@@ -10,7 +10,9 @@ class Home extends SiteController{
     {
         parent::__construct();
     }
-
+    public function index(){
+        echo 'home';
+    }
 }
 ?>
 

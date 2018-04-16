@@ -11,6 +11,6 @@ class Login extends AdminController{
         parent::__construct();
     }
     public function index(){
-
+        $this->render('Sample');
     }
 }
