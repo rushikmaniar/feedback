@@ -7,8 +7,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/backoffice/');?>images/favicon.png">
-    <title>Ela - Bootstrap Admin Dashboard Template</title>
+    <link rel="icon" type="image/ico" sizes="16x16" href="<?= base_url();?>/assets/backoffice/images/favicon.ico">
+    <title>Christ College Feedback</title>
     <!-- Bootstrap Core CSS -->
     <link href="<?= base_url('assets/backoffice/');?>css/lib/bootstrap/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -25,4 +25,10 @@
     <script src="https:**oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https:**oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <!-- All Jquery -->
+    <script src="<?= base_url('assets/backoffice/')?>js/lib/jquery/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="<?= base_url('assets/backoffice/')?>js/lib/bootstrap/js/popper.min.js"></script>
+    <script src="<?= base_url('assets/backoffice/')?>js/lib/bootstrap/js/bootstrap.min.js"></script>
 </head>

@@ -90,7 +90,7 @@ class CI_Output {
 	 *
 	 * @var	bool
 	 */
-	public $enable_profiler = FALSE;
+	public $enable_profiler = false;
 
 	/**
 	 * php.ini zlib.output_compression flag

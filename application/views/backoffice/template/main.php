@@ -141,7 +141,7 @@
                             <div class="testimonial-widget-one owl-carousel owl-theme">
                                 <div class="item">
                                     <div class="testimonial-content">
-                                        <img class="testimonial-author-img" src="images/avatar/2.jpg" alt="" />
+                                        <img class="testimonial-author-img" src="<?= base_url();?>/assets/backoffice/images/avatar/2.jpg" alt="" />
                                         <div class="testimonial-author">John</div>
                                         <div class="testimonial-author-position">Founder-Ceo. Dell Corp</div>
 
@@ -153,7 +153,7 @@
                                 </div>
                                 <div class="item">
                                     <div class="testimonial-content">
-                                        <img class="testimonial-author-img" src="images/avatar/3.jpg" alt="" />
+                                        <img class="testimonial-author-img" src="<?= base_url();?>/assets/backoffice/images/avatar/3.jpg" alt="" />
                                         <div class="testimonial-author">Abraham</div>
                                         <div class="testimonial-author-position">Founder-Ceo. Dell Corp</div>
 
@@ -165,7 +165,7 @@
                                 </div>
                                 <div class="item">
                                     <div class="testimonial-content">
-                                        <img class="testimonial-author-img" src="images/avatar/1.jpg" alt="" />
+                                        <img class="testimonial-author-img" src="<?= base_url();?>/assets/backoffice/images/avatar/1.jpg" alt="" />
                                         <div class="testimonial-author">Lincoln</div>
                                         <div class="testimonial-author-position">Founder-Ceo. Dell Corp</div>
 
@@ -177,7 +177,7 @@
                                 </div>
                                 <div class="item">
                                     <div class="testimonial-content">
-                                        <img class="testimonial-author-img" src="images/avatar/4.jpg" alt="" />
+                                        <img class="testimonial-author-img" src="<?= base_url();?>/assets/backoffice/images/avatar/4.jpg" alt="" />
                                         <div class="testimonial-author">TYRION LANNISTER</div>
                                         <div class="testimonial-author-position">Founder-Ceo. Dell Corp</div>
 
@@ -189,7 +189,7 @@
                                 </div>
                                 <div class="item">
                                     <div class="testimonial-content">
-                                        <img class="testimonial-author-img" src="images/avatar/5.jpg" alt="" />
+                                        <img class="testimonial-author-img" src="<?= base_url();?>/assets/backoffice/images/avatar/5.jpg" alt="" />
                                         <div class="testimonial-author">TYRION LANNISTER</div>
                                         <div class="testimonial-author-position">Founder-Ceo. Dell Corp</div>
 
@@ -201,7 +201,7 @@
                                 </div>
                                 <div class="item">
                                     <div class="testimonial-content">
-                                        <img class="testimonial-author-img" src="images/avatar/6.jpg" alt="" />
+                                        <img class="testimonial-author-img" src="<?= base_url();?>/assets/backoffice/images/avatar/6.jpg" alt="" />
                                         <div class="testimonial-author">TYRION LANNISTER</div>
                                         <div class="testimonial-author-position">Founder-Ceo. Dell Corp</div>
 
@@ -298,7 +298,7 @@
                                 <div class="recent-comment">
                                     <div class="media">
                                         <div class="media-left">
-                                            <a href="#"><img alt="..." src="images/avatar/1.jpg" class="media-object"></a>
+                                            <a href="#"><img alt="..." src="<?= base_url(); ?>assets/backoffice/images/avatar/1.jpg" class="media-object"></a>
                                         </div>
                                         <div class="media-body">
                                             <h4 class="media-heading">john doe</h4>
@@ -308,7 +308,7 @@
                                     </div>
                                     <div class="media">
                                         <div class="media-left">
-                                            <a href="#"><img alt="..." src="images/avatar/1.jpg" class="media-object"></a>
+                                            <a href="#"><img alt="..." src="<?= base_url(); ?>assets/backoffice/images/avatar/1.jpg" class="media-object"></a>
                                         </div>
                                         <div class="media-body">
                                             <h4 class="media-heading">john doe</h4>
@@ -319,7 +319,7 @@
 
                                     <div class="media">
                                         <div class="media-left">
-                                            <a href="#"><img alt="..." src="images/avatar/1.jpg" class="media-object"></a>
+                                            <a href="#"><img alt="..." src="<?= base_url(); ?>assets/backoffice/images/avatar/1.jpg" class="media-object"></a>
                                         </div>
                                         <div class="media-body">
                                             <h4 class="media-heading">john doe</h4>
@@ -330,7 +330,7 @@
 
                                     <div class="media no-border">
                                         <div class="media-left">
-                                            <a href="#"><img alt="..." src="images/avatar/1.jpg" class="media-object"></a>
+                                            <a href="#"><img alt="..." src="<?= base_url(); ?>assets/backoffice/images/avatar/1.jpg" class="media-object"></a>
                                         </div>
                                         <div class="media-body">
                                             <h4 class="media-heading">Mr. Michael</h4>
@@ -418,7 +418,7 @@
     <!-- End Page wrapper  -->
 </div>
 <!-- End Wrapper -->
-<?php $this->load->view('backoffice/template/footerScrip.php');?>
+<?php $this->load->view('backoffice/template/footerScript.php');?>
 </body>
 
 </html>

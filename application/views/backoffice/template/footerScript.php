@@ -1,9 +1,5 @@
 <?php // js scripts and custom.js ?>
-<!-- All Jquery -->
-<script src="<?= base_url('assets/backoffice/')?>js/lib/jquery/jquery.min.js"></script>
-<!-- Bootstrap tether Core JavaScript -->
-<script src="<?= base_url('assets/backoffice/')?>js/lib/bootstrap/js/popper.min.js"></script>
-<script src="<?= base_url('assets/backoffice/')?>js/lib/bootstrap/js/bootstrap.min.js"></script>
+
 <!-- slimscrollbar scrollbar JavaScript -->
 <script src="<?= base_url('assets/backoffice/')?>js/jquery.slimscroll.js"></script>
 <!--Menu sidebar -->
