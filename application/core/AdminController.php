@@ -1,10 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+use DebugBar\StandardDebugBar;
 
 class AdminController extends CI_Controller {
 
 	public $pageData = array();
-	public $pageTitle = 'Page Title';
+    public $debugbar;
+    public $debugbarRenderer;
+
+    public $pageTitle = 'Page Title';
 	public $userInfo = array();
 	public $total_customer = 0;
 	public $total_category = 0;
@@ -13,7 +17,9 @@ class AdminController extends CI_Controller {
 	
 	public function __construct()
 	{
-		parent::__construct();
+        parent::__construct();
+        $this->debugbar = new StandardDebugBar();
+        $this->debugbarRenderer = $this->debugbar->getJavascriptRenderer(base_url('vendor/maximebf/debugbar/src/DebugBar/Resources'),BASEPATH);
 	}
 	
 	public function render($the_view=null,$template='main')
