@@ -415,7 +415,6 @@
         <?php $this->load->view('backoffice/template/footer.php');?>
         <!-- End footer -->
     </div>
-    <?php echo $this->debugbarRenderer->render() ?>
     <!-- End Page wrapper  -->
 </div>
 <!-- End Wrapper -->

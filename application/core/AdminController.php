@@ -18,8 +18,6 @@ class AdminController extends CI_Controller {
 	public function __construct()
 	{
         parent::__construct();
-        $this->debugbar = new StandardDebugBar();
-        $this->debugbarRenderer = $this->debugbar->getJavascriptRenderer(base_url('vendor/maximebf/debugbar/src/DebugBar/Resources'),BASEPATH);
 	}
 	
 	public function render($the_view=null,$template='main')

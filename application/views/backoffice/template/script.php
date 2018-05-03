@@ -12,7 +12,6 @@
     <!-- Bootstrap Core CSS -->
     <link href="<?= base_url('assets/backoffice/');?>css/lib/bootstrap/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <?php echo $this->debugbarRenderer->renderHead() ?>
     <link href="<?= base_url('assets/backoffice/');?>css/lib/calendar2/semantic.ui.min.css" rel="stylesheet">
     <link href="<?= base_url('assets/backoffice/');?>css/lib/calendar2/pignose.calendar.min.css" rel="stylesheet">
     <link href="<?= base_url('assets/backoffice/');?>css/lib/owl.carousel.min.css" rel="stylesheet" />
