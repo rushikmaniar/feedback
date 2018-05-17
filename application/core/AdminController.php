@@ -18,8 +18,31 @@ class AdminController extends CI_Controller {
 	public function __construct()
 	{
         parent::__construct();
+        $this->load->database();
+        $this->load->model('CommonModel');
 	}
-	
+    public function checkexists($id = false)
+    {
+
+        $table = $this->input->post('table');
+        $field = $this->input->post('field');
+        $value = $this->input->post($field);
+
+        if (isset($id)) {
+            $c = $this->CommonModel->getRecord($table, array($field => $value, "id !=" => $id))->num_rows();
+
+        } else {
+            $c = $this->CommonModel->getRecord($table, array($field => $value))->num_rows();
+        }
+
+        if ($c > 0) {
+            echo "false";
+        } else {
+            echo "true";
+        }
+        exit();
+
+    }
 	public function render($the_view=null,$template='main')
 	{
 	    if($the_view)

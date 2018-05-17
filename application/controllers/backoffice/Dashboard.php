@@ -15,6 +15,7 @@ class Dashboard extends AdminController
 
     public function index()
     {
+        $this->pageTitle = 'Dashboard';
         $this->render("dashboard/index");
     }
 }

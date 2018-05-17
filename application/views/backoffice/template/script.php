@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/ico" sizes="16x16" href="<?= base_url();?>/assets/backoffice/images/favicon.ico">
-    <title>Christ College Feedback</title>
+    <title><?= $this->pageTitle ?></title>
     <!-- Bootstrap Core CSS -->
     <link href="<?= base_url('assets/backoffice/');?>css/lib/bootstrap/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -17,6 +17,8 @@
     <link href="<?= base_url('assets/backoffice/');?>css/lib/owl.carousel.min.css" rel="stylesheet" />
     <link href="<?= base_url('assets/backoffice/');?>css/lib/owl.theme.default.min.css" rel="stylesheet" />
     <link href="<?= base_url('assets/backoffice/');?>css/helper.css" rel="stylesheet">
+    <!-- Data table css-->
+    <link href="<?= base_url();?>assets/backoffice/css/lib/data-table/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="<?= base_url('assets/backoffice/');?>css/style.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:** -->
@@ -30,4 +32,22 @@
     <!-- Bootstrap tether Core JavaScript -->
     <script src="<?= base_url('assets/backoffice/')?>js/lib/bootstrap/js/popper.min.js"></script>
     <script src="<?= base_url('assets/backoffice/')?>js/lib/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap Select -->
+    <link href="<?= base_url('assets/backoffice/');?>/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+    <script src="<?= base_url('assets/backoffice/')?>/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
+    
+    <!-- Datatable js-->
+    <script src="<?= base_url()?>assets/backoffice/js/lib/datatables/datatables.min.js"></script>
+    <script src="<?= base_url()?>assets/backoffice/js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="<?= base_url()?>assets/backoffice/js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+    <script src="<?= base_url()?>assets/backoffice/js/lib/datatables/cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="<?= base_url()?>assets/backoffice/js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="<?= base_url()?>assets/backoffice/js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="<?= base_url()?>assets/backoffice/js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+    <script src="<?= base_url()?>assets/backoffice/js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+    <script type="text/javascript">
+        var base_url = "<?= base_url();?>";
+        var SITE_URL = "<?= site_url(); ?>";
+    </script>
 </head>
