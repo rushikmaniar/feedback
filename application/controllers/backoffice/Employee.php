@@ -17,7 +17,6 @@ class Employee extends AdminController
         //$employee_data = $this->CommonModel->dblike(array('emp_code'=>'%'.($search) ? $search : ''.'%','emp_name'=>'%'.($search) ? $search : ''.'%','emp_phone'=>'%'.($search) ? $search : ''.'%','emp_email'=>'%'.($search) ? $search : ''.'%'))->dbOrderBy(array('id'=>'DESC'))->getRecord("emloyee_master",'','employee_master.*,SELE',$this->per_page,$offset)->result_array();
         $OrWhere = array();
         $employee_data = $this->CommonModel
-            ->dblike(array('emp_code'=>'%'.($search) ? $search : ''.'%','emp_name'=>'%'.($search) ? $search : ''.'%','emp_phone'=>'%'.($search) ? $search : ''.'%','emp_email'=>'%'.($search) ? $search : ''.'%'))
             ->dbOrderBy(array('id'=>'DESC'))
             ->dbjoin(
             array(
@@ -27,7 +26,6 @@ class Employee extends AdminController
                 )
             )
         )->getRecord('employee_master', $OrWhere, 'employee_master.*,department_master.dept_id,department_master.dept_name')->result_array();
-
 
         $this->pageTitle = 'Employee Management';
         $this->pageData['employee_data'] = $employee_data;
@@ -59,11 +57,11 @@ class Employee extends AdminController
         if ($this->input->post('action') && $this->input->post('action') == "addEmployee")
         {
             $employee_data = array(
-                "emp_code" => $this->input->post('txt_emp_code'),
-                "emp_name" => $this->input->post('txt_emp_name'),
-                "emp_phone" => $this->input->post('txt_emp_phone'),
-                "emp_email" => $this->input->post('txt_emp_email'),
-                "dept_id" => $this->input->post('txt_dept_id')
+                "emp_code" => $this->input->post('employee_frm_emp_code'),
+                "emp_name" => $this->input->post('employee_frm_emp_name'),
+                "emp_phone" => $this->input->post('employee_frm_emp_phone'),
+                "emp_email" => $this->input->post('employee_frm_emp_email'),
+                "dept_id" => $this->input->post('employee_frm_dept_id')
             );
 
 

@@ -32,10 +32,10 @@
                                 <td><?=$row['dept_name']?></td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-action btn-custom btn-sm" data-tooltip="tooltip" data-container="body" title="Edit User" onclick="ajaxModel('backoffice/Employee/viewEditEmployeeModal/<?=$row['id']?>','Edit Employee',800)">
+                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Employee" data-container="body" title="Edit User" onclick="ajaxModel('backoffice/Employee/viewEditEmployeeModal/<?=$row['id']?>','Edit Employee',800)">
                                             <i class="fa fa-pencil"></i>
                                         </button>
-                                        <button type="button" class="btn btn-action btn-custom btn-sm" data-tooltip="tooltip" data-container="body" title="Delete User" onclick="deleteUser(<?=$row['id']?>')">
+                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Employee" data-container="body" title="Delete User" onclick="deleteUser(<?=$row['id']?>')">
                                             <i class="fa fa-remove"></i>
                                         </button>
                                     </div>
@@ -76,29 +76,42 @@ endif;
 	/*************************************
 				Delete User
 	*************************************/
-	function deleteUser(emp_id)
-	{
-		$.ajax({
-			url : base_url+"backoffice/Empployee/deleteEmployee",
-			type : "POST",
-			dataType : "json",
-			data : {"emp_id":emp_id},
-			success : function(result)
-			{
-				if(result.code == 1 && result.code != '')
-            	{
-            		$.Notification.notify(result.status,'top center',result.message);
-            		setTimeout(function(){
-            			location.reload();
-            			},2000);
-            	}
-            	else
-            	{
-            		$.Notification.notify(result.status,'top center',result.message);
-            	}
-			}
-		});
-	}
+    function deleteUser(user_id)
+    {
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+
+            $.ajax({
+            url: base_url + "backoffice/Empployee/deleteEmployee",
+            type: "POST",
+            dataType: "json",
+            data: {"user_id": user_id},
+            success: function (result) {
+                if (result.code == 1 && result.code != '') {
+                    $.notify({message: result.message },{type: 'success'});
+                }
+                else {
+                    $.notify({message: result.message },{type: 'error'});
+                }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+        setTimeout(function () {
+            location.reload();
+        },1000);
+
+
+    }).catch(swal.noop);
+    }
 	/*************************************
 				Delete User End
 	*************************************/
