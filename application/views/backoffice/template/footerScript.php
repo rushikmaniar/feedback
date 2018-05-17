@@ -33,6 +33,8 @@
 
 <!-- Include Again Duew To above script -->
 <script src="<?= base_url('assets/backoffice/')?>js/lib/bootstrap/js/bootstrap.min.js"></script>
+<!-- bootstrap selectpiker -->
+<script src="<?= base_url()?>assets/backoffice/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
 <!-- scripit init-->
 
 <!-- jquery validation -->

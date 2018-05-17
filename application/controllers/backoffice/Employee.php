@@ -76,14 +76,14 @@ class Employee extends AdminController
         if ($this->input->post('action') && $this->input->post('action') == "editEmployee")
         {
             $employee_data = array(
-                "emp_code" => $this->input->post('txt_emp_code'),
-                "emp_name" => $this->input->post('txt_emp_name'),
-                "emp_phone" => $this->input->post('txt_emp_phone'),
-                "emp_email" => $this->input->post('txt_emp_email'),
-                "dept_id" => $this->input->post('txt_dept_id')
+                "emp_code" => $this->input->post('employee_frm_emp_code'),
+                "emp_name" => $this->input->post('employee_frm_emp_name'),
+                "emp_phone" => $this->input->post('employee_frm_emp_phone'),
+                "emp_email" => $this->input->post('employee_frm_emp_email'),
+                "dept_id" => $this->input->post('employee_frm_dept_id')
             );
             
-            $update = $this->CommonModel->update("emploee_master",$employee_data,array('id'=>$this->input->post('update_id')));
+            $update = $this->CommonModel->update("employee_master",$employee_data,array('id'=>$this->input->post('update_id')));
             if($update){
                 $this->session->set_flashdata("success","Employee updated successfully");
             }else{
@@ -118,7 +118,7 @@ class Employee extends AdminController
     {
         if ($this->input->post('emp_id'))
         {
-            $result = $this->UserModel->delete("employee_master",array('id'=>$this->input->post('emp_id')));
+            $result = $this->CommonModel->delete("employee_master",array('id'=>$this->input->post('emp_id')));
             if ($result)
             {
                 if ($this->input->post('emp_pic'))

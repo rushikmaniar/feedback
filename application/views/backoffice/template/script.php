@@ -36,6 +36,10 @@
     <!-- Bootstrap Select -->
     <link href="<?= base_url('assets/backoffice/');?>/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
     <script src="<?= base_url('assets/backoffice/')?>/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
+
+    <!-- Select2 -->
+    <link href="<?= base_url();?>assets/backoffice/plugins/select2/css/select2.min.css" rel="stylesheet">
+    <script src="<?= base_url()?>assets/backoffice/plugins/select2/js/select2.min.js"></script>
     
     <!-- Datatable js-->
     <script src="<?= base_url()?>assets/backoffice/js/lib/datatables/datatables.min.js"></script>
@@ -46,6 +50,10 @@
     <script src="<?= base_url()?>assets/backoffice/js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
     <script src="<?= base_url()?>assets/backoffice/js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
     <script src="<?= base_url()?>assets/backoffice/js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+
+    <!-- Sweet Alert 2 -->
+    <link href="<?= base_url();?>assets/backoffice/plugins/sweet-alert2/sweetalert2.min.css" rel="stylesheet">
+    <script src="<?= base_url()?>assets/backoffice/plugins/sweet-alert2/sweetalert2.min.js"></script>
     <script type="text/javascript">
         var base_url = "<?= base_url();?>";
         var SITE_URL = "<?= site_url(); ?>";

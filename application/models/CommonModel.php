@@ -138,7 +138,7 @@ class CommonModel extends CI_Model
         return $this->db->insert_id();
     }
 
-    function update($table,$array,$where)
+    public function update($table,$array,$where)
     {
         if(!array_key_exists('updated_at', $array)){
     		$array['updated_at'] = now();
@@ -147,7 +147,7 @@ class CommonModel extends CI_Model
        return $this->db->update($table,$array);
     }
     
-    function updateIncrement($table,$array,$where)
+    public function updateIncrement($table,$array,$where)
     {
     	$updateArray = array();
     	foreach ($array as $col)
@@ -164,13 +164,13 @@ class CommonModel extends CI_Model
     	return $this->db->update($table);
     }
 
-    function delete($table,$where)
+    public function delete($table,$where)
     {
         $this->db->where($where);
         return $this->db->delete($table);
     }
 
-    function slug($string)
+    public function slug($string)
     {
        return strtolower(preg_replace('/[^A-Za-z0-9\-]/','', $string));
     }

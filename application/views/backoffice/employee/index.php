@@ -35,7 +35,7 @@
                                         <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Employee" data-container="body" title="Edit User" onclick="ajaxModel('backoffice/Employee/viewEditEmployeeModal/<?=$row['id']?>','Edit Employee',800)">
                                             <i class="fa fa-pencil"></i>
                                         </button>
-                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Employee" data-container="body" title="Delete User" onclick="deleteUser(<?=$row['id']?>')">
+                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Employee" data-container="body" title="Delete User" onclick="deleteUser(<?=$row['id']?>)">
                                             <i class="fa fa-remove"></i>
                                         </button>
                                     </div>
@@ -44,27 +44,13 @@
                         <?php endforeach;?>
                         </tbody>
                     </table>
-            <?php
-if (isset($pagelink['page_link']) && !empty($pagelink['page_link'])):
-?>
-                        <div class="row m-t-10 paggination-content">
-                            <div class="col-sm-4 col-md-4">
-                                <?="Showing " . ($offset + 1) . " to " . ($offset + $totalDisplay) . " of " . $pagelink['totalRecord'] . " entires"?>
-                            </div>
-                            <div class="col-sm-8 col-md-8">
-                                <?=$pagelink['page_link']?>
-                            </div>
-                        </div>
-                    <?php
-endif;
-?>
-
             </div>
 
     </div>
 </div>
 <script>
     $(document).ready(function () {
+
         $('#EmployeeTable').dataTable({
             dom: 'Bfrtip',
             buttons: [
@@ -76,7 +62,7 @@ endif;
 	/*************************************
 				Delete User
 	*************************************/
-    function deleteUser(user_id)
+    function deleteUser(emp_id)
     {
         swal({
             title: 'Are you sure?',
@@ -89,10 +75,10 @@ endif;
         }).then((result) => {
 
             $.ajax({
-            url: base_url + "backoffice/Empployee/deleteEmployee",
+            url: base_url + "backoffice/Employee/deleteEmployee",
             type: "POST",
             dataType: "json",
-            data: {"user_id": user_id},
+            data: {"emp_id": emp_id},
             success: function (result) {
                 if (result.code == 1 && result.code != '') {
                     $.notify({message: result.message },{type: 'success'});

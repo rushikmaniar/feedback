@@ -39,8 +39,10 @@
     <!-- Select Depatment -->
     <div class="col-sm-6">
         <div class="input-group form-group">
-            <select name="employee_frm_dept_id" id="employee_frm_dept_id" class="form-control">
+            <select name="employee_frm_dept_id" id="employee_frm_dept_id" class="col-md-6">
                 <option value="" selected>No Department</option>
+                <option value="1" >No1 Department</option>
+                <option value="2" >No2 Department</option>
             </select>
         </div>
     </div>
@@ -57,7 +59,7 @@
 
     var flag_email = 1;
     $(document).ready(function () {
-        //$("#department").selectpicker("refresh");
+        $('#employee_frm_dept_id').select2();
 
         /*************************************
          Add Edit employee
