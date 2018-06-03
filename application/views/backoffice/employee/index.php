@@ -1,16 +1,17 @@
 <div class="card">
-    <div class="card-title">
-        <h4><?=$this->pageTitle;?></h4>
-    </div>
     <div class="card-body">
         <div class="col-sm-12 col-md-12">
-        <div class="pull-left">
                         <button type="button" class="btn btn-success btn-top" id="btn_add_user" onclick="ajaxModel('backoffice/Employee/viewAddEmployeeModal','Add New Employee','modal-lg')" data-toggle="modal" data-target="#feedback_admin_modal">
                             <i class="fa fa-plus"></i> Add Employee
                         </button>
+                        <form action="<?= base_url().'backoffice/Employee/importEmployee'; ?>" enctype="multipart/form-data">
+                            <input type="file" name="employee_csv" style="display: none">
+                            <button  onclick="" class="form-control btn btn-success"></button>
+                            <button type="submit" class="form-control btn btn-success"></button>
+                        </form>
         </div>
             <table class="table table-responsive table-hover m-t-40" id="EmployeeTable">
-                        <thead
+                        <thead>
                         <tr>
                             <th>Employee Code</th>
                             <th>Employee Name</th>
@@ -47,7 +48,6 @@
             </div>
 
     </div>
-</div>
 <script>
     $(document).ready(function () {
 
@@ -72,7 +72,7 @@
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
+        }).then(function(result)  {
 
             $.ajax({
             url: base_url + "backoffice/Employee/deleteEmployee",

@@ -46,7 +46,9 @@ class Employee extends AdminController
     }
     
 
-    
+    public function importEmployee(){
+
+    }
     
     /**
      * Add or edit Employee

@@ -18,7 +18,7 @@
     <link href="<?= base_url('assets/backoffice/');?>css/lib/owl.theme.default.min.css" rel="stylesheet" />
     <link href="<?= base_url('assets/backoffice/');?>css/helper.css" rel="stylesheet">
     <!-- Data table css-->
-    <link href="<?= base_url();?>assets/backoffice/css/lib/data-table/dataTables.bootstrap.min.css" rel="stylesheet">
+    <!--<link href="<?/*= base_url();*/?>assets/backoffice/css/lib/data-table/dataTables.bootstrap.min.css" rel="stylesheet">-->
     <link href="<?= base_url('assets/backoffice/');?>css/style.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:** -->
@@ -40,7 +40,7 @@
     <!-- Select2 -->
     <link href="<?= base_url();?>assets/backoffice/plugins/select2/css/select2.min.css" rel="stylesheet">
     <script src="<?= base_url()?>assets/backoffice/plugins/select2/js/select2.min.js"></script>
-    
+
     <!-- Datatable js-->
     <script src="<?= base_url()?>assets/backoffice/js/lib/datatables/datatables.min.js"></script>
     <script src="<?= base_url()?>assets/backoffice/js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
