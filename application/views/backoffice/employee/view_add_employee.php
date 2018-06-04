@@ -57,7 +57,7 @@
 
     <script>
 
-        var flag_email = 1;
+        var update_id = $('#update_id').val();
         $(document).ready(function () {
             $('#employee_frm_dept_id').select2();
 
@@ -81,34 +81,70 @@
                 rules:
                     {
                         'employee_frm_emp_code': {
-                            required: true
+                            required: true,
+                            remote: {
+                                url: base_url+"backoffice/Employee/checkexists/"+update_id,
+                                type: "post",
+                                data: {
+                                    'table': 'employee_master',
+                                    'field': 'emp_code',
+                                    emp_code: function () {
+                                        return $('#employee_frm_emp_code').val();
+                                    }
+                                }
+                            }
                         },
                         'employee_frm_emp_name': {
                             required: true
                         },
                         'employee_frm_emp_email': {
                             required: true,
-                            email: true
+                            email: true,
+                            remote: {
+                                url: base_url+"backoffice/Employee/checkexists/"+update_id,
+                                type: "post",
+                                data: {
+                                    'table': 'employee_master',
+                                    'field': 'emp_email',
+                                    emp_email: function () {
+                                        return $('#employee_frm_emp_email').val();
+                                    }
+                                }
+                            }
                         },
                         'employee_frm_emp_phone': {
-                            regex: "^[6-9]\\d{9}$"
+                            regex: "^[6-9]\\d{9}$",
+                            remote: {
+                                url: base_url+"backoffice/Employee/checkexists/"+update_id,
+                                type: "post",
+                                data: {
+                                    'table': 'employee_master',
+                                    'field': 'emp_phone',
+                                    emp_phone: function () {
+                                        return $('#employee_frm_emp_phone').val();
+                                    }
+                                }
+                            }
                         }
                     },
 
                 messages:
                     {
                         'employee_frm_emp_code': {
-                            required: "This field is required."
+                            required: "This field is required.",
+                            remote:"Employee code already Exists"
                         },
                         'employee_frm_emp_name': {
                             required: "This field is required."
                         },
                         'employee_frm_emp_email': {
                             required: "This field is required.",
-                            email: "Please enter valid email."
+                            email: "Please enter valid email.",
+                            remote:"Employee Email already Exists"
                         },
                         'employee_frm_emp_phone': {
-                            regex: "Please Enter valid mobile number"
+                            regex: "Please Enter valid mobile number",
+                            remote:"Employee Phone already Exists"
                         }
                     }
             });

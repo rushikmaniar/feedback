@@ -1,37 +1,31 @@
 <div class="card">
     <div class="card-body">
         <div class="col-sm-12 col-md-12">
-                        <button type="button" class="btn btn-success btn-top" id="btn_add_user" onclick="ajaxModel('backoffice/Employee/viewAddEmployeeModal','Add New Employee','modal-lg')" data-toggle="modal" data-target="#feedback_admin_modal">
-                            <i class="fa fa-plus"></i> Add Employee
+                        <button type="button" class="btn btn-success btn-top" id="btn_add_user" onclick="ajaxModel('backoffice/Department/viewAddDepartmentModal','Add New Department','modal-md')" data-toggle="modal" data-target="#feedback_admin_modal">
+                            <i class="fa fa-plus"></i> Add Department
                         </button>
         </div>
-            <table class="display nowrap table table-hover table-striped table-bordered dataTable" id="EmployeeTable">
+            <table class="display nowrap table table-hover table-striped table-bordered dataTable" id="DepartmentTable">
                         <thead>
                         <tr>
-                            <th>Employee Code</th>
-                            <th>Employee Name</th>
-                            <th>Employee Email</th>
-                            <th>Employee Mobile</th>
-                            <th>Department</th>
+                            <th>Department ID</th>
+                            <th>Department Name</th>
                             <th class="text-center">Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($employee_data as $row): ?>
+                        <?php foreach ($department_data as $row): ?>
                             <tr>
-                                <!-- Employee Code -->
+                                <!-- Department id -->
 
-                                <td><?=$row['emp_code']?></td>
-                                <td><?=$row['emp_name']?></td>
-                                <td><?=$row['emp_phone']?></td>
-                                <td><?=$row['emp_email']?></td>
+                                <td><?=$row['dept_id']?></td>
                                 <td><?=$row['dept_name']?></td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Employee" data-container="body" title="Edit User" onclick="ajaxModel('backoffice/Employee/viewEditEmployeeModal/<?=$row['id']?>','Edit Employee',800)">
+                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Department" data-container="body" title="Edit Department" onclick="ajaxModel('backoffice/Department/viewEditDepartmentModal/<?=$row['id']?>','Edit Department',800)">
                                             <i class="fa fa-pencil"></i>
                                         </button>
-                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Employee" data-container="body" title="Delete User" onclick="deleteUser(<?=$row['id']?>)">
+                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Department" data-container="body" title="Delete Department" onclick="deletedepartment(<?=$row['id']?>)">
                                             <i class="fa fa-remove"></i>
                                         </button>
                                     </div>
@@ -46,7 +40,7 @@
 <script>
     $(document).ready(function () {
 
-        $('#EmployeeTable').dataTable({
+        $('#DepartmentTable').dataTable({
             dom: 'Bfrtip',
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
@@ -55,9 +49,9 @@
 
     });
 	/*************************************
-				Delete User
+				Delete Department
 	*************************************/
-    function deleteUser(emp_id)
+    function deletedepartment(dept_id)
     {
         swal({
             title: 'Are you sure?',
@@ -70,10 +64,10 @@
         }).then(function(result)  {
 
             $.ajax({
-            url: base_url + "backoffice/Employee/deleteEmployee",
+            url: base_url + "backoffice/Department/deleteDepartment",
             type: "POST",
             dataType: "json",
-            data: {"emp_id": emp_id},
+            data: {"dept_id": dept_id},
             success: function (result) {
                 if (result.code == 1 && result.code != '') {
                     $.notify({message: result.message },{type: 'success'});
