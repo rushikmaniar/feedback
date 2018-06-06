@@ -23,8 +23,7 @@
 
     <!-- Select Department -->
     <div class="col-sm-12">
-        <div class="col-md-12">
-            <select name="class_frm_dept_id" id="class_frm_dept_id">
+            <select name="class_frm_dept_id" id="class_frm_dept_id" style="width: 30%">
                 <option value="0" selected>No Department</option>
                 <?php foreach ($department_list as $row): ?>
                     <?php if (isset($class_data['dept_id'])): ?>
@@ -38,7 +37,6 @@
                     <?php endif; ?>
                 <?php endforeach; ?>
             </select>
-        </div>
     </div>
 
     <!--  submit -->

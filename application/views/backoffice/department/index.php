@@ -70,10 +70,10 @@
             data: {"dept_id": dept_id},
             success: function (result) {
                 if (result.code == 1 && result.code != '') {
-                    $.notify({message: result.message },{type: 'success'});
+                    toastr["success"](result.message, "Success");
                 }
                 else {
-                    $.notify({message: result.message },{type: 'error'});
+                    toastr["error"](result.message, "Error");
                 }
             },
             error:function (result) {

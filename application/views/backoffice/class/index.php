@@ -77,10 +77,12 @@
                 data: {"class_id": class_id},
                 success: function (result) {
                     if (result.code == 1 && result.code != '') {
-                        $.notify({message: result.message}, {type: 'success'});
+                        //success notifiacation
+                        toastr["success"](result.message, "Success");
                     }
                     else {
-                        $.notify({message: result.message}, {type: 'error'});
+                        //error notification
+                        toastr["error"](result.message, "Error");
                     }
                 },
                 error: function (result) {

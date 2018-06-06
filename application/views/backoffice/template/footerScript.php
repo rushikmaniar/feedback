@@ -46,6 +46,7 @@
 <script src="<?= base_url('assets/backoffice/') ?>js/custom.min.js"></script>
 
 <script type="text/javascript">
+
     function ajaxModel(url, title, width) {
         if (typeof(width) === 'undefined') {
             width = 'modal-lg';
@@ -70,45 +71,9 @@
     jQuery(document).ready(function ($) {
 
         <?php if($this->session->flashdata('error')) : ?>
-        toastr.error('<?= $this->session->flashdata('error') ?>','Top Right',{
-            "positionClass": "toast-top-right",
-            timeOut: 5000,
-            "closeButton": true,
-            "debug": false,
-            "newestOnTop": true,
-            "progressBar": true,
-            "preventDuplicates": true,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut",
-            "tapToDismiss": false
-
-        });
+        toastr["error"]('<?= $this->session->flashdata('error') ?>', "Error");
         <?php elseif($this->session->flashdata('success')) : ?>
-        toastr.success('<?= $this->session->flashdata('success') ?>','Top Right',{
-            "positionClass": "toast-top-right",
-            timeOut: 5000,
-            "closeButton": true,
-            "debug": false,
-            "newestOnTop": true,
-            "progressBar": true,
-            "preventDuplicates": true,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut",
-            "tapToDismiss": false
-
-        });
+        toastr["success"]('<?= $this->session->flashdata('success') ?>', "Success");
         <?php endif; ?>
     });
 </script>

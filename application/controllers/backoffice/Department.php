@@ -32,7 +32,7 @@ class Department extends AdminController
 
     
     /**
-     * Add or edit Employee
+     * Add or edit Department
      * 
      */
     public function addEditDepartment()
@@ -62,9 +62,9 @@ class Department extends AdminController
             
             $update = $this->CommonModel->update("department_master",$department_data,array('id'=>$this->input->post('update_id')));
             if($update){
-                $this->session->set_flashdata("success","Employee updated successfully");
+                $this->session->set_flashdata("success","Department updated successfully");
             }else{
-                $this->session->set_flashdata("error","Problem Editing Employee.Try Later");
+                $this->session->set_flashdata("error","Problem Editing Department.Try Later");
             }
         }
         
@@ -75,7 +75,7 @@ class Department extends AdminController
     /**
      * View edit modal with set Department data
      * 
-     * @param int $user_id
+     * @param int $dept_id
      */
     public function viewEditDepartmentModal($dept_id)
     {
