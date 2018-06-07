@@ -36,15 +36,22 @@
         </div>
     </div>
 
-    <!-- Select Depatment -->
+    <!-- Select Department -->
     <div class="col-sm-12">
-        <div class="col-md-12">
-            <select name="employee_frm_dept_id" id="employee_frm_dept_id">
-                <option value="" selected>No Department</option>
-                <option value="1">No1 Department</option>
-                <option value="2">No2 Department</option>
-            </select>
-        </div>
+        <select name="class_frm_dept_id" id="class_frm_dept_id" style="width: 30%" class="form-control">
+            <option value="0" selected>No Department</option>
+            <?php foreach ($department_list as $row): ?>
+                <?php if (isset($class_data['dept_id'])): ?>
+                    <?php if (($class_data['dept_id']) == $row['dept_id']): ?>
+                        <option value="<?= $row['dept_id'] ?>" selected><?= $row['dept_name'] ?></option>
+                    <?php else: ?>
+                        <option value="<?= $row['dept_id'] ?>"><?= $row['dept_name'] ?></option>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <option value="<?= $row['dept_id'] ?>"><?= $row['dept_name'] ?></option>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </select>
     </div>
 
     <!--  submit -->

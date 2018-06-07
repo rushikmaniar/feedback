@@ -42,6 +42,13 @@ class Employee extends AdminController
      */
     public function viewAddEmployeeModal()
     {
+        $OrWhere = array();
+        $department_data = $this->CommonModel
+            ->dbOrderBy(array('id'=>'DESC'))
+            ->getRecord('department_master', $OrWhere, 'department_master.*')->result_array();
+
+        $this->pageData['department_list'] = $department_data;
+
         $this->render("backoffice/Employee/view_add_employee",FALSE);
     }
     
@@ -56,6 +63,7 @@ class Employee extends AdminController
      */
     public function addEditEmployee()
     {
+
         if ($this->input->post('action') && $this->input->post('action') == "addEmployee")
         {
             $employee_data = array(
@@ -104,6 +112,13 @@ class Employee extends AdminController
      */
     public function viewEditEmployeeModal($emp_id)
     {
+        $OrWhere = array();
+        $department_data = $this->CommonModel
+            ->dbOrderBy(array('id'=>'DESC'))
+            ->getRecord('department_master', $OrWhere, 'department_master.*')->result_array();
+
+        $this->pageData['department_list'] = $department_data;
+
         $department_list = $this->CommonModel->getRecord("department_master",'')->result_array();
         $employee_data = $this->CommonModel->getRecord("employee_master",array('id'=>$emp_id))->row_array();
         $this->pageData['employee_data'] = $employee_data;
