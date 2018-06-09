@@ -69,22 +69,28 @@ class EmployeeAllocation extends AdminController
     public function editAllocation()
     {
 
+            if($this->input->post('allocation_frm_emp_codes')) {
+                //delete previous data
+                $delete = $this->CommonModel->delete('employee_allocation', array('class_id' => $this->input->post('update_id')));
+                $emp_codes = $this->input->post('allocation_frm_emp_codes');
+                $data = array();
+                foreach ($emp_codes as $row):
+                    $data[] = array('class_id' => $this->input->post('update_id'), 'employee_codes' => $row);
+                endforeach;
 
-            //delete previous data
-            $delete = $this->CommonModel->delete('employee_allocation',array('class_id'=>$this->input->post('update_id')));
-            $emp_codes = $this->input->post('allocation_frm_emp_codes');
-            $data = array();
-            foreach ($emp_codes as $row):
-                $data[] = array('class_id'=>$this->input->post('update_id'),'employee_codes'=>$row);
-            endforeach;
-
-            $update = $this->CommonModel->db->insert_batch('employee_allocation',$data);
-            if ($update) {
-                $this->session->set_flashdata("success", "Allocation updated successfully");
-            } else {
-                $this->session->set_flashdata("error", "Problem Editing Allocation.Try Later");
+                $update = $this->CommonModel->db->insert_batch('employee_allocation', $data);
+                if ($update) {
+                    $this->session->set_flashdata("success", "Allocation updated successfully");
+                } else {
+                    $this->session->set_flashdata("error", "Problem Editing Allocation.Try Later");
+                }
+            }else{
+                //delete previous data
+                $delete = $this->CommonModel->delete('employee_allocation', array('class_id' => $this->input->post('update_id')));
+                if ($delete) {
+                    $this->session->set_flashdata("success", "Allocation updated successfully");
+                }
             }
-
         redirect("backoffice/EmployeeAllocation", "refresh");
     }
 

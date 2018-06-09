@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-use DebugBar\StandardDebugBar;
 
 class AdminController extends CI_Controller {
 
@@ -20,6 +19,19 @@ class AdminController extends CI_Controller {
         parent::__construct();
         $this->load->database();
         $this->load->model('CommonModel');
+        if(isset($_SESSION['feedback-admin'])){
+            $whr = array("user_email"=>$this->session->userdata('feedback-admin')['user_email']);
+            $result = $this->CommonModel->getRecord("user",$whr);
+            if($result->num_rows() == 1){
+                //continue
+            }else{
+                $this->session->unset_userdata('feedback-admin');
+                redirect(base_url('backoffice/login'));
+            }
+        }else{
+
+           redirect(base_url('backoffice/login'));
+        }
 	}
     public function checkexists($id = false)
     {
