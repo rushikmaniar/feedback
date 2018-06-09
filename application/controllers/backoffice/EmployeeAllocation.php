@@ -63,85 +63,70 @@ class EmployeeAllocation extends AdminController
 
 
     /**
-     * View add Criteria modal
+     * Edit Allocation
      *
      */
-    public function viewAddCriteriaModal()
-    {
-        $this->render("backoffice/Criteria/view_add_criteria", FALSE);
-    }
-
-
-    /**
-     * Add or edit Criteria
-     *
-     */
-    public function addEditCriteria()
+    public function editAllocation()
     {
 
-        if ($this->input->post('action') && $this->input->post('action') == "addCriteria") {
-            $criteria_data = array(
-                "point_name" => $this->input->post('criteria_frm_point_name')
-            );
 
+            //delete previous data
+            $delete = $this->CommonModel->delete('employee_allocation',array('class_id'=>$this->input->post('update_id')));
+            $emp_codes = $this->input->post('allocation_frm_emp_codes');
+            $data = array();
+            foreach ($emp_codes as $row):
+                $data[] = array('class_id'=>$this->input->post('update_id'),'employee_codes'=>$row);
+            endforeach;
 
-            $save = $this->CommonModel->save("criteria_master", $criteria_data);
-            if ($save) {
-                $this->session->set_flashdata("success", "Criteria added successfully");
-            } else {
-                $this->session->set_flashdata("error", "problem adding Criteria. Try Later");
-            }
-        }
-
-        if ($this->input->post('action') && $this->input->post('action') == "editCriteria") {
-            $criteria_data = array(
-                "point_name" => $this->input->post('criteria_frm_point_name')
-            );
-
-            $update = $this->CommonModel->update("criteria_master", $criteria_data, array('id' => $this->input->post('update_id')));
+            $update = $this->CommonModel->db->insert_batch('employee_allocation',$data);
             if ($update) {
-                $this->session->set_flashdata("success", "Criteria updated successfully");
+                $this->session->set_flashdata("success", "Allocation updated successfully");
             } else {
-                $this->session->set_flashdata("error", "Problem Editing Criteria.Try Later");
+                $this->session->set_flashdata("error", "Problem Editing Allocation.Try Later");
             }
-        }
 
-        redirect("backoffice/CriteriaManagement", "refresh");
+        redirect("backoffice/EmployeeAllocation", "refresh");
     }
 
 
     /**
-     * View edit modal with set Criteria data
+     * View edit modal with set Allocation data
      *
-     * @param int $criteria_id
+     * @param int $class_id
      */
-    public function viewEditCriteriaModal($criteria_id)
+    public function viewEditAllocationModal($class_id,$class_name)
     {
 
-        $criteria_data = $this->CommonModel->getRecord("criteria_master", array('id' => $criteria_id))->row_array();
-        $this->pageData['criteria_data'] = $criteria_data;
-        $this->render("backoffice/criteria/view_add_criteria", FALSE);
+        //get employee_list
+        $employee_list = $this->CommonModel->getRecord('employee_master','','emp_code,emp_name')->result_array();
+        $allocation_data = array_map(function ($data){return $data['employee_codes'];},$this->CommonModel->getRecord("employee_allocation", array('class_id' => $class_id),'employee_codes')->result_array());
+        $this->pageData['allocation_data'] = $allocation_data;
+        $this->pageData['class_id'] = $class_id;
+        $this->pageData['class_name'] = $class_name;
+        $this->pageData['employee_list'] = $employee_list;
+        $this->pageData['emp_codes'] = array_map(function ($data){return $data['emp_code'];},$employee_list);
+        $this->render("backoffice/Allocation/view_add_allocation", FALSE);
     }
 
 
     /**
-     * Delete Criteria
+     * Delete Allocation
      *
      */
-    public function deleteCriteria()
+    public function deleteallocation()
     {
-        if ($this->input->post('criteria_id')) {
-            $result = $this->CommonModel->delete("criteria_master", array('id' => $this->input->post('criteria_id')));
+        if ($this->input->post('class_id')) {
+            $result = $this->CommonModel->delete("employee_allocation", array('class_id' => $this->input->post('class_id')));
             if ($result) {
                 $res_output['code'] = 1;
                 $res_output['status'] = "success";
-                $res_output['message'] = "Criteria deleted successfully";
+                $res_output['message'] = "Allocation deleted successfully";
                 echo json_encode($res_output);
                 exit();
             } else {
                 $res_output['code'] = 0;
                 $res_output['status'] = "error";
-                $res_output['message'] = "Criteria not delete";
+                $res_output['message'] = "Allocation not deleted";
                 echo json_encode($res_output);
                 exit();
             }

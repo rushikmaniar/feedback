@@ -20,15 +20,15 @@
                                             echo $emp['emp_name']."<br>";
                                         endforeach;?>
                                         <?php else:?>
-                                        NO Employees Allocated to this class
+                                        No Employees Allocated to this class
                                     <?php endif;?>
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Criteria" data-container="body" title="Edit Criteria" onclick="ajaxModel('backoffice/CriteriaManagement/viewEditCriteriaModal/<?=$row['class_id']?>','Edit Criteria',800)">
+                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Allocation" data-container="body" title="Edit Allocation" onclick="ajaxModel('backoffice/EmployeeAllocation/viewEditAllocationModal/<?=$row['class_id']?>/<?= $row['class_name']?>','Edit Allocation')">
                                             <i class="fa fa-pencil"></i>
                                         </button>
-                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Criteria" data-container="body" title="Delete Criteria" onclick="deleteallocation(<?=$row['class_id']?>)">
+                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Allocation" data-container="body" title="Delete Allocation" onclick="deleteallocation(<?=$row['class_id']?>)">
                                             <i class="fa fa-remove"></i>
                                         </button>
                                     </div>
@@ -67,10 +67,10 @@
         }).then(function(result)  {
 
             $.ajax({
-            url: base_url + "backoffice/CriteriaManagement/deleteCriteria",
+            url: base_url + "backoffice/EmployeeAllocation/deleteAllocation",
             type: "POST",
             dataType: "json",
-            data: {"criteria_id": criteria_id},
+            data: {"class_id": class_id},
             success: function (result) {
                 if (result.code == 1 && result.code != '') {
                     toastr["success"](result.message, "Success");
@@ -85,12 +85,12 @@
         });
         setTimeout(function () {
             location.reload();
-        },1000);
+        },500);
 
 
     }).catch(swal.noop);
     }
 	/*************************************
-				Delete Criteria End
+				Delete Allocation End
 	*************************************/
 </script>
