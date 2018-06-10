@@ -1,18 +1,19 @@
 <?php
+
 /**
  * Created by PhpStorm.
- * User: Rushik
- * Date: 12-04-2018
- * Time: 11:44 AM
+ * User: jatin
+ * Date: 010 10-06-2018
+ * Time: 01:39 PM
  */
-class Home extends SiteController{
+class StartFeedback extends SiteController
+{
     public function __construct()
     {
         parent::__construct();
     }
     public function index(){
-        $this->render('home');
+        $this->render('startfeedback.php');
     }
-}
-?>
 
+}

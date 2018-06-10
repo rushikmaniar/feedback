@@ -9,8 +9,7 @@
 <!--Header Section End-->
 
 <!-- Body Part Starts -->
-<div id="pageContent">
-
+<div id="page-content">
     <?php echo $page_content;?>
 </div>
 <!-- Body Part Ends -->
