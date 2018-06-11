@@ -2,8 +2,24 @@
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
+
+<!-- blink.js -->
+<script src="<?= base_url().'assets/fronted/plugins/modern-blink/jquery.modern-blink.js'?>"></script>
+
+<!-- jquery step.js -->
+<script src="<?= base_url().'assets/fronted/plugins/jquery.steps/js/jquery.steps.min.js'?>"></script>
+
+<!-- jquery validation.js -->
+<script src="<?= base_url().'assets/fronted/plugins/jquery-validation/js/jquery.validate.min.js'?>"></script>
+<script src="<?= base_url().'assets/fronted/plugins/jquery-validation/js/additional-methods.js'?>"></script>
+
+<!-- select2.js -->
+<script src="<?= base_url().'assets/fronted/plugins/select2/js/select2.min.js';?>"></script>
+<!-- tostr -->
+
+<script src="<?= base_url().'assets/fronted/plugins/toastr/toastr.min.js';?>"></script>
+
 <script src="<?= base_url().'assets/fronted/js/shards.min.js'?>"></script>
-<script src="<?= base_url().'assets/fronted/js/jquery.modern-blink.js'?>"></script>
 
 <script type="text/javascript">
 

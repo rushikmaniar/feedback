@@ -8,7 +8,7 @@
     <h1>Welcome To Feedback System</h1>
     <p>christ college feedback.</p>
 </div>
-<button type="button" class="btn btn-primary btn-pill btn-lg d-table ml-auto mr-auto" onclick="ajaxModel('backoffice/','sample')">
+<button type="button" class="btn btn-primary btn-pill btn-lg d-table ml-auto mr-auto" onclick="ajaxModel('home','sample')">
     ✋ Sample Modal
 </button>
 <div class="pull-right"><a href="<?= base_url().'StartFeedback'?>"> <button type="button" class="btn btn-primary btn-pill">Start Feedback</button></a></div>
