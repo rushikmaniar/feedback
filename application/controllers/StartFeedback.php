@@ -51,4 +51,9 @@ class StartFeedback extends SiteController
         }
         echo json_encode($response);
     }
+    public function FeedbackData(){
+        echo '<pre>';
+        print_r($this->input->post());
+        echo '</pre>';exit;
+    }
 }

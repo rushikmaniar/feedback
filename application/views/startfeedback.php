@@ -12,7 +12,7 @@
 <h3 class="text-danger">Please give Rating On scale 1-5</h3>
 <h3 class="text-warning blink">1-Unstatisfactory ,2-Statisfactory,3-Good,4-Very Good,5-Excellent</h3>
 <div class="container mb-5">
-    <form id="frm_feedback" name="frm_feedback" method="post" action="<?= base_url().''?>">
+    <form id="frm_feedback" name="frm_feedback" method="post" action="<?= base_url().'StartFeedback/FeedbackData'?>">
         <div>
 
             <!-- Select Class -->
@@ -38,8 +38,10 @@
                     <div class="form-group col-md-12 card">
                         <table id="frm_feedback_emp_table" class="table table-bordered table-hover">
                             <thead>
-                            <?php foreach ($criteria_list as $row):?>
-                                <td data-criteriaid="<?= $row['id']; ?>"><?= $row['point_name']; ?></td>
+                            <td>Teachers Name</td>
+                            <?php foreach ($criteria_list as $index=>$value):?>
+                                <td data-criteriaid="<?= $value['id']; ?>" class="criteria"><?= $value['point_name']; ?></td>
+
                             <?php endforeach;?>
                             </thead>
                             <tbody>
@@ -73,6 +75,7 @@ $(document).ready(function () {
         {
             $('#frm_feedback').validate().settings.ignore = ":disabled,:hidden";
             return $('#frm_feedback').valid();
+            return true;
         },
         onFinishing: function (event, currentIndex)
         {
@@ -82,11 +85,16 @@ $(document).ready(function () {
         onFinished: function (event, currentIndex)
         {
             alert("Submitted!");
+            $('#frm_feedback').submit();
         }
     });
 
     $('#frm_feedback_class').on('change',function () {
         var class_id = $(this).val();
+        var criteria_list = [];
+            $.each($('.criteria'),function (index,value) {
+                criteria_list.push($(value).data("criteriaid"));
+        });
         if(class_id){
             $.ajax({
                 type:'post',
@@ -97,11 +105,19 @@ $(document).ready(function () {
                     var response = JSON.parse(response);
                     if(response.code == 1){
                         var html = '';
+                        html +'<input type="hidden" name="class_id" value="'+class_id+'">';
                         $.each(response.data,function (key,value) {
-                           html+= '<tr>' +
-                               '<td data-emp_code="'+value.employee_codes+'">'+value.emp_name+'</td>' +
-                               '</tr>';
-                            console.log(value);
+                           html+= '<tr>';
+                               html += '<td data-emp_code="'+value.employee_codes+'">'+value.emp_name+'</td>';
+                                $.each(criteria_list,function (index,criteria_value) {
+                                    html += '<td>';
+                                    html+= '<input type="hidden" name="data['+value.employee_codes+']['+index+'][emp_code]" value="'+value.employee_codes+'">';
+                                    html+= '<input type="hidden" name="data['+value.employee_codes+']['+index+'][criteria_code]" value="'+criteria_value+'">';
+                                    html+= '<input type="text" pattern="^[0-5]$" title="Enter 0-5" required="required" class="points form-control" name="data['+value.employee_codes+']['+index+'][emp_criteria_points]">';
+                                    html += '</td>';
+                                });
+                                html += '</tr>';
+                            //console.log(value);
                         });
                         $('#frm_feedback_emp_table tbody').html(html);
                     }else{
@@ -109,7 +125,7 @@ $(document).ready(function () {
                     }
                 },
                 error:function (response) {
-                    console.log(response);
+                    //console.log(response);
                 }
             })
         }
@@ -128,10 +144,19 @@ $(document).ready(function () {
             frm_feedback_class:{
                 required:true
             }
-        },messages:{
+        },
+        messages:{
             frm_feedback_class:{
                 required:"This field is required"
             }
+        }
+
+    });
+
+    jQuery.validator.addClassRules({
+        points:{
+            required:true,
+            regex:"^[0-5]$"
         }
     });
 
