@@ -11,9 +11,18 @@ class CriteriaManagement extends AdminController
     public function index()
     {
        $OrWhere = array();
+
         $criteria_data = $this->CommonModel
             ->dbOrderBy(array('id'=>'DESC'))
-            ->getRecord('criteria_master', $OrWhere, 'criteria_master.*')->result_array();
+            ->dbjoin(
+                array(
+                    array(
+                        'table' => 'section_master',
+                        'condition' => 'criteria_master.section_id = section_master.id'
+                    )
+                )
+            )
+            ->getRecord('criteria_master', $OrWhere, 'criteria_master.*,section_master.id as section_id,section_master.section_name')->result_array();
 
         $this->pageTitle = 'Criteria Management';
         $this->pageData['criteria_data'] = $criteria_data;
@@ -27,6 +36,12 @@ class CriteriaManagement extends AdminController
      */
     public function viewAddCriteriaModal()
     {
+        $OrWhere = array();
+        $section_list = $this->CommonModel
+            ->dbOrderBy(array('id'=>'DESC'))
+            ->getRecord('section_master', $OrWhere, 'section_master.id as section_id,section_master.section_name')->result_array();
+
+        $this->pageData['section_list'] = $section_list;
         $this->render("backoffice/Criteria/view_add_criteria",FALSE);
     }
 
@@ -41,6 +56,7 @@ class CriteriaManagement extends AdminController
         if ($this->input->post('action') && $this->input->post('action') == "addCriteria")
         {
             $criteria_data = array(
+                "section_id" => $this->input->post('criteria_frm_section_id'),
                 "point_name" => $this->input->post('criteria_frm_point_name')
             );
 
@@ -56,6 +72,7 @@ class CriteriaManagement extends AdminController
         if ($this->input->post('action') && $this->input->post('action') == "editCriteria")
         {
             $criteria_data = array(
+                "section_id" => $this->input->post('criteria_frm_section'),
                 "point_name" => $this->input->post('criteria_frm_point_name')
             );
             
@@ -78,9 +95,18 @@ class CriteriaManagement extends AdminController
      */
     public function viewEditCriteriaModal($criteria_id)
     {
+        $OrWhere = array();
+        $section_list = $this->CommonModel
+            ->dbOrderBy(array('id'=>'DESC'))
+            ->getRecord('section_master', $OrWhere, 'section_master.id as section_id,section_master.section_name')->result_array();
+
+
 
         $criteria_data = $this->CommonModel->getRecord("criteria_master",array('id'=>$criteria_id))->row_array();
+
+        $this->pageData['section_list'] = $section_list;
         $this->pageData['criteria_data'] = $criteria_data;
+
         $this->render("backoffice/criteria/view_add_criteria",FALSE);
     }
     

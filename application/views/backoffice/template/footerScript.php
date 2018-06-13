@@ -42,6 +42,7 @@
 <!-- jquery validation -->
 <script src="<?= base_url() ?>assets/backoffice/plugins/jquery-validation/js/jquery.validate.min.js"></script>
 <script src="<?= base_url() ?>assets/backoffice/plugins/jquery-validation/js/additional-methods.js"></script>
+<script src="<?= base_url() ?>assets/backoffice/plugins/modern-blink/jquery.modern-blink.js"></script>
 
 <script src="<?= base_url('assets/backoffice/') ?>js/custom.min.js"></script>
 

@@ -1,33 +1,33 @@
 <div class="card">
     <div class="card-body">
         <div class="col-sm-12 col-md-12">
-                        <button type="button" class="btn btn-success btn-top" title="Add Criteria" id="btn_add_user" onclick="ajaxModel('backoffice/CriteriaManagement/viewAddCriteriaModal','Add New Criteria','modal-md')" data-toggle="modal" data-target="#feedback_admin_modal">
-                            <i class="fa fa-plus"></i> Add Criteria
+                        <h1 class="blink text-danger" align="center">Don't Edit This Section Unless You Know  What You Are Doing .</h1>
+                        <h1 class="blink text-danger" align="center">Criteria Management,Analysis tables , Front site Feedback form Relies On Sections</h1>
+                        <button type="button" class="btn btn-success btn-top" title="Add Section" onclick="ajaxModel('backoffice/SectionManagement/viewAddSectionModal','Add New Section','modal-md')" data-toggle="modal" data-target="#feedback_admin_modal">
+                            <i class="fa fa-plus"></i> Add New Section
                         </button>
         </div>
-            <table class="display nowrap table table-hover table-striped table-bordered dataTable" id="CriteriaTable">
+            <table class="display nowrap table table-hover table-striped table-bordered dataTable" id="SectionTable">
                         <thead>
                         <tr>
-                            <th>Criteria ID</th>
-                            <th>Criteria Name</th>
+                            <th>Section ID</th>
                             <th>Section Name</th>
                             <th class="text-center">Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($criteria_data as $row): ?>
+                        <?php foreach ($section_master_data as $row): ?>
                             <tr>
-                                <!-- Criteria id -->
+                                <!-- Section id -->
 
                                 <td><?=$row['id']?></td>
-                                <td><?=$row['point_name']?></td>
                                 <td><?=$row['section_name']?></td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Criteria" data-container="body" title="Edit Criteria" onclick="ajaxModel('backoffice/CriteriaManagement/viewEditCriteriaModal/<?=$row['id']?>','Edit Criteria',800)">
+                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Section" data-container="body" title="Edit Section" onclick="ajaxModel('backoffice/SectionManagement/viewEditSectionModal/<?=$row['id']?>','Edit Section',800)">
                                             <i class="fa fa-pencil"></i>
                                         </button>
-                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Criteria" data-container="body" title="Delete Criteria" onclick="deletecriteria(<?=$row['id']?>)">
+                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Section" data-container="body" title="Delete Section" onclick="deletesection(<?=$row['id']?>)">
                                             <i class="fa fa-remove"></i>
                                         </button>
                                     </div>
@@ -42,18 +42,23 @@
 <script>
     $(document).ready(function () {
 
-        $('#CriteriaTable').dataTable({
+        $('#SectionTable').dataTable({
             dom: 'Bfrtip',
             buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
             ]
         });
 
+        //blink text
+        $('.blink').modernBlink({
+            duration: 3000
+        });
+
     });
 	/*************************************
-				Delete Criteria
+				Delete Section Criteria
 	*************************************/
-    function deletecriteria(criteria_id)
+    function deletesection(section_master_id)
     {
         swal({
             title: 'Are you sure?',
@@ -66,10 +71,10 @@
         }).then(function(result)  {
 
             $.ajax({
-            url: base_url + "backoffice/CriteriaManagement/deleteCriteria",
+            url: base_url + "backoffice/SectionManagement/deleteSection",
             type: "POST",
             dataType: "json",
-            data: {"criteria_id": criteria_id},
+            data: {"section_master_id": section_master_id},
             success: function (result) {
                 if (result.code == 1 && result.code != '') {
                     toastr["success"](result.message, "Success");
@@ -90,6 +95,6 @@
     }).catch(swal.noop);
     }
 	/*************************************
-				Delete Criteria End
+				Delete Section End
 	*************************************/
 </script>

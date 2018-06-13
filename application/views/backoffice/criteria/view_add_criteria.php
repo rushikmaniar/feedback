@@ -4,6 +4,23 @@
 
 <div class="row">
 
+    <!-- Select Section -->
+    <div class="col-sm-12 form-group">
+        <label>Select section</label>
+        <select name="criteria_frm_section_id" id="criteria_frm_section_id" style="width: 30%" class="form-control">
+            <?php foreach ($section_list as $row): ?>
+                <?php if (isset($criteria_data['section_id'])): ?>
+                    <?php if (($criteria_data['section_id']) == $row['section_id']): ?>
+                        <option value="<?= $row['section_id'] ?>" selected><?= $row['section_name'] ?></option>
+                    <?php else: ?>
+                        <option value="<?= $row['section_id'] ?>"><?= $row['section_name'] ?></option>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <option value="<?= $row['section_id'] ?>"><?= $row['section_name'] ?></option>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </select>
+    </div>
 
 
     <!-- Criteria Name  -->
@@ -26,7 +43,9 @@
 
         var update_id = $('#update_id').val();
         $(document).ready(function () {
-
+            $('#criteria_frm_section_id').select2({
+                placeholder:"Select Section"
+            });
             /*************************************
              Add Edit Criteria
              *************************************/
@@ -46,6 +65,9 @@
                 },
                 rules:
                     {
+                        criteria_frm_section_id:{
+                            required: true
+                        },
                         'criteria_frm_point_name': {
                             required: true,
                             remote: {
@@ -60,12 +82,16 @@
                                 }
                             }
                         }
+
                     },
                 messages:
                     {
                         'criteria_frm_point_name': {
                             required: "This field is required.",
                             remote:"Criteria already Exists"
+                        },
+                        criteria_frm_section_id: {
+                            required: "This field is required."
                         }
                     }
             });
