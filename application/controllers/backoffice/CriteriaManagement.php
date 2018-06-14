@@ -38,7 +38,7 @@ class CriteriaManagement extends AdminController
     {
         $OrWhere = array();
         $section_list = $this->CommonModel
-            ->dbOrderBy(array('id'=>'DESC'))
+            ->dbOrderBy(array('id'=>'ASC'))
             ->getRecord('section_master', $OrWhere, 'section_master.id as section_id,section_master.section_name')->result_array();
 
         $this->pageData['section_list'] = $section_list;
@@ -72,7 +72,7 @@ class CriteriaManagement extends AdminController
         if ($this->input->post('action') && $this->input->post('action') == "editCriteria")
         {
             $criteria_data = array(
-                "section_id" => $this->input->post('criteria_frm_section'),
+                "section_id" => $this->input->post('criteria_frm_section_id'),
                 "point_name" => $this->input->post('criteria_frm_point_name')
             );
             
@@ -97,7 +97,7 @@ class CriteriaManagement extends AdminController
     {
         $OrWhere = array();
         $section_list = $this->CommonModel
-            ->dbOrderBy(array('id'=>'DESC'))
+            ->dbOrderBy(array('id'=>'ASC'))
             ->getRecord('section_master', $OrWhere, 'section_master.id as section_id,section_master.section_name')->result_array();
 
 

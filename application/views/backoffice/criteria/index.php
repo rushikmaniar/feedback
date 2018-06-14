@@ -1,6 +1,8 @@
 <div class="card">
     <div class="card-body">
         <div class="col-sm-12 col-md-12">
+                <h1 class="blink text-danger" align="center">Don't Edit Criteria Unless You Know  What You Are Doing .</h1>
+                <h1 class="blink text-danger" align="center">Analysis tables , Front site Feedback form Relies On Criterias</h1>
                         <button type="button" class="btn btn-success btn-top" title="Add Criteria" id="btn_add_user" onclick="ajaxModel('backoffice/CriteriaManagement/viewAddCriteriaModal','Add New Criteria','modal-md')" data-toggle="modal" data-target="#feedback_admin_modal">
                             <i class="fa fa-plus"></i> Add Criteria
                         </button>

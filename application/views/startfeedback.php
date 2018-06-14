@@ -31,6 +31,7 @@
                 </div>
             </section>
 
+            
             <!-- Employee Feedback -->
             <h3>Employee Feddback</h3>
             <section>
@@ -59,12 +60,6 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function () {
-
-   //blink text
-    $('.blink').modernBlink({
-       duration: 2000
-   });
-
 
     //multi step form
     $('#frm_feedback').children('div').steps({

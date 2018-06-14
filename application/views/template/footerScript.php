@@ -23,6 +23,13 @@
 
 <script type="text/javascript">
 
+    $(document).ready(function () {
+        //blink text
+        $('.blink').modernBlink({
+            duration: 2000
+        });
+
+    });
     function ajaxModel(url, title, width) {
         if (typeof(width) === 'undefined') {
             width = 'modal-lg';

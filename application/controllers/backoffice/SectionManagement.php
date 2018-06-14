@@ -81,7 +81,7 @@ class SectionManagement extends AdminController
 
         $section_data = $this->CommonModel->getRecord("section_master",array('id'=>$section_master_id))->row_array();
         $this->pageData['section_master_data'] = $section_data;
-        $this->render("backoffice/Section/view_add_section_master",FALSE);
+        $this->render("backoffice/Section/view_add_section",FALSE);
     }
     
     

@@ -49,11 +49,6 @@
             ]
         });
 
-        //blink text
-        $('.blink').modernBlink({
-            duration: 3000
-        });
-
     });
 	/*************************************
 				Delete Section Criteria
