@@ -14,7 +14,77 @@
 <div class="container mb-5">
     <form id="frm_feedback" name="frm_feedback" method="post" action="<?= base_url().'StartFeedback/FeedbackData'?>">
         <div>
+            <h3>Select Class</h3>
+            <section>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="frm_feedback_class" class="col-form-label-lg"><h4>Select Class</h4></label>
+                        <select name="frm_feedback_class" id="frm_feedback_class" class="select2 form-control" style="width: 80%">
+                            <option value="">Select Class</option>
+                            <?php foreach ($class_list as $row):?>
+                                <option value="<?= $row['class_id']; ?>"><?= $row['class_name']; ?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </div>
+                </div>
+            </section>
+            <?php foreach ($section_list as $row_section):?>
 
+                <h3><?= $row_section['section_name']?></h3>
+
+                <!-- Employee section -->
+                <?php if($row_section['id'] == 1):?>
+                <section>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label for="frm_feedback_class" class="col-form-label-lg"><h4><?= $row_section['section_name']?></h4></label>
+                            <div class="row">
+                                <div class="form-group col-md-12 card">
+                                    <table id="frm_feedback_emp_table" class="table table-bordered table-hover">
+                                        <thead>
+                                        <td>Teachers Name</td>
+                                        <?php foreach ($row_section['criteria_list'] as $index=>$value):?>
+                                            <td data-criteriaid="<?= $value['point_id']; ?>" class="employee_criteria"><?= $value['point_name']; ?></td>
+
+                                        <?php endforeach;?>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <?php else:?>
+                    <section>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="frm_feedback_class" class="col-form-label-lg"><h4><?= $row_section['section_name']?></h4></label>
+                                <div class="row">
+                                    <div class="form-group col-md-12 card">
+                                        <table id="frm_feedback_<?= $row_section['section_name']?>" class="table table-bordered table-hover">
+                                            <thead>
+                                            <?php foreach ($row_section['criteria_list'] as $index=>$value):?>
+                                                <td data-criteriaid="<?= $value['point_id']; ?>" class="<?= $row_section['section_name']?>_criteria"><?= $value['point_name']; ?></td>
+                                            <?php endforeach;?>
+                                            </thead>
+                                            <tbody>
+                                            <?php foreach ($row_section['criteria_list'] as $index=>$value):?>
+                                                <td><input type="text" name="section[<?= $row_section['id']?>][points][<?= $value['point_id']?>]" class="points form-control" pattern="^[0-5]$" title="Enter 0-5"></td>
+                                            <?php endforeach;?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+            <?php endif; ?>
+            <?php endforeach;?>
+
+            <?php /* ?>
             <!-- Select Class -->
             <h3>Select Class</h3>
             <section>
@@ -53,7 +123,7 @@
                 </div>
             </section>
 
-
+            <?php */?>
         </div>
 
     </form>
@@ -86,9 +156,9 @@ $(document).ready(function () {
 
     $('#frm_feedback_class').on('change',function () {
         var class_id = $(this).val();
-        var criteria_list = [];
-            $.each($('.criteria'),function (index,value) {
-                criteria_list.push($(value).data("criteriaid"));
+        var employee_criteria_list = [];
+            $.each($('.employee_criteria'),function (index,value) {
+                employee_criteria_list.push($(value).data("criteriaid"));
         });
         if(class_id){
             $.ajax({
@@ -104,7 +174,7 @@ $(document).ready(function () {
                         $.each(response.data,function (key,value) {
                            html+= '<tr>';
                                html += '<td data-emp_code="'+value.employee_codes+'">'+value.emp_name+'</td>';
-                                $.each(criteria_list,function (index,criteria_value) {
+                                $.each(employee_criteria_list,function (index,criteria_value) {
                                     html += '<td>';
                                     html+= '<input type="hidden" name="data['+value.employee_codes+']['+index+'][emp_code]" value="'+value.employee_codes+'">';
                                     html+= '<input type="hidden" name="data['+value.employee_codes+']['+index+'][criteria_code]" value="'+criteria_value+'">';

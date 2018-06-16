@@ -15,10 +15,38 @@ class StartFeedback extends SiteController
     public function index()
     {
         $classlist = $this->CommonModel->getRecord('class_master')->result_array();
-        $criteria_list = $this->CommonModel->getRecord('criteria_master')->result_array();
+        $val = '
+        section_master.id,
+        section_master.section_name,
+        
+        criteria_master.id as point_id,
+        criteria_master.point_name,
+             
+        ';
+        $section_data = $this->CommonModel
+            ->dbOrderBy(array('section_master.id'))
+            ->dbjoin(
+                array(
+                    array(
+                        'table' => 'criteria_master',
+                        'condition' => 'criteria_master.section_id = section_master.id'
+                    )
+                ))
+            ->getRecord('section_master','',$val)->result_array();
+
+        $section_list = array();
+        foreach ($section_data as $row):
+
+            if(array_key_exists($row['id'],$section_list)):
+                array_push($section_list[$row['id']]['criteria_list'],array('point_id'=>$row['point_id'],'point_name'=>$row['point_name']));
+            else:
+                $section_list[$row['id']] = array('id'=>$row['id'],'section_name'=>$row['section_name'],'criteria_list'=>array(array('point_id'=>$row['point_id'],'point_name'=>$row['point_name'])));
+                    endif;
+            endforeach;
+            
         $this->pageTitle = 'Feedback System';
         $this->pageData['class_list'] = $classlist;
-        $this->pageData['criteria_list'] = $criteria_list;
+        $this->pageData['section_list'] = $section_list;
         $this->render('startfeedback.php');
     }
 
