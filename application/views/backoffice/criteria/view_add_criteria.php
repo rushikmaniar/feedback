@@ -22,6 +22,31 @@
         </select>
     </div>
 
+    <!--want options data ? -->
+    <div class="col-sm-12 form-group">
+        <label>Type Of Data</label>
+        <div>
+            Simple Data (0-5)
+            <input type="radio" name="radios" value="simple" checked="checked">
+            With Options
+            <input type="radio" name="radios" value="options">
+        </div>
+
+        <div id="options" style="display: none">
+            <div class="row">
+
+                <div class="col-sm-12 form-group">
+                    <button class="btn-primary btn-sm pull-right" onclick="addoptions()"><i class="fa fa-plus"></i> Add
+                        Fields
+                    </button>
+                </div>
+
+                <div class="col-sm-12 row" id="options_div">
+                    <!-- option for design -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Criteria Name  -->
     <div class="col-sm-12">
@@ -40,11 +65,30 @@
     <?= form_close(); ?>
 
     <script>
+        function addoptions() {
+            var options_div = $('#option_div');
+            html = '<div class="col-sm-6">';
+            html += '<div class="input-group form-group"><input type="text" class="form-control" name="options[][][option_text]" placeholder="Enter Option Text" required="true"></div> </div>';
+            html += '<div class="col-sm-6">';
+            html += '<div class="input-group form-group"><input type="text" class="form-control"  name="options[][][option_value]" placeholder="Enter Option Value" required="true">';
+            html += '<button class="btn-danger btn-sm"><i class="fa fa-minus"></i> Delete</button></div>';
+            html += '</div>';
+            options_div.append()
+        }
 
         var update_id = $('#update_id').val();
         $(document).ready(function () {
+            /*On radio change */
+            $('input[type=radio]').on('change',function () {
+               if($(this).val() == "options"){
+                   $('#options').css('display','block');
+               }else{
+                   $('#options').css('display','none');
+               }
+            });
+
             $('#criteria_frm_section_id').select2({
-                placeholder:"Select Section"
+                placeholder: "Select Section"
             });
             /*************************************
              Add Edit Criteria
@@ -52,8 +96,8 @@
             $("#criteria_frm").validate({
                 errorClass: 'invalid-feedback animated fadeInDown',
                 /*errorPlacement: function(error, element) {
-                    error.appendTo(element.parent().parent());
-                },*/
+                 error.appendTo(element.parent().parent());
+                 },*/
                 errorPlacement: function (e, a) {
                     jQuery(a).parents(".input-group").append(e)
                 },
@@ -63,37 +107,35 @@
                 success: function (e) {
                     jQuery(e).closest(".input-group").removeClass("is-invalid"), jQuery(e).remove()
                 },
-                rules:
-                    {
-                        criteria_frm_section_id:{
-                            required: true
-                        },
-                        'criteria_frm_point_name': {
-                            required: true,
-                            remote: {
-                                url: base_url+"backoffice/CriteriaManagement/checkexists/"+update_id,
-                                type: "post",
-                                data: {
-                                    'table': 'criteria_master',
-                                    'field': 'point_name',
-                                    point_name: function () {
-                                        return $('#criteria_frm_point_name').val();
-                                    }
+                rules: {
+                    criteria_frm_section_id: {
+                        required: true
+                    },
+                    'criteria_frm_point_name': {
+                        required: true,
+                        remote: {
+                            url: base_url + "backoffice/CriteriaManagement/checkexists/" + update_id,
+                            type: "post",
+                            data: {
+                                'table': 'criteria_master',
+                                'field': 'point_name',
+                                point_name: function () {
+                                    return $('#criteria_frm_point_name').val();
                                 }
                             }
                         }
-
-                    },
-                messages:
-                    {
-                        'criteria_frm_point_name': {
-                            required: "This field is required.",
-                            remote:"Criteria already Exists"
-                        },
-                        criteria_frm_section_id: {
-                            required: "This field is required."
-                        }
                     }
+
+                },
+                messages: {
+                    'criteria_frm_point_name': {
+                        required: "This field is required.",
+                        remote: "Criteria already Exists"
+                    },
+                    criteria_frm_section_id: {
+                        required: "This field is required."
+                    }
+                }
             });
             /*************************************
              Add Edit Criteria End
