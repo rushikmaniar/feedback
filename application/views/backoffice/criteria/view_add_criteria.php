@@ -41,8 +41,23 @@
                     </button>
                 </div>
 
-                <div class="col-sm-12 row" id="options_div">
+                <div class="col-sm-12" id="options_div">
                     <!-- option for design -->
+                    <?php if(isset($criteria_data['option_data'])):?>
+                    <?php else:?>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="input-group form-group">
+                                    <input type="text" class="form-control" name="options[][][option_text]" placeholder="Enter Option Text" required="true">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group form-group">
+                                    <input type="text" class="form-control" name="options[][][option_value]" placeholder="Enter Option Value" required="true">
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif;?>
                 </div>
             </div>
         </div>
@@ -66,14 +81,28 @@
 
     <script>
         function addoptions() {
-            var options_div = $('#option_div');
-            html = '<div class="col-sm-6">';
-            html += '<div class="input-group form-group"><input type="text" class="form-control" name="options[][][option_text]" placeholder="Enter Option Text" required="true"></div> </div>';
+            var options_div = $('#options_div');
+            html = '<div class="row">';
             html += '<div class="col-sm-6">';
-            html += '<div class="input-group form-group"><input type="text" class="form-control"  name="options[][][option_value]" placeholder="Enter Option Value" required="true">';
-            html += '<button class="btn-danger btn-sm"><i class="fa fa-minus"></i> Delete</button></div>';
+                html += '<div class="input-group form-group">';
+                html += '<input type="text" class="form-control" name="options[][][option_text]" placeholder="Enter Option Text" required="true">';
+                html += '</div>';
             html += '</div>';
-            options_div.append()
+
+            html += '<div class="col-sm-6">';
+                html += '<div class="input-group form-group">';
+                html += '<input type="text" class="form-control"  name="options[][][option_value]" placeholder="Enter Option Value" required="true">';
+                html += '<button class="btn-danger btn-sm" onclick="deleteoption(this)"><i class="fa fa-minus"></i> Delete</button>';
+                html +=  '</div>';
+            html +=  '</div>';
+            html +=  '</div>';
+
+
+            options_div.append(html);
+        }
+        function  deleteoption(element) {
+            console.log(element);
+            $(element).parent().parent().parent().html('');
         }
 
         var update_id = $('#update_id').val();

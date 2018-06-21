@@ -103,6 +103,10 @@ class CriteriaManagement extends AdminController
 
 
         $criteria_data = $this->CommonModel->getRecord("criteria_master",array('id'=>$criteria_id))->row_array();
+        if($criteria_data['type_data'] == 1){
+            $option_data = $this->CommonModel->getRecord("option_master",array('criteria_id'=>$criteria_id))->result_array();
+            $this->pageData['option_data'] = $option_data;
+        }
 
         $this->pageData['section_list'] = $section_list;
         $this->pageData['criteria_data'] = $criteria_data;
