@@ -26,38 +26,60 @@
     <div class="col-sm-12 form-group">
         <label>Type Of Data</label>
         <div>
-            Simple Data (0-5)
-            <input type="radio" name="radios" value="simple" checked="checked">
+
+            <?php if(isset($criteria_data)):?>
+                Simple Data (0-5)
+            <input type="radio" name="radios" value="simple" <?= ($criteria_data['type_data'] == 0)?'checked="checked"':''?>>
             With Options
-            <input type="radio" name="radios" value="options">
+            <input type="radio" name="radios" value="options" <?= ($criteria_data['type_data'] == 1)?'checked="checked"':''?>>
+            <?php else:?>
+                Simple Data (0-5)
+                <input type="radio" name="radios" value="simple" checked="checked">
+                With Options
+                <input type="radio" name="radios" value="options">
+            <?php endif;?>
         </div>
 
-        <div id="options" style="display: none">
+        <div id="options" style="<?= isset($option_data)?'display:block':'display:none'?>">
             <div class="row">
 
                 <div class="col-sm-12 form-group">
                     <button class="btn-primary btn-sm pull-right" onclick="addoptions()"><i class="fa fa-plus"></i> Add
-                        Fields
+                        Option
                     </button>
                 </div>
 
                 <div class="col-sm-12" id="options_div">
+                    <div class="row">
                     <!-- option for design -->
-                    <?php if(isset($criteria_data['option_data'])):?>
+                    <?php if(isset($option_data)):?>
+                        <?php foreach ($option_data as $row):?>
+                            <div class="col-sm-6">
+                                <div class="input-group form-group">
+                                    <input type="text" class="form-control options_require" name="options[<?= $row['id'];?>][option_text]" value="<?= $row['option_text']?>" placeholder="Enter Option Text" required="true">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group form-group">
+                                    <input type="text" class="form-control options_require" name="options[<?= $row['id'];?>][option_value]" value="<?= $row['option_value']?>" placeholder="Enter Option Value" required="true">
+                                    <button class="btn-danger btn-sm" onclick="deleteoption(this)"><i class="fa fa-minus"></i> Delete</button>
+                                </div>
+                            </div>
+                            <?php endforeach;?>
                     <?php else:?>
-                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="input-group form-group">
-                                    <input type="text" class="form-control" name="options[][][option_text]" placeholder="Enter Option Text" required="true">
+                                    <input type="text" class="form-control options_require" name="options[1][option_text]" placeholder="Enter Option Text" required="required">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="input-group form-group">
-                                    <input type="text" class="form-control" name="options[][][option_value]" placeholder="Enter Option Value" required="true">
+                                    <input type="text" class="form-control options_require" name="options[1][option_value]" placeholder="Enter Option Value" required="required">
+                                    <button class="btn-danger btn-sm" onclick="deleteoption(this)"><i class="fa fa-minus"></i> Delete</button>
                                 </div>
                             </div>
-                        </div>
                     <?php endif;?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -81,34 +103,34 @@
 
     <script>
         function addoptions() {
+            var random_no = Math.random();
             var options_div = $('#options_div');
             html = '<div class="row">';
             html += '<div class="col-sm-6">';
                 html += '<div class="input-group form-group">';
-                html += '<input type="text" class="form-control" name="options[][][option_text]" placeholder="Enter Option Text" required="true">';
+                html += '<input type="text" class="form-control options_require" name="options['+random_no+'][option_text]" placeholder="Enter Option Text" required="required">';
                 html += '</div>';
             html += '</div>';
 
             html += '<div class="col-sm-6">';
                 html += '<div class="input-group form-group">';
-                html += '<input type="text" class="form-control"  name="options[][][option_value]" placeholder="Enter Option Value" required="true">';
+                html += '<input type="text" class="form-control options_require"  name="options['+random_no+'][option_value]" placeholder="Enter Option Value" required="required">';
                 html += '<button class="btn-danger btn-sm" onclick="deleteoption(this)"><i class="fa fa-minus"></i> Delete</button>';
                 html +=  '</div>';
             html +=  '</div>';
             html +=  '</div>';
 
-
             options_div.append(html);
+
         }
         function  deleteoption(element) {
-            console.log(element);
             $(element).parent().parent().parent().html('');
         }
 
         var update_id = $('#update_id').val();
-        $(document).ready(function () {
+        $(document).ajaxComplete(function () {
             /*On radio change */
-            $('input[type=radio]').on('change',function () {
+            $('input[name=radios]').on('change',function () {
                if($(this).val() == "options"){
                    $('#options').css('display','block');
                }else{
@@ -153,7 +175,14 @@
                                 }
                             }
                         }
+                    },
+                    "options[option_text][]":{
+                        required:true
+                        },
+                    "options[option_value][]":{
+                        required:true
                     }
+
 
                 },
                 messages: {
@@ -163,12 +192,44 @@
                     },
                     criteria_frm_section_id: {
                         required: "This field is required."
+                    },
+                    "options[option_text][]":{
+                        required: "This field is required."
+                    },
+                    "options[option_value][]":{
+                        required: "This field is required."
                     }
+                },
+                submitHandler: function (form,event) {
+                    var type_of_data = $('input[name=radios]:checked').val();
+                    if(type_of_data === "options"){
+                        var no_options = $('.options_require').length;
+                        if(no_options/2 < 2){
+                            alert('minimum 2 options required');
+                            event.preventDefault();
+                        }
+                        else{
+                            //options greater than 2
+                            return true;
+                        }
+                    }else{
+                        //simple data
+                        return true;
+                    }
+
                 }
             });
             /*************************************
              Add Edit Criteria End
              *************************************/
 
+
+            jQuery.validator.addClassRules({
+                options_require:{
+                    required:true
+                }
+            });
+
         });
+
     </script>

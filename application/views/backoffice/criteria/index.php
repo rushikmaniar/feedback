@@ -13,10 +13,14 @@
                             <th>Criteria ID</th>
                             <th>Criteria Name</th>
                             <th>Section Name</th>
+                            <th>Type Of Data</th>
+                            <th>Options For Criteria</th>
+
                             <th class="text-center">Action</th>
                         </tr>
                         </thead>
                         <tbody>
+
                         <?php foreach ($criteria_data as $row): ?>
                             <tr>
                                 <!-- Criteria id -->
@@ -24,6 +28,16 @@
                                 <td><?=$row['id']?></td>
                                 <td><?=$row['point_name']?></td>
                                 <td><?=$row['section_name']?></td>
+                                <td><?=($row['type_data'] == 1)?'With Options':'simple'?></td>
+                                <td>
+                                    <?php if($row['type_data'] == 1):?>
+                                        <?php foreach ($row['options'] as $option_row):?>
+                                            <?= $option_row['option_text'];?><br>
+                                        <?php endforeach;?>
+                                    <?php else:?>
+                                        No options Data.
+                                    <?php endif;?>
+                                </td>
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Criteria" data-container="body" title="Edit Criteria" onclick="ajaxModel('backoffice/CriteriaManagement/viewEditCriteriaModal/<?=$row['id']?>','Edit Criteria',800)">

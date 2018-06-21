@@ -11,9 +11,13 @@ class CriteriaManagement extends AdminController
     public function index()
     {
        $OrWhere = array();
-
+        $val = '
+        criteria_master.*,
+        section_master.id as section_id,
+        section_master.section_name
+        ';
         $criteria_data = $this->CommonModel
-            ->dbOrderBy(array('id'=>'DESC'))
+            ->dbOrderBy(array('criteria_master.id'=>'DESC'))
             ->dbjoin(
                 array(
                     array(
@@ -22,7 +26,18 @@ class CriteriaManagement extends AdminController
                     )
                 )
             )
-            ->getRecord('criteria_master', $OrWhere, 'criteria_master.*,section_master.id as section_id,section_master.section_name')->result_array();
+            ->getRecord('criteria_master', $OrWhere, $val)->result_array();
+
+        $new_criteria_data = array();
+        foreach ($criteria_data as $row):
+            $new_criteria_data[$row['id']] = $row;
+        endforeach;
+        $criteria_data = $new_criteria_data;
+        foreach ($criteria_data as $row):
+            if($row['type_data'] == 1):
+                $criteria_data[$row['id']]['options'] = $this->CommonModel->getRecord('option_master',array('criteria_id'=>$row['id']))->result_array();
+                endif;
+        endforeach;
 
         $this->pageTitle = 'Criteria Management';
         $this->pageData['criteria_data'] = $criteria_data;
@@ -59,10 +74,27 @@ class CriteriaManagement extends AdminController
                 "section_id" => $this->input->post('criteria_frm_section_id'),
                 "point_name" => $this->input->post('criteria_frm_point_name')
             );
+            if($this->input->post('radios') == "options"){
+                $criteria_data['type_data'] = 1;
+            }
+
 
 
             $save = $this->CommonModel->save("criteria_master",$criteria_data);
+
+
             if($save){
+
+                //entry in option_master if options are available
+                if($this->input->post('radios') == "options"){
+                    $options = $this->input->post('options');
+                    foreach ($options as $row):
+                        $row['criteria_id'] = $save;
+                        $option_data = $row;
+                        unset($option_data['section_id']);
+                        $this->CommonModel->save("option_master",$option_data);
+                    endforeach;
+                }
                 $this->session->set_flashdata("success","Criteria added successfully");
             }else{
                 $this->session->set_flashdata("error","problem adding Criteria. Try Later");
@@ -73,9 +105,24 @@ class CriteriaManagement extends AdminController
         {
             $criteria_data = array(
                 "section_id" => $this->input->post('criteria_frm_section_id'),
-                "point_name" => $this->input->post('criteria_frm_point_name')
+                "point_name" => $this->input->post('criteria_frm_point_name'),
+                "type_data" => 0
             );
-            
+            if($this->input->post('radios') == "options"){
+                $criteria_data['type_data'] = 1;
+            }
+            //entry in option_master if options are available
+            if($this->input->post('radios') == "options"){
+                //delete previous if any
+                $this->CommonModel->delete("option_master",array('criteria_id'=>$this->input->post('update_id')));
+                $options = $this->input->post('options');
+                foreach ($options as $row):
+                    $row['criteria_id'] = $this->input->post('update_id');
+                    $option_data = $row;
+                    unset($option_data['section_id']);
+                    $this->CommonModel->save("option_master",$option_data);
+                endforeach;
+            }
             $update = $this->CommonModel->update("criteria_master",$criteria_data,array('id'=>$this->input->post('update_id')));
             if($update){
                 $this->session->set_flashdata("success","Criteria updated successfully");
