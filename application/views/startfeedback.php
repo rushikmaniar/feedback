@@ -29,7 +29,6 @@
                 </div>
             </section>
             <?php foreach ($section_list as $row_section):?>
-
                 <h3><?= $row_section['section_name']?></h3>
 
                 <!-- Employee section -->
@@ -44,7 +43,7 @@
                                         <thead>
                                         <td>Teachers Name</td>
                                         <?php foreach ($row_section['criteria_list'] as $index=>$value):?>
-                                            <td data-criteriaid="<?= $value['point_id']; ?>" class="employee_criteria"><?= $value['point_name']; ?></td>
+                                            <td data-criteriaid="<?= $value['point_id']; ?>" class="employee_criteria" data-type_data="<?= $value['type_data']?>"<?= ($value['type_data'] == 1)?'data-options="'.json_encode($value['option_list']).'"':''?>><?= $value['point_name']; ?></td>
 
                                         <?php endforeach;?>
                                         </thead>
@@ -71,6 +70,7 @@
                                             <?php endforeach;?>
                                             </thead>
                                             <tbody>
+
                                             <?php foreach ($row_section['criteria_list'] as $index=>$value):?>
                                                 <td><input type="text" name="section[<?= $row_section['id']?>][points][<?= $value['point_id']?>]" class="points form-control" pattern="^[0-5]$" title="Enter 0-5"></td>
                                             <?php endforeach;?>
@@ -158,8 +158,15 @@ $(document).ready(function () {
         var class_id = $(this).val();
         var employee_criteria_list = [];
             $.each($('.employee_criteria'),function (index,value) {
-                employee_criteria_list.push($(value).data("criteriaid"));
-        });
+                var criteria_id = $(value).data("criteriaid");
+                employee_criteria_list.push(criteria_id);
+                if($(value).data("data-type_data") == 1){
+                    var option_list = JSON.parse($(value).data("options"));
+                    employee_criteria_list[criteria_id]['option_list'].push(option_list);
+                }
+            });
+            console.log(employee_criteria_list);
+
         if(class_id){
             $.ajax({
                 type:'post',

@@ -21,7 +21,7 @@ class StartFeedback extends SiteController
         
         criteria_master.id as point_id,
         criteria_master.point_name,
-             
+        criteria_master.type_data                  
         ';
         $section_data = $this->CommonModel
             ->dbOrderBy(array('section_master.id'))
@@ -34,16 +34,30 @@ class StartFeedback extends SiteController
                 ))
             ->getRecord('section_master','',$val)->result_array();
 
+        //section wise criteria list
         $section_list = array();
         foreach ($section_data as $row):
 
             if(array_key_exists($row['id'],$section_list)):
-                array_push($section_list[$row['id']]['criteria_list'],array('point_id'=>$row['point_id'],'point_name'=>$row['point_name']));
+                $section_list[$row['id']]['criteria_list'][$row['point_id'] ]= array('point_id'=>$row['point_id'],'point_name'=>$row['point_name'],'type_data'=>$row['type_data']);
             else:
-                $section_list[$row['id']] = array('id'=>$row['id'],'section_name'=>$row['section_name'],'criteria_list'=>array(array('point_id'=>$row['point_id'],'point_name'=>$row['point_name'])));
+                $section_list[$row['id']] = array('id'=>$row['id'],'section_name'=>$row['section_name'],'criteria_list'=>array($row['point_id'] => array('point_id'=>$row['point_id'],'point_name'=>$row['point_name'],'type_data'=>$row['type_data'])));
                     endif;
+
             endforeach;
-            
+
+        //if options are there
+        $section_with_options = array();
+        foreach ($section_list as $row):
+            foreach ($row['criteria_list'] as $row_criteria):
+                if($row_criteria['type_data'] == 1) {
+                    $option_list = $this->CommonModel->getRecord('option_master', array('option_master.criteria_id' => $row_criteria['point_id']), 'id as option_id,option_text,option_value')->result_array();
+                    $row_criteria['option_list'] = $option_list;
+                    $section_list[$row['id']]['criteria_list'][$row_criteria['point_id']]['option_list'] = $option_list;
+                }
+            endforeach;
+        endforeach;
+
         $this->pageTitle = 'Feedback System';
         $this->pageData['class_list'] = $classlist;
         $this->pageData['section_list'] = $section_list;
