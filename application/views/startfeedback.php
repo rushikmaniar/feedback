@@ -43,7 +43,7 @@
                                         <thead>
                                         <td>Teachers Name</td>
                                         <?php foreach ($row_section['criteria_list'] as $index=>$value):?>
-                                            <td data-criteriaid="<?= $value['point_id']; ?>" class="employee_criteria" data-type_data="<?= $value['type_data']?>"<?= ($value['type_data'] == 1)?'data-options="'.json_encode($value['option_list']).'"':''?>><?= $value['point_name']; ?></td>
+                                            <td data-criteriaid="<?= $value['point_id']; ?>" class="employee_criteria" data-type_data="<?= $value['type_data']?>"><?= $value['point_name']; ?></td>
 
                                         <?php endforeach;?>
                                         </thead>
@@ -72,7 +72,17 @@
                                             <tbody>
 
                                             <?php foreach ($row_section['criteria_list'] as $index=>$value):?>
-                                                <td><input type="text" name="section[<?= $row_section['id']?>][points][<?= $value['point_id']?>]" class="points form-control" pattern="^[0-5]$" title="Enter 0-5"></td>
+                                                <td>
+                                                    <?php if($value['type_data'] == 1):?>
+                                                        <select name="section[<?= $row_section['id']?>][points][<?= $value['point_id']?>]" class="select2 form-control">
+                                                        <?php foreach ($value['option_list'] as $row_option): ?>
+                                                            <option value="<?= $row_option['option_value']?>"><?= $row_option['option_text'];?></option>
+                                                        <?php endforeach;?>
+                                                        </select>
+                                                    <?php else:?>
+                                                        <input type="text" name="section[<?= $row_section['id']?>][points][<?= $value['point_id']?>]" class="points form-control" pattern="^[0-5]$" title="Enter 0-5">
+                                                    <?php endif;?>
+                                                </td>
                                             <?php endforeach;?>
                                             </tbody>
                                         </table>
@@ -165,7 +175,7 @@ $(document).ready(function () {
                     employee_criteria_list[criteria_id]['option_list'].push(option_list);
                 }
             });
-            console.log(employee_criteria_list);
+            //console.log(employee_criteria_list);
 
         if(class_id){
             $.ajax({
@@ -236,6 +246,12 @@ $(document).ready(function () {
     $('#frm_feedback_class').select2({
         placeholder: "Select a class",
         allowClear: true
+    });
+
+    //select2
+    $('.select2').select2({
+        allowClear: true,
+        dropdownAutoWidth : true
     });
 });
 </script>

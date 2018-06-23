@@ -102,8 +102,10 @@
     <?= form_close(); ?>
 
     <script>
+        var i = Math.pow(10,15);
         function addoptions() {
-            var random_no = Math.random();
+
+            var random_no = Math.random() * ++i;
             var options_div = $('#options_div');
             html = '<div class="row">';
             html += '<div class="col-sm-6">';
@@ -139,7 +141,8 @@
             });
 
             $('#criteria_frm_section_id').select2({
-                placeholder: "Select Section"
+                placeholder: "Select Section",
+                dropdownAutoWidth : true
             });
             /*************************************
              Add Edit Criteria

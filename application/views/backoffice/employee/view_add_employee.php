@@ -66,7 +66,9 @@
 
         var update_id = $('#update_id').val();
         $(document).ready(function () {
-            $('#employee_frm_dept_id').select2();
+            $('#employee_frm_dept_id').select2({
+                dropdownAutoWidth : true
+            });
 
             /*************************************
              Add Edit employee
