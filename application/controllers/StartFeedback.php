@@ -96,6 +96,7 @@ class StartFeedback extends SiteController
     public function FeedbackData(){
         echo '<pre>';
         print_r($this->input->post());
+        //var_dump($this->input->post());
         echo '</pre>';exit;
     }
 }

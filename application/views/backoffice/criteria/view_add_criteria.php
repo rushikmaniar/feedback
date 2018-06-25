@@ -102,10 +102,10 @@
     <?= form_close(); ?>
 
     <script>
-        var i = Math.pow(10,15);
+        var i = 1111;
         function addoptions() {
 
-            var random_no = Math.random() * ++i;
+            var random_no = ++i;
             var options_div = $('#options_div');
             html = '<div class="row">';
             html += '<div class="col-sm-6">';
