@@ -12,7 +12,7 @@
 <h3 class="text-danger">Please give Rating On scale 1-5</h3>
 <h3 class="text-warning blink">1-Unstatisfactory ,2-Statisfactory,3-Good,4-Very Good,5-Excellent</h3>
 <div class="container-fluid">
-    <form id="frm_feedback" name="frm_feedback" method="post" action="<?= base_url().'StartFeedback/FeedbackData'?>">
+    <form id="frm_feedback" name="frm_feedback" method="post" action="<?= base_url().'StartFeedback/InsertFeedbackData'?>">
         <div>
             <style>
                 .myclass{

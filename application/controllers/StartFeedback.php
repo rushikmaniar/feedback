@@ -93,10 +93,57 @@ class StartFeedback extends SiteController
         }
         echo json_encode($response);
     }
-    public function FeedbackData(){
-        echo '<pre>';
-        print_r($this->input->post());
-        //var_dump($this->input->post());
-        echo '</pre>';exit;
+    public function InsertFeedbackData(){
+
+        //insert entry in entry_record table
+        $class_id = $this->input->post('frm_feedback_class');
+        $entry_id = $this->CommonModel->save('entry_record',array('class_id'=>$class_id));
+
+        //insert record in analysis master
+        $section = $this->input->post('section');
+
+        foreach ($section as $row_section):
+            if($row_section['section_name'] == 'Employee Section'):
+                foreach ($row_section['points'] as $employees):
+                    foreach ($employees as $row_employee):
+                        $empdata = array(
+                            'entry_id'=>$entry_id,
+                            'class_id'=>$class_id,
+                            'section_id'=>$row_section['section_id'],
+                            'point_id'=>$row_employee['criteria_code'],
+                            'points'=>$row_employee['emp_criteria_points'],
+                            'emp_code'=>$row_employee['emp_code']
+                        );
+                        $this->CommonModel->save('analysis_master',$empdata);
+                    endforeach;
+                endforeach;
+            else:
+                foreach ($row_section['points'] as $index=>$general):
+                    $general_section_data = array(
+                        'entry_id'=>$entry_id,
+                        'class_id'=>$class_id,
+                        'section_id'=>$row_section['section_id'],
+                        'point_id'=>$index,
+                        'points'=>$general,
+                        'emp_code'=>0
+                    );
+                    $this->CommonModel->save('analysis_master',$general_section_data);
+                endforeach;
+            endif;
+
+            //entry in remark_master
+            $remrks = $row_section['remarks'];
+            $remarks_data = array(
+                'entry_id'=>$entry_id,
+                'section_id'=>$row_section['section_id'],
+                'remarks'=>$row_section['remarks']
+            );
+            $this->CommonModel->save('remarks_master',$remarks_data);
+
+        endforeach;
+
+        $this->session->set_flashdata('success',"Feedback Stored Successfully");
+        redirect(base_url());
+
     }
 }
