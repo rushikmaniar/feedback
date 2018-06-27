@@ -153,6 +153,9 @@ class CriteriaManagement extends AdminController
         if($criteria_data['type_data'] == 1){
             $option_data = $this->CommonModel->getRecord("option_master",array('criteria_id'=>$criteria_id))->result_array();
             $this->pageData['option_data'] = $option_data;
+        }else{
+            //delete all option from option_master
+            $this->CommonModel->delete('option_master',array('criteria_id'=>$criteria_id));
         }
 
         $this->pageData['section_list'] = $section_list;

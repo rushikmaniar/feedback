@@ -22,6 +22,8 @@ class Analysis extends AdminController
         //Class List
         $class_list = $this->CommonModel->getRecord('class_master')->result_array();
 
+
+
         $this->pageData['section_list'] = $section_list;
         $this->pageData['class_list'] = $class_list;
         $this->render('Analysis/index.php');

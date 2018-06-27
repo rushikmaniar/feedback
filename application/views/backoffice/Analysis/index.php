@@ -12,9 +12,9 @@
             <!-- Class List -->
             <div class="col-md-4">
                 <label>Select Class</label>
-                <select name="class_list" id="class_list" class="form-control select2">
+                <select name="class_select" id="class_select" class="form-control select2">
                     <?php foreach ($class_list as $row_class): ?>
-                        <option>All Class</option>
+                        <option>Select Class</option>
                         <option value="<?= $row_class['class_id']; ?>"><?= $row_class['class_name']?></option>
                     <?php endforeach; ?>
                 </select>
@@ -23,9 +23,9 @@
             <!-- Section List -->
             <div class="col-md-3">
                 <label>Select Section</label>
-                <select name="section_list" id="section_list" class="form-control select2">
+                <select name="section_select" id="section_select" class="form-control select2">
+                    <option value="" selected>Select section</option>
                     <?php foreach ($section_list as $row_section): ?>
-                        <option>General Analysis</option>
                         <option value="<?= $row_section['id']; ?>"><?= $row_section['section_name']?></option>
                     <?php endforeach; ?>
                 </select>
@@ -34,16 +34,16 @@
             <!-- Criteria List -->
             <div class="col-md-3">
                 <label>Select Criterias</label>
-                <select name="criteria_list" id="criteria_list" class="form-control select2">
-
+                <select name="criteria_select" id="criteria_select" class="form-control select2">
+                    <option>Select Criteia</option>
                 </select>
             </div>
 
             <!-- Employee List -->
-            <div class="col-md-3">
+            <div class="col-md-3" id="employee_select_div" style="display: none">
                 <label>Select Employees</label>
-                <select name="employee_list" id="employee_list" class="form-control select2">
-
+                <select name="employee_select" id="employee_select" class="form-control select2">
+                    <option>Select Employee</option>
                 </select>
             </div>
 
@@ -53,6 +53,27 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+        
+        function getAnlaysedData(section_id,criteria_id,employee_id,class_id) {
+            if(undefined(criteria_id)){
+                criteria_id = null;
+            }
+            if(undefined(employee_id)){
+                employee_id = null;
+            }
+            if(undefined(class_id)){
+                class_id = null;
+            }
+
+            //ajax call for data
+
+        }
+        
+        //on section change
+        $('#section_select').on('change',function () {
+            var section_id = $(this).val();
+        });
+
         //Section select2
         $('#class_list').select2({
             placeholder: "Select a Class"

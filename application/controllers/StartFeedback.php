@@ -24,7 +24,7 @@ class StartFeedback extends SiteController
         criteria_master.type_data                  
         ';
         $section_data = $this->CommonModel
-            ->dbOrderBy(array('section_master.id'))
+            ->dbOrderBy(array('section_master.id','ASC'))
             ->dbjoin(
                 array(
                     array(
