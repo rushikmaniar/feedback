@@ -1,6 +1,6 @@
 <?= form_open("backoffice/Department/addEditDepartment", array('id' => 'department_frm', 'method' => 'post')) ?>
 <?= form_input(array('type' => 'hidden', 'name' => 'action', 'id' => 'action', 'value' => (isset($department_data)) ? 'editDepartment' : 'addDepartment')) ?>
-<?= form_input(array('type' => 'hidden', 'name' => 'update_id', 'id' => 'update_id', 'value' => (isset($department_data)) ? $department_data['id'] : '')) ?>
+<?= form_input(array('type' => 'hidden', 'name' => 'update_id', 'id' => 'update_id', 'value' => (isset($department_data)) ? $department_data['dept_id'] : '')) ?>
 
 <div class="row">
 
@@ -56,7 +56,7 @@
                         'department_frm_dept_id': {
                             required: true,
                             remote: {
-                                url: base_url+"backoffice/Employee/checkexists/"+update_id,
+                                url: base_url+"backoffice/Employee/checkexists/"+"dept_id"+"/"+update_id,
                                 type: "post",
                                 data: {
                                     'table': 'department_master',
@@ -78,7 +78,7 @@
                             remote:"Department Code already Exists"
                         },
                         'department_frm_dept_name': {
-                            required: "This field is required.",
+                            required: "This field is required."
                         }
                     }
             });

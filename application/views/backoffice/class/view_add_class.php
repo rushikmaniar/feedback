@@ -1,6 +1,6 @@
 <?= form_open("backoffice/ClassManagement/addEditClass", array('id' => 'class_frm', 'method' => 'post')) ?>
 <?= form_input(array('type' => 'hidden', 'name' => 'action', 'id' => 'action', 'value' => (isset($class_data)) ? 'editClass' : 'addClass')) ?>
-<?= form_input(array('type' => 'hidden', 'name' => 'update_id', 'id' => 'update_id', 'value' => (isset($class_data)) ? $class_data['id'] : '')) ?>
+<?= form_input(array('type' => 'hidden', 'name' => 'update_id', 'id' => 'update_id', 'value' => (isset($class_data)) ? $class_data['class_id'] : '')) ?>
 
 <div class="row">
 
@@ -24,7 +24,6 @@
     <!-- Select Department -->
     <div class="col-sm-12">
             <select name="class_frm_dept_id" id="class_frm_dept_id" style="width: 30%" class="form-control">
-                <option value="0" selected>No Department</option>
                 <?php foreach ($department_list as $row): ?>
                     <?php if (isset($class_data['dept_id'])): ?>
                         <?php if (($class_data['dept_id']) == $row['dept_id']): ?>
@@ -74,7 +73,7 @@
                     'class_frm_class_id': {
                         required: true,
                         remote: {
-                            url: base_url + "backoffice/ClassManagement/checkexists/" + update_id,
+                            url: base_url + "backoffice/ClassManagement/checkexists/" +"class_id"+"/"+ update_id,
                             type: "post",
                             data: {
                                 'table': 'class_master',

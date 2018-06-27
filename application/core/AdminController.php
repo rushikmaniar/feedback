@@ -33,15 +33,16 @@ class AdminController extends CI_Controller {
            redirect(base_url('backoffice/login'));
         }
 	}
-    public function checkexists($id = false)
+    public function checkexists($update_field = false,$id = false)
     {
+        //update field and $id  used while edit in CRUD
 
         $table = $this->input->post('table');
         $field = $this->input->post('field');
         $value = $this->input->post($field);
 
-        if (isset($id)) {
-            $c = $this->CommonModel->getRecord($table, array($field => $value, "id !=" => $id))->num_rows();
+        if (isset($id) && $id != '' && isset($update_field) && $update_field != '') {
+            $c = $this->CommonModel->getRecord($table, array($field => $value, "$update_field !=" => $id))->num_rows();
 
         } else {
             $c = $this->CommonModel->getRecord($table, array($field => $value))->num_rows();

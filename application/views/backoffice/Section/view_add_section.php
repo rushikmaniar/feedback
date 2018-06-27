@@ -1,6 +1,6 @@
 <?= form_open("backoffice/SectionManagement/addEditSection", array('id' => 'section_frm', 'method' => 'post')) ?>
 <?= form_input(array('type' => 'hidden', 'name' => 'action', 'id' => 'action', 'value' => (isset($section_master_data)) ? 'editSection' : 'addSection')) ?>
-<?= form_input(array('type' => 'hidden', 'name' => 'update_id', 'id' => 'update_id', 'value' => (isset($section_master_data)) ? $section_master_data['id'] : '')) ?>
+<?= form_input(array('type' => 'hidden', 'name' => 'update_id', 'id' => 'update_id', 'value' => (isset($section_master_data)) ? $section_master_data['section_id'] : '')) ?>
 
 <div class="row">
 
@@ -49,7 +49,7 @@
                         'section_master_frm_section_name': {
                             required: true,
                             remote: {
-                                url: base_url+"backoffice/SectionManagement/checkexists/"+update_id,
+                                url: base_url+"backoffice/SectionManagement/checkexists/"+"section_id"+"/"+update_id,
                                 type: "post",
                                 data: {
                                     'table': 'section_master',

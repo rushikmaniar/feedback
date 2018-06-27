@@ -17,7 +17,7 @@ class Employee extends AdminController
         //$employee_data = $this->CommonModel->dblike(array('emp_code'=>'%'.($search) ? $search : ''.'%','emp_name'=>'%'.($search) ? $search : ''.'%','emp_phone'=>'%'.($search) ? $search : ''.'%','emp_email'=>'%'.($search) ? $search : ''.'%'))->dbOrderBy(array('id'=>'DESC'))->getRecord("emloyee_master",'','employee_master.*,SELE',$this->per_page,$offset)->result_array();
         $OrWhere = array();
         $employee_data = $this->CommonModel
-            ->dbOrderBy(array('id'=>'DESC'))
+            ->dbOrderBy(array('emp_code'=>'DESC'))
             ->dbjoin(
             array(
                 array(
@@ -44,7 +44,7 @@ class Employee extends AdminController
     {
         $OrWhere = array();
         $department_data = $this->CommonModel
-            ->dbOrderBy(array('id'=>'DESC'))
+            ->dbOrderBy(array('dept_id'=>'ASC'))
             ->getRecord('department_master', $OrWhere, 'department_master.*')->result_array();
 
         $this->pageData['department_list'] = $department_data;
@@ -63,7 +63,6 @@ class Employee extends AdminController
      */
     public function addEditEmployee()
     {
-
         if ($this->input->post('action') && $this->input->post('action') == "addEmployee")
         {
             $employee_data = array(
@@ -75,8 +74,9 @@ class Employee extends AdminController
             );
 
 
-            $save = $this->CommonModel->save("employee_master",$employee_data);
-            if($save){
+           $save = $this->CommonModel->save("employee_master",$employee_data);
+
+           if($save){
                 $this->session->set_flashdata("success","Employee added successfully");
             }else{
                 $this->session->set_flashdata("error","problem adding employee. Try Later");
@@ -92,8 +92,8 @@ class Employee extends AdminController
                 "emp_email" => $this->input->post('employee_frm_emp_email'),
                 "dept_id" => $this->input->post('employee_frm_dept_id')
             );
-            
-            $update = $this->CommonModel->update("employee_master",$employee_data,array('id'=>$this->input->post('update_id')));
+
+            $update = $this->CommonModel->update("employee_master",$employee_data,array('emp_code'=>$this->input->post('update_id')));
             if($update){
                 $this->session->set_flashdata("success","Employee updated successfully");
             }else{
@@ -110,17 +110,17 @@ class Employee extends AdminController
      * 
      * @param int $user_id
      */
-    public function viewEditEmployeeModal($emp_id)
+    public function viewEditEmployeeModal($emp_code)
     {
         $OrWhere = array();
         $department_data = $this->CommonModel
-            ->dbOrderBy(array('id'=>'DESC'))
+            ->dbOrderBy(array('dept_id'=>'DESC'))
             ->getRecord('department_master', $OrWhere, 'department_master.*')->result_array();
 
         $this->pageData['department_list'] = $department_data;
 
         $department_list = $this->CommonModel->getRecord("department_master",'')->result_array();
-        $employee_data = $this->CommonModel->getRecord("employee_master",array('id'=>$emp_id))->row_array();
+        $employee_data = $this->CommonModel->getRecord("employee_master",array('emp_code'=>$emp_code))->row_array();
         $this->pageData['employee_data'] = $employee_data;
         $this->pageData['department_list'] = $department_list;
         $this->render("backoffice/Employee/view_add_Employee",FALSE);
@@ -133,9 +133,9 @@ class Employee extends AdminController
      */
     public function deleteEmployee()
     {
-        if ($this->input->post('emp_id'))
+        if ($this->input->post('emp_code'))
         {
-            $result = $this->CommonModel->delete("employee_master",array('id'=>$this->input->post('emp_id')));
+            $result = $this->CommonModel->delete("employee_master",array('emp_code'=>$this->input->post('emp_code')));
             if ($result)
             {
                 if ($this->input->post('emp_pic'))

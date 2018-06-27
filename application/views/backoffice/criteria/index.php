@@ -25,8 +25,8 @@
                             <tr>
                                 <!-- Criteria id -->
 
-                                <td><?=$row['id']?></td>
-                                <td><?=$row['point_name']?></td>
+                                <td><?=$row['criteria_id']?></td>
+                                <td><?=$row['criteria_name']?></td>
                                 <td><?=$row['section_name']?></td>
                                 <td><?=($row['type_data'] == 1)?'With Options':'simple'?></td>
                                 <td>
@@ -40,10 +40,10 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Criteria" data-container="body" title="Edit Criteria" onclick="ajaxModel('backoffice/CriteriaManagement/viewEditCriteriaModal/<?=$row['id']?>','Edit Criteria',800)">
+                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Criteria" data-container="body" title="Edit Criteria" onclick="ajaxModel('backoffice/CriteriaManagement/viewEditCriteriaModal/<?=$row['criteria_id']?>','Edit Criteria',800)">
                                             <i class="fa fa-pencil"></i>
                                         </button>
-                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Criteria" data-container="body" title="Delete Criteria" onclick="deletecriteria(<?=$row['id']?>)">
+                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Criteria" data-container="body" title="Delete Criteria" onclick="deletecriteria(<?=$row['criteria_id']?>)">
                                             <i class="fa fa-remove"></i>
                                         </button>
                                     </div>

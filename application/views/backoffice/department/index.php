@@ -22,10 +22,10 @@
                                 <td><?=$row['dept_name']?></td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Department" data-container="body" title="Edit Department" onclick="ajaxModel('backoffice/Department/viewEditDepartmentModal/<?=$row['id']?>','Edit Department',800)">
+                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Department" data-container="body" title="Edit Department" <?=($row['dept_id'] == 0)?'disabled':''?> onclick="ajaxModel('backoffice/Department/viewEditDepartmentModal/<?=$row['dept_id']?>','Edit Department',800)">
                                             <i class="fa fa-pencil"></i>
                                         </button>
-                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Department" data-container="body" title="Delete Department" onclick="deletedepartment(<?=$row['id']?>)">
+                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Department" data-container="body" title="Delete Department" <?=($row['dept_id'] == 0)?'disabled':''?> onclick="deletedepartment(<?=$row['dept_id']?>)">
                                             <i class="fa fa-remove"></i>
                                         </button>
                                     </div>

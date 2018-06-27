@@ -13,7 +13,7 @@ class ClassManagement extends AdminController
        $OrWhere = array();
 
         $class_data = $this->CommonModel
-            ->dbOrderBy(array('class_master.id'=>'DESC'))
+            ->dbOrderBy(array('class_master.class_id'=>'DESC'))
             ->dbjoin(
                 array(
                     array(
@@ -37,7 +37,7 @@ class ClassManagement extends AdminController
     {
         $OrWhere = array();
         $department_data = $this->CommonModel
-            ->dbOrderBy(array('id'=>'DESC'))
+            ->dbOrderBy(array('dept_id'=>'ASC'))
             ->getRecord('department_master', $OrWhere, 'department_master.*')->result_array();
 
         $this->pageData['department_list'] = $department_data;
@@ -77,7 +77,7 @@ class ClassManagement extends AdminController
                 "dept_id" => $this->input->post('class_frm_dept_id')
             );
             
-            $update = $this->CommonModel->update("class_master",$class_data,array('id'=>$this->input->post('update_id')));
+            $update = $this->CommonModel->update("class_master",$class_data,array('class_id'=>$this->input->post('update_id')));
             if($update){
                 $this->session->set_flashdata("success","Class updated successfully");
             }else{
@@ -98,11 +98,11 @@ class ClassManagement extends AdminController
     {
         $OrWhere = array();
         $department_data = $this->CommonModel
-            ->dbOrderBy(array('id'=>'DESC'))
+            ->dbOrderBy(array('dept_id'=>'ASC'))
             ->getRecord('department_master', $OrWhere, 'department_master.*')->result_array();
 
         $this->pageData['department_list'] = $department_data;
-        $class_data = $this->CommonModel->getRecord("class_master",array('id'=>$class_id))->row_array();
+        $class_data = $this->CommonModel->getRecord("class_master",array('class_id'=>$class_id))->row_array();
         $this->pageData['class_data'] = $class_data;
         $this->render("backoffice/Class/view_add_class",FALSE);
     }
@@ -116,7 +116,7 @@ class ClassManagement extends AdminController
     {
         if ($this->input->post('class_id'))
         {
-            $result = $this->CommonModel->delete("class_master",array('id'=>$this->input->post('class_id')));
+            $result = $this->CommonModel->delete("class_master",array('class_id'=>$this->input->post('class_id')));
             if ($result)
             {
                 $res_output['code'] = 1;

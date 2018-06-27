@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 27, 2018 at 02:14 PM
+-- Generation Time: Jun 27, 2018 at 06:15 PM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -51,16 +51,6 @@ CREATE TABLE `class_master` (
   `created_at` varchar(255) DEFAULT NULL,
   `updated_at` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Class Master Table';
-
---
--- Dumping data for table `class_master`
---
-
-INSERT INTO `class_master` (`class_id`, `class_name`, `dept_id`, `created_at`, `updated_at`) VALUES
-(2, 'BCA', 1, '1528282824', '1528283999'),
-(3, 'MCA', 1, '1528367575', '1528367575'),
-(4, 'MsciT', 1, '1528367588', '1528367588'),
-(5, 'BsciT', 1, '1528367596', '1528367596');
 
 -- --------------------------------------------------------
 
@@ -132,14 +122,6 @@ CREATE TABLE `department_master` (
   `updated_at` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Department Master Table';
 
---
--- Dumping data for table `department_master`
---
-
-INSERT INTO `department_master` (`dept_id`, `dept_name`, `created_at`, `updated_at`) VALUES
-(0, 'No Department', NULL, NULL),
-(1, 'Computer', '1528099679', '1528099679');
-
 -- --------------------------------------------------------
 
 --
@@ -154,17 +136,6 @@ CREATE TABLE `employee_allocation` (
   `updated_at` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='emloyee_allocation master';
 
---
--- Dumping data for table `employee_allocation`
---
-
-INSERT INTO `employee_allocation` (`employee_allocation_id`, `class_id`, `emp_code`, `created_at`, `updated_at`) VALUES
-(15, 5, 23, NULL, NULL),
-(17, 3, 23, NULL, NULL),
-(18, 2, 23, NULL, NULL),
-(19, 2, 5, NULL, NULL),
-(20, 2, 21, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -176,19 +147,10 @@ CREATE TABLE `employee_master` (
   `emp_name` varchar(255) DEFAULT NULL,
   `emp_phone` varchar(15) DEFAULT NULL COMMENT 'employee phone',
   `emp_email` varchar(255) DEFAULT NULL COMMENT 'employee table email',
-  `dept_id` int(11) DEFAULT NULL COMMENT 'dept id from department_master',
+  `dept_id` int(11) DEFAULT '0' COMMENT 'dept id from department_master',
   `created_at` varchar(255) DEFAULT NULL,
   `updated_at` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Emplyoees Master table';
-
---
--- Dumping data for table `employee_master`
---
-
-INSERT INTO `employee_master` (`emp_code`, `emp_name`, `emp_phone`, `emp_email`, `dept_id`, `created_at`, `updated_at`) VALUES
-(5, 'meet', '9898989898', 'as@gmail.com', 0, '1528104035', '1528367615'),
-(21, 'rushi', '6565656562', 'rushi@gmail.com', 0, '1528367673', '1528367673'),
-(23, 'rushik', '6565656565', 'rushik2@gmail.com', 0, '1528032553', '1528032553');
 
 -- --------------------------------------------------------
 
@@ -308,10 +270,10 @@ INSERT INTO `user` (`user_id`, `user_email`, `user_type`, `user_password`, `is_a
 ALTER TABLE `analysis_master`
   ADD PRIMARY KEY (`analysis_master_id`),
   ADD KEY `entryid_link` (`entry_id`),
-  ADD KEY `section_master_analysis_section_id` (`section_id`),
-  ADD KEY `criteria_master_analysis_section_id` (`criteria_id`),
   ADD KEY `related_index` (`class_id`,`section_id`,`criteria_id`,`emp_code`) USING BTREE,
-  ADD KEY `employee_analaysis_link` (`emp_code`);
+  ADD KEY `employee_master_analysis` (`emp_code`),
+  ADD KEY `section_id_analysis_link` (`section_id`),
+  ADD KEY `criteria_analysis_link` (`criteria_id`);
 
 --
 -- Indexes for table `class_master`
@@ -395,15 +357,30 @@ ALTER TABLE `user`
 ALTER TABLE `analysis_master`
   MODIFY `analysis_master_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'row_id staff analysis';
 --
+-- AUTO_INCREMENT for table `class_master`
+--
+ALTER TABLE `class_master`
+  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'class_id by college', AUTO_INCREMENT=6;
+--
 -- AUTO_INCREMENT for table `criteria_master`
 --
 ALTER TABLE `criteria_master`
   MODIFY `criteria_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
+-- AUTO_INCREMENT for table `department_master`
+--
+ALTER TABLE `department_master`
+  MODIFY `dept_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'dept_id';
+--
 -- AUTO_INCREMENT for table `employee_allocation`
 --
 ALTER TABLE `employee_allocation`
   MODIFY `employee_allocation_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'row id emloyee_allocation master', AUTO_INCREMENT=21;
+--
+-- AUTO_INCREMENT for table `employee_master`
+--
+ALTER TABLE `employee_master`
+  MODIFY `emp_code` int(11) NOT NULL AUTO_INCREMENT COMMENT 'employee unique id from college';
 --
 -- AUTO_INCREMENT for table `entry_record`
 --
@@ -438,10 +415,10 @@ ALTER TABLE `user`
 --
 ALTER TABLE `analysis_master`
   ADD CONSTRAINT `class_id_analysis_class_id` FOREIGN KEY (`class_id`) REFERENCES `class_master` (`class_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `criteria_master_analysis_section_id` FOREIGN KEY (`criteria_id`) REFERENCES `criteria_master` (`criteria_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `employee_analaysis_link` FOREIGN KEY (`emp_code`) REFERENCES `employee_master` (`emp_code`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `entry_anlaysis_link` FOREIGN KEY (`entry_id`) REFERENCES `entry_record` (`entry_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `section_master_analysis_section_id` FOREIGN KEY (`section_id`) REFERENCES `section_master` (`section_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `criteria_analysis_link` FOREIGN KEY (`criteria_id`) REFERENCES `criteria_master` (`criteria_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `employee_master_analysis` FOREIGN KEY (`emp_code`) REFERENCES `employee_master` (`emp_code`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `entry_id_analysis_link` FOREIGN KEY (`entry_id`) REFERENCES `entry_record` (`entry_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `section_id_analysis_link` FOREIGN KEY (`section_id`) REFERENCES `section_master` (`section_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `class_master`
@@ -453,14 +430,14 @@ ALTER TABLE `class_master`
 -- Constraints for table `criteria_master`
 --
 ALTER TABLE `criteria_master`
-  ADD CONSTRAINT `section_criteria` FOREIGN KEY (`section_id`) REFERENCES `section_master` (`section_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `section_id_criteria_link` FOREIGN KEY (`section_id`) REFERENCES `section_master` (`section_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `employee_allocation`
 --
 ALTER TABLE `employee_allocation`
-  ADD CONSTRAINT `class_allocation_link` FOREIGN KEY (`class_id`) REFERENCES `class_master` (`class_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `employee_allocation_link` FOREIGN KEY (`emp_code`) REFERENCES `employee_master` (`emp_code`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `class_employee_allocation_link` FOREIGN KEY (`class_id`) REFERENCES `class_master` (`class_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `employee_master_allocation_link` FOREIGN KEY (`emp_code`) REFERENCES `employee_master` (`emp_code`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `employee_master`
@@ -478,13 +455,13 @@ ALTER TABLE `entry_record`
 -- Constraints for table `option_master`
 --
 ALTER TABLE `option_master`
-  ADD CONSTRAINT `option_criteria_link` FOREIGN KEY (`criteria_id`) REFERENCES `criteria_master` (`criteria_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `criteria_id_option_master_link` FOREIGN KEY (`criteria_id`) REFERENCES `criteria_master` (`criteria_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `remarks_master`
 --
 ALTER TABLE `remarks_master`
-  ADD CONSTRAINT `entry record bind` FOREIGN KEY (`entry_id`) REFERENCES `entry_record` (`entry_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `entry_id_rematk_link` FOREIGN KEY (`entry_id`) REFERENCES `entry_record` (`entry_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `section_id_remark_section_id` FOREIGN KEY (`section_id`) REFERENCES `section_master` (`section_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

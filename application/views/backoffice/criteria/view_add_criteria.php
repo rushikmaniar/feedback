@@ -1,6 +1,6 @@
 <?= form_open("backoffice/CriteriaManagement/addEditCriteria", array('id' => 'criteria_frm', 'method' => 'post')) ?>
 <?= form_input(array('type' => 'hidden', 'name' => 'action', 'id' => 'action', 'value' => (isset($criteria_data)) ? 'editCriteria' : 'addCriteria')) ?>
-<?= form_input(array('type' => 'hidden', 'name' => 'update_id', 'id' => 'update_id', 'value' => (isset($criteria_data)) ? $criteria_data['id'] : '')) ?>
+<?= form_input(array('type' => 'hidden', 'name' => 'update_id', 'id' => 'update_id', 'value' => (isset($criteria_data)) ? $criteria_data['criteria_id'] : '')) ?>
 
 <div class="row">
 
@@ -56,12 +56,12 @@
                         <?php foreach ($option_data as $row):?>
                             <div class="col-sm-6">
                                 <div class="input-group form-group">
-                                    <input type="text" class="form-control options_require" name="options[<?= $row['id'];?>][option_text]" value="<?= $row['option_text']?>" placeholder="Enter Option Text" required="true">
+                                    <input type="text" class="form-control options_require" name="options[<?= $row['criteria_id'];?>][option_text]" value="<?= $row['option_text']?>" placeholder="Enter Option Text" required="true">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="input-group form-group">
-                                    <input type="text" class="form-control options_require" name="options[<?= $row['id'];?>][option_value]" value="<?= $row['option_value']?>" placeholder="Enter Option Value" required="true">
+                                    <input type="text" class="form-control options_require" name="options[<?= $row['criteria_id'];?>][option_value]" value="<?= $row['option_value']?>" placeholder="Enter Option Value" required="true">
                                     <button class="btn-danger btn-sm" onclick="deleteoption(this)"><i class="fa fa-minus"></i> Delete</button>
                                 </div>
                             </div>
@@ -88,7 +88,7 @@
     <!-- Criteria Name  -->
     <div class="col-sm-12">
         <div class="input-group form-group">
-            <?= form_input(array('name' => 'criteria_frm_point_name', 'id' => 'criteria_frm_point_name', 'class' => 'form-control', 'placeholder' => 'Criteria  Name', 'value' => (isset($criteria_data)) ? $criteria_data['point_name'] : '')) ?>
+            <?= form_input(array('name' => 'criteria_frm_criteria_name', 'id' => 'criteria_frm_criteria_name', 'class' => 'form-control', 'placeholder' => 'Criteria  Name', 'value' => (isset($criteria_data)) ? $criteria_data['criteria_name'] : '')) ?>
             <span class="input-group-addon"><i class="fa fa-lock"></i></span>
         </div>
     </div>
@@ -165,16 +165,16 @@
                     criteria_frm_section_id: {
                         required: true
                     },
-                    'criteria_frm_point_name': {
+                    'criteria_frm_criteria_name': {
                         required: true,
                         remote: {
-                            url: base_url + "backoffice/CriteriaManagement/checkexists/" + update_id,
+                            url: base_url + "backoffice/CriteriaManagement/checkexists/"+"criteria_id"+"/" + update_id,
                             type: "post",
                             data: {
                                 'table': 'criteria_master',
-                                'field': 'point_name',
-                                point_name: function () {
-                                    return $('#criteria_frm_point_name').val();
+                                'field': 'criteria_name',
+                                criteria_name: function () {
+                                    return $('#criteria_frm_criteria_name').val();
                                 }
                             }
                         }
@@ -189,7 +189,7 @@
 
                 },
                 messages: {
-                    'criteria_frm_point_name': {
+                    'criteria_frm_criteria_name': {
                         required: "This field is required.",
                         remote: "Criteria already Exists"
                     },

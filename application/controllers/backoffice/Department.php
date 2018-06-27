@@ -12,7 +12,7 @@ class Department extends AdminController
     {
        $OrWhere = array();
         $department_data = $this->CommonModel
-            ->dbOrderBy(array('id'=>'DESC'))
+            ->dbOrderBy(array('dept_id'=>'DESC'))
             ->getRecord('department_master', $OrWhere, 'department_master.*')->result_array();
 
         $this->pageTitle = 'Department Management';
@@ -80,7 +80,7 @@ class Department extends AdminController
     public function viewEditDepartmentModal($dept_id)
     {
 
-        $department_data = $this->CommonModel->getRecord("department_master",array('id'=>$dept_id))->row_array();
+        $department_data = $this->CommonModel->getRecord("department_master",array('dept_id'=>$dept_id))->row_array();
         $this->pageData['department_data'] = $department_data;
         $this->render("backoffice/Department/view_add_Department",FALSE);
     }
@@ -94,7 +94,7 @@ class Department extends AdminController
     {
         if ($this->input->post('dept_id'))
         {
-            $result = $this->CommonModel->delete("department_master",array('id'=>$this->input->post('dept_id')));
+            $result = $this->CommonModel->delete("department_master",array('dept_id'=>$this->input->post('dept_id')));
             if ($result)
             {
                 $res_output['code'] = 1;

@@ -29,11 +29,11 @@
                         <div class="btn-group">
                             <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Employee"
                                     data-container="body" title="Edit User"
-                                    onclick="ajaxModel('backoffice/ClassManagement/viewEditClassModal/<?= $row['id'] ?>','Edit Class',800)">
+                                    onclick="ajaxModel('backoffice/ClassManagement/viewEditClassModal/<?= $row['class_id'] ?>','Edit Class',800)">
                                 <i class="fa fa-pencil"></i>
                             </button>
                             <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Employee"
-                                    data-container="body" title="Delete Class" onclick="deleteClass(<?= $row['id'] ?>)">
+                                    data-container="body" title="Delete Class" onclick="deleteClass(<?= $row['class_id'] ?>)">
                                 <i class="fa fa-remove"></i>
                             </button>
                         </div>

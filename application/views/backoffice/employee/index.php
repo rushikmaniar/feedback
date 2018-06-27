@@ -23,15 +23,15 @@
 
                                 <td><?=$row['emp_code']?></td>
                                 <td><?=$row['emp_name']?></td>
-                                <td><?=$row['emp_phone']?></td>
                                 <td><?=$row['emp_email']?></td>
+                                <td><?=$row['emp_phone']?></td>
                                 <td><?=$row['dept_name']?></td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Employee" data-container="body" title="Edit User" onclick="ajaxModel('backoffice/Employee/viewEditEmployeeModal/<?=$row['id']?>','Edit Employee',800)">
+                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Employee" data-container="body" title="Edit User" onclick="ajaxModel('backoffice/Employee/viewEditEmployeeModal/<?=$row['emp_code']?>','Edit Employee',800)">
                                             <i class="fa fa-pencil"></i>
                                         </button>
-                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Employee" data-container="body" title="Delete User" onclick="deleteUser(<?=$row['id']?>)">
+                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Employee" data-container="body" title="Delete User" onclick="deleteUser(<?=$row['emp_code']?>)">
                                             <i class="fa fa-remove"></i>
                                         </button>
                                     </div>
@@ -57,7 +57,7 @@
 	/*************************************
 				Delete User
 	*************************************/
-    function deleteUser(emp_id)
+    function deleteUser(emp_code)
     {
         swal({
             title: 'Are you sure?',
@@ -73,7 +73,7 @@
             url: base_url + "backoffice/Employee/deleteEmployee",
             type: "POST",
             dataType: "json",
-            data: {"emp_id": emp_id},
+            data: {"emp_code": emp_code},
             success: function (result) {
                 if (result.code == 1 && result.code != '') {
                     toastr["success"](result.message, "Success");

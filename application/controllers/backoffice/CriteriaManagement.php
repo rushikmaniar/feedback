@@ -13,16 +13,16 @@ class CriteriaManagement extends AdminController
        $OrWhere = array();
         $val = '
         criteria_master.*,
-        section_master.id as section_id,
+        section_master.section_id,
         section_master.section_name
         ';
         $criteria_data = $this->CommonModel
-            ->dbOrderBy(array('criteria_master.id'=>'DESC'))
+            ->dbOrderBy(array('criteria_master.criteria_id'=>'DESC'))
             ->dbjoin(
                 array(
                     array(
                         'table' => 'section_master',
-                        'condition' => 'criteria_master.section_id = section_master.id'
+                        'condition' => 'criteria_master.section_id = section_master.section_id'
                     )
                 )
             )
@@ -30,12 +30,12 @@ class CriteriaManagement extends AdminController
 
         $new_criteria_data = array();
         foreach ($criteria_data as $row):
-            $new_criteria_data[$row['id']] = $row;
+            $new_criteria_data[$row['criteria_id']] = $row;
         endforeach;
         $criteria_data = $new_criteria_data;
         foreach ($criteria_data as $row):
             if($row['type_data'] == 1):
-                $criteria_data[$row['id']]['options'] = $this->CommonModel->getRecord('option_master',array('criteria_id'=>$row['id']))->result_array();
+                $criteria_data[$row['criteria_id']]['options'] = $this->CommonModel->getRecord('option_master',array('criteria_id'=>$row['criteria_id']))->result_array();
                 endif;
         endforeach;
 
@@ -53,8 +53,8 @@ class CriteriaManagement extends AdminController
     {
         $OrWhere = array();
         $section_list = $this->CommonModel
-            ->dbOrderBy(array('id'=>'ASC'))
-            ->getRecord('section_master', $OrWhere, 'section_master.id as section_id,section_master.section_name')->result_array();
+            ->dbOrderBy(array('section_id'=>'ASC'))
+            ->getRecord('section_master', $OrWhere, 'section_master.section_id,section_master.section_name')->result_array();
 
         $this->pageData['section_list'] = $section_list;
         $this->render("backoffice/Criteria/view_add_criteria",FALSE);
@@ -72,7 +72,7 @@ class CriteriaManagement extends AdminController
         {
             $criteria_data = array(
                 "section_id" => $this->input->post('criteria_frm_section_id'),
-                "point_name" => $this->input->post('criteria_frm_point_name')
+                "criteria_name" => $this->input->post('criteria_frm_criteria_name')
             );
             if($this->input->post('radios') == "options"){
                 $criteria_data['type_data'] = 1;
@@ -105,7 +105,7 @@ class CriteriaManagement extends AdminController
         {
             $criteria_data = array(
                 "section_id" => $this->input->post('criteria_frm_section_id'),
-                "point_name" => $this->input->post('criteria_frm_point_name'),
+                "criteria_name" => $this->input->post('criteria_frm_criteria_name'),
                 "type_data" => 0
             );
             if($this->input->post('radios') == "options"){
@@ -123,7 +123,7 @@ class CriteriaManagement extends AdminController
                     $this->CommonModel->save("option_master",$option_data);
                 endforeach;
             }
-            $update = $this->CommonModel->update("criteria_master",$criteria_data,array('id'=>$this->input->post('update_id')));
+            $update = $this->CommonModel->update("criteria_master",$criteria_data,array('criteria_id'=>$this->input->post('update_id')));
             if($update){
                 $this->session->set_flashdata("success","Criteria updated successfully");
             }else{
@@ -144,12 +144,12 @@ class CriteriaManagement extends AdminController
     {
         $OrWhere = array();
         $section_list = $this->CommonModel
-            ->dbOrderBy(array('id'=>'ASC'))
-            ->getRecord('section_master', $OrWhere, 'section_master.id as section_id,section_master.section_name')->result_array();
+            ->dbOrderBy(array('section_id'=>'ASC'))
+            ->getRecord('section_master', $OrWhere, 'section_master.section_id,section_master.section_name')->result_array();
 
 
 
-        $criteria_data = $this->CommonModel->getRecord("criteria_master",array('id'=>$criteria_id))->row_array();
+        $criteria_data = $this->CommonModel->getRecord("criteria_master",array('criteria_id'=>$criteria_id))->row_array();
         if($criteria_data['type_data'] == 1){
             $option_data = $this->CommonModel->getRecord("option_master",array('criteria_id'=>$criteria_id))->result_array();
             $this->pageData['option_data'] = $option_data;
@@ -173,7 +173,7 @@ class CriteriaManagement extends AdminController
     {
         if ($this->input->post('criteria_id'))
         {
-            $result = $this->CommonModel->delete("criteria_master",array('id'=>$this->input->post('criteria_id')));
+            $result = $this->CommonModel->delete("criteria_master",array('criteria_id'=>$this->input->post('criteria_id')));
             if ($result)
             {
                 $res_output['code'] = 1;

@@ -12,7 +12,7 @@ class SectionManagement extends AdminController
     {
        $OrWhere = array();
         $section_data = $this->CommonModel
-            ->dbOrderBy(array('id'=>'DESC'))
+            ->dbOrderBy(array('section_id'=>'DESC'))
             ->getRecord('section_master', $OrWhere, 'section_master.*')->result_array();
 
         $this->pageTitle = 'Section Management';
@@ -59,7 +59,7 @@ class SectionManagement extends AdminController
                 "section_name" => $this->input->post('section_master_frm_section_name')
             );
             
-            $update = $this->CommonModel->update("section_master",$section_data,array('id'=>$this->input->post('update_id')));
+            $update = $this->CommonModel->update("section_master",$section_data,array('section_id'=>$this->input->post('update_id')));
             if($update){
                 $this->session->set_flashdata("success"," Section updated successfully");
             }else{
@@ -79,7 +79,7 @@ class SectionManagement extends AdminController
     public function viewEditSectionModal($section_master_id)
     {
 
-        $section_data = $this->CommonModel->getRecord("section_master",array('id'=>$section_master_id))->row_array();
+        $section_data = $this->CommonModel->getRecord("section_master",array('section_id'=>$section_master_id))->row_array();
         $this->pageData['section_master_data'] = $section_data;
         $this->render("backoffice/Section/view_add_section",FALSE);
     }
@@ -93,7 +93,7 @@ class SectionManagement extends AdminController
     {
         if ($this->input->post('section_master_id'))
         {
-            $result = $this->CommonModel->delete("section_master",array('id'=>$this->input->post('section_master_id')));
+            $result = $this->CommonModel->delete("section_master",array('section_id'=>$this->input->post('section_master_id')));
             if ($result)
             {
                 $res_output['code'] = 1;

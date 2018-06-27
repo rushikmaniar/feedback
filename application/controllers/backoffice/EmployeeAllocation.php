@@ -20,7 +20,7 @@ class EmployeeAllocation extends AdminController
        ';
         $OrWhere = array();
         $class_data = $this->CommonModel
-            ->dbOrderBy(array('class_master.id' => 'DESC'))
+            ->dbOrderBy(array('class_master.class_id' => 'DESC'))
             ->dbjoin(
                 array(
                     array(
@@ -47,7 +47,7 @@ class EmployeeAllocation extends AdminController
                         array(
                             array(
                                 'table' => 'employee_master',
-                                'condition' => 'employee_master.emp_code = employee_allocation.employee_codes'
+                                'condition' => 'employee_master.emp_code = employee_allocation.emp_code'
                             )
                         )
                     )
@@ -75,7 +75,7 @@ class EmployeeAllocation extends AdminController
                 $emp_codes = $this->input->post('allocation_frm_emp_codes');
                 $data = array();
                 foreach ($emp_codes as $row):
-                    $data[] = array('class_id' => $this->input->post('update_id'), 'employee_codes' => $row);
+                    $data[] = array('class_id' => $this->input->post('update_id'), 'emp_code' => $row);
                 endforeach;
 
                 $update = $this->CommonModel->db->insert_batch('employee_allocation', $data);
@@ -105,7 +105,7 @@ class EmployeeAllocation extends AdminController
 
         //get employee_list
         $employee_list = $this->CommonModel->getRecord('employee_master','','emp_code,emp_name')->result_array();
-        $allocation_data = array_map(function ($data){return $data['employee_codes'];},$this->CommonModel->getRecord("employee_allocation", array('class_id' => $class_id),'employee_codes')->result_array());
+        $allocation_data = array_map(function ($data){return $data['emp_code'];},$this->CommonModel->getRecord("employee_allocation", array('class_id' => $class_id),'emp_code')->result_array());
         $this->pageData['allocation_data'] = $allocation_data;
         $this->pageData['class_id'] = $class_id;
         $this->pageData['class_name'] = $class_name;

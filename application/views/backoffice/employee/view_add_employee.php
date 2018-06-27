@@ -1,6 +1,6 @@
 <?= form_open("backoffice/Employee/addEditEmployee", array('id' => 'employee_frm', 'method' => 'post')) ?>
 <?= form_input(array('type' => 'hidden', 'name' => 'action', 'id' => 'action', 'value' => (isset($employee_data)) ? 'editEmployee' : 'addEmployee')) ?>
-<?= form_input(array('type' => 'hidden', 'name' => 'update_id', 'id' => 'update_id', 'value' => (isset($employee_data)) ? $employee_data['id'] : '')) ?>
+<?= form_input(array('type' => 'hidden', 'name' => 'update_id', 'id' => 'update_id', 'value' => (isset($employee_data)) ? $employee_data['emp_code'] : '')) ?>
 
 <div class="row">
 
@@ -38,11 +38,10 @@
 
     <!-- Select Department -->
     <div class="col-sm-12">
-        <select name="class_frm_dept_id" id="class_frm_dept_id" style="width: 30%" class="form-control">
-            <option value="0" selected>No Department</option>
+        <select name="employee_frm_dept_id" id="employee_frm_dept_id" style="width: 30%" class="form-control">
             <?php foreach ($department_list as $row): ?>
-                <?php if (isset($class_data['dept_id'])): ?>
-                    <?php if (($class_data['dept_id']) == $row['dept_id']): ?>
+                <?php if (isset($employee_data['dept_id'])): ?>
+                    <?php if (($employee_data['dept_id']) == $row['dept_id']): ?>
                         <option value="<?= $row['dept_id'] ?>" selected><?= $row['dept_name'] ?></option>
                     <?php else: ?>
                         <option value="<?= $row['dept_id'] ?>"><?= $row['dept_name'] ?></option>
@@ -65,6 +64,15 @@
     <script>
 
         var update_id = $('#update_id').val();
+        var update_field = '';
+
+        if(typeof update_id === "undefined"){
+            //nothing
+        }else{
+            update_field = 'emp_code'
+        }
+
+
         $(document).ready(function () {
             $('#employee_frm_dept_id').select2({
                 dropdownAutoWidth : true
@@ -92,7 +100,7 @@
                         'employee_frm_emp_code': {
                             required: true,
                             remote: {
-                                url: base_url+"backoffice/Employee/checkexists/"+update_id,
+                                url: base_url+"backoffice/Employee/checkexists/"+update_field+"/"+update_id,
                                 type: "post",
                                 data: {
                                     'table': 'employee_master',
@@ -110,7 +118,7 @@
                             required: true,
                             email: true,
                             remote: {
-                                url: base_url+"backoffice/Employee/checkexists/"+update_id,
+                                url: base_url+"backoffice/Employee/checkexists/"+update_field+"/"+update_id,
                                 type: "post",
                                 data: {
                                     'table': 'employee_master',
@@ -124,7 +132,7 @@
                         'employee_frm_emp_phone': {
                             regex: "^[6-9]\\d{9}$",
                             remote: {
-                                url: base_url+"backoffice/Employee/checkexists/"+update_id,
+                                url: base_url+"backoffice/Employee/checkexists/"+update_field+"/"+update_id,
                                 type: "post",
                                 data: {
                                     'table': 'employee_master',

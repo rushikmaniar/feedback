@@ -20,14 +20,14 @@
                             <tr>
                                 <!-- Section id -->
 
-                                <td><?=$row['id']?></td>
+                                <td><?=$row['section_id']?></td>
                                 <td><?=$row['section_name']?></td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Section" data-container="body" title="Edit Section" onclick="ajaxModel('backoffice/SectionManagement/viewEditSectionModal/<?=$row['id']?>','Edit Section',800)">
+                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Section" data-container="body" title="Edit Section" onclick="ajaxModel('backoffice/SectionManagement/viewEditSectionModal/<?=$row['section_id']?>','Edit Section',800)">
                                             <i class="fa fa-pencil"></i>
                                         </button>
-                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Section" data-container="body" title="Delete Section" onclick="deletesection(<?=$row['id']?>)">
+                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Section" data-container="body" title="Delete Section" onclick="deletesection(<?=$row['section_id']?>)">
                                             <i class="fa fa-remove"></i>
                                         </button>
                                     </div>

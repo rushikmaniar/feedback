@@ -135,6 +135,7 @@ class CommonModel extends CI_Model
     	}
     		
         $this->db->insert($table,$array);
+
         return $this->db->insert_id();
     }
 
