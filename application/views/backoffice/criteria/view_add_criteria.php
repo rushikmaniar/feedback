@@ -56,12 +56,12 @@
                         <?php foreach ($option_data as $row):?>
                             <div class="col-sm-6">
                                 <div class="input-group form-group">
-                                    <input type="text" class="form-control options_require" name="options[<?= $row['criteria_id'];?>][option_text]" value="<?= $row['option_text']?>" placeholder="Enter Option Text" required="true">
+                                    <input type="text" class="form-control options_require" name="options[<?= $row['option_id'];?>][option_text]" value="<?= $row['option_text']?>" placeholder="Enter Option Text" required="true">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="input-group form-group">
-                                    <input type="text" class="form-control options_require" name="options[<?= $row['criteria_id'];?>][option_value]" value="<?= $row['option_value']?>" placeholder="Enter Option Value" required="true">
+                                    <input type="text" class="form-control options_require" name="options[<?= $row['option_id'];?>][option_value]" value="<?= $row['option_value']?>" placeholder="Enter Option Value" required="true">
                                     <button class="btn-danger btn-sm" onclick="deleteoption(this)"><i class="fa fa-minus"></i> Delete</button>
                                 </div>
                             </div>

@@ -16,20 +16,20 @@ class StartFeedback extends SiteController
     {
         $classlist = $this->CommonModel->getRecord('class_master')->result_array();
         $val = '
-        section_master.id,
+        section_master.section_id,
         section_master.section_name,
         
-        criteria_master.id as point_id,
-        criteria_master.point_name,
+        criteria_master.criteria_id,
+        criteria_master.criteria_name,
         criteria_master.type_data                  
         ';
         $section_data = $this->CommonModel
-            ->dbOrderBy(array('section_master.id','ASC'))
+            ->dbOrderBy(array('section_master.section_id','ASC'))
             ->dbjoin(
                 array(
                     array(
                         'table' => 'criteria_master',
-                        'condition' => 'criteria_master.section_id = section_master.id'
+                        'condition' => 'criteria_master.section_id = section_master.section_id'
                     )
                 ))
             ->getRecord('section_master','',$val)->result_array();
@@ -38,10 +38,10 @@ class StartFeedback extends SiteController
         $section_list = array();
         foreach ($section_data as $row):
 
-            if(array_key_exists($row['id'],$section_list)):
-                $section_list[$row['id']]['criteria_list'][$row['point_id'] ]= array('point_id'=>$row['point_id'],'point_name'=>$row['point_name'],'type_data'=>$row['type_data']);
+            if(array_key_exists($row['section_id'],$section_list)):
+                $section_list[$row['section_id']]['criteria_list'][$row['criteria_id'] ]= array('criteria_id'=>$row['criteria_id'],'criteria_name'=>$row['criteria_name'],'type_data'=>$row['type_data']);
             else:
-                $section_list[$row['id']] = array('id'=>$row['id'],'section_name'=>$row['section_name'],'criteria_list'=>array($row['point_id'] => array('point_id'=>$row['point_id'],'point_name'=>$row['point_name'],'type_data'=>$row['type_data'])));
+                $section_list[$row['section_id']] = array('section_id'=>$row['section_id'],'section_name'=>$row['section_name'],'criteria_list'=>array($row['criteria_id'] => array('criteria_id'=>$row['criteria_id'],'criteria_name'=>$row['criteria_name'],'type_data'=>$row['type_data'])));
                     endif;
 
             endforeach;
@@ -51,9 +51,9 @@ class StartFeedback extends SiteController
         foreach ($section_list as $row):
             foreach ($row['criteria_list'] as $row_criteria):
                 if($row_criteria['type_data'] == 1) {
-                    $option_list = $this->CommonModel->getRecord('option_master', array('option_master.criteria_id' => $row_criteria['point_id']), 'id as option_id,option_text,option_value')->result_array();
+                    $option_list = $this->CommonModel->getRecord('option_master', array('option_master.criteria_id' => $row_criteria['criteria_id']), 'id as option_id,option_text,option_value')->result_array();
                     $row_criteria['option_list'] = $option_list;
-                    $section_list[$row['id']]['criteria_list'][$row_criteria['point_id']]['option_list'] = $option_list;
+                    $section_list[$row['criteria_id']]['criteria_list'][$row_criteria['criteria_id']]['option_list'] = $option_list;
                 }
             endforeach;
         endforeach;
@@ -73,10 +73,10 @@ class StartFeedback extends SiteController
                     array(
                         array(
                             'table' => 'employee_master',
-                            'condition' => 'employee_allocation.employee_codes = employee_master.emp_code'
+                            'condition' => 'employee_allocation.emp_code = employee_master.emp_code'
                         )
                     ))
-                ->getRecord("employee_allocation", array('class_id' => $class_id),'employee_allocation.employee_codes,employee_master.emp_name')->result_array();
+                ->getRecord("employee_allocation", array('class_id' => $class_id),'employee_allocation.emp_code,employee_master.emp_name')->result_array();
             /*$employee_code_list = array_map(function ($data){return $data['employee_codes'];},$emp_list);
             $employee_name_list = array_map(function ($data){return $data['emp_name'];},$emp_list);*/
 
@@ -110,8 +110,8 @@ class StartFeedback extends SiteController
                             'entry_id'=>$entry_id,
                             'class_id'=>$class_id,
                             'section_id'=>$row_section['section_id'],
-                            'point_id'=>$row_employee['criteria_code'],
-                            'points'=>$row_employee['emp_criteria_points'],
+                            'criteria_id'=>$row_employee['criteria_code'],
+                            'criteria_points'=>$row_employee['emp_criteria_points'],
                             'emp_code'=>$row_employee['emp_code']
                         );
                         $this->CommonModel->save('analysis_master',$empdata);
@@ -123,8 +123,8 @@ class StartFeedback extends SiteController
                         'entry_id'=>$entry_id,
                         'class_id'=>$class_id,
                         'section_id'=>$row_section['section_id'],
-                        'point_id'=>$index,
-                        'points'=>$general,
+                        'criteria_id'=>$index,
+                        'criteria_points'=>$general,
                         'emp_code'=>0
                     );
                     $this->CommonModel->save('analysis_master',$general_section_data);

@@ -39,7 +39,7 @@
                 <h3><?= $row_section['section_name']?></h3>
 
                 <!-- Employee section -->
-                <?php if($row_section['id'] == 1):?>
+                <?php if($row_section['section_id'] == 1):?>
                 <section>
                     <div class="row">
                         <div class="form-group col-md-12">
