@@ -22,6 +22,8 @@
                 <li class="nav-devider"></li>
                 <li class="nav-label">Analysis</li>
                 <li> <a href="<?= base_url('backoffice/Analysis')?>" aria-expanded="false"><i class="fa fa-user"></i>Analysis</a></li>
+                <li> <a href="<?= base_url('backoffice/EntryRecord')?>" aria-expanded="false"><i class="fa fa-user"></i>Entry Record</a></li>
+                <li> <a href="<?= base_url('backoffice/AnalysisMaster')?>" aria-expanded="false"><i class="fa fa-user"></i>Analysis Master</a></li>
 
 
                 <!--site Settings -->

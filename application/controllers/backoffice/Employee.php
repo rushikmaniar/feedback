@@ -15,6 +15,12 @@ class Employee extends AdminController
         //$offset = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
         //$pageLink = $this->CommonModel->createPagination(site_url("backoffice/Employee/index"),"emloyee_master",'',NULL,array('emp_code'=>'%'.($search) ? $search : ''.'%','emp_name'=>'%'.($search) ? $search : ''.'%','emp_phone'=>'%'.($search) ? $search : ''.'%','emp_email'=>'%'.($search) ? $search : ''.'%'),$this->per_page,$offset);
         //$employee_data = $this->CommonModel->dblike(array('emp_code'=>'%'.($search) ? $search : ''.'%','emp_name'=>'%'.($search) ? $search : ''.'%','emp_phone'=>'%'.($search) ? $search : ''.'%','emp_email'=>'%'.($search) ? $search : ''.'%'))->dbOrderBy(array('id'=>'DESC'))->getRecord("emloyee_master",'','employee_master.*,SELE',$this->per_page,$offset)->result_array();
+        $val = '
+        employee_master.*,
+        department_master.dept_id,
+        department_master.dept_name,
+        (SELECT COUNT(`emp_code`) FROM `analysis_master` WHERE employee_master.emp_code = analysis_master.emp_code) as analysis_emp_code_entries
+        ';
         $OrWhere = array();
         $employee_data = $this->CommonModel
             ->dbOrderBy(array('emp_code'=>'DESC'))
@@ -25,7 +31,8 @@ class Employee extends AdminController
                     'condition' => 'employee_master.dept_id = department_master.dept_id'
                 )
             )
-        )->getRecord('employee_master', $OrWhere, 'employee_master.*,department_master.dept_id,department_master.dept_name')->result_array();
+        )->getRecord('employee_master', $OrWhere, $val)->result_array();
+
 
         $this->pageTitle = 'Employee Management';
         $this->pageData['employee_data'] = $employee_data;

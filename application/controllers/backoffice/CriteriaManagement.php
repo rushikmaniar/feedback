@@ -10,6 +10,8 @@ class CriteriaManagement extends AdminController
     
     public function index()
     {
+        //check entry in anysis table
+        $criteria_analysis_entry = $this->CommonModel->getRecord('analysis_master')->num_rows();
        $OrWhere = array();
         $val = '
         criteria_master.*,
@@ -41,6 +43,7 @@ class CriteriaManagement extends AdminController
 
         $this->pageTitle = 'Criteria Management';
         $this->pageData['criteria_data'] = $criteria_data;
+        $this->pageData['criteria_analysis_entry'] = $criteria_analysis_entry;
         $this->render("Criteria/index.php");
     }
     

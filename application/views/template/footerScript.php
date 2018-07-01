@@ -28,7 +28,11 @@
         $('.blink').modernBlink({
             duration: 2000
         });
-
+        <?php if($this->session->flashdata('error')) : ?>
+        toastr["error"]('<?= $this->session->flashdata('error') ?>', "Error");
+        <?php elseif($this->session->flashdata('success')) : ?>
+        toastr["success"]('<?= $this->session->flashdata('success') ?>', "Success");
+        <?php endif; ?>
     });
     function ajaxModel(url, title, width) {
         if (typeof(width) === 'undefined') {

@@ -11,7 +11,12 @@ class ClassManagement extends AdminController
     public function index()
     {
        $OrWhere = array();
-
+        $val = '
+        class_master.*,
+        department_master.dept_id,
+        department_master.dept_name,
+        (SELECT COUNT(`entry_id`) FROM `entry_record` WHERE entry_record.class_id = class_master.class_id) as entries
+        ';
         $class_data = $this->CommonModel
             ->dbOrderBy(array('class_master.class_id'=>'DESC'))
             ->dbjoin(
@@ -21,7 +26,7 @@ class ClassManagement extends AdminController
                         'condition' => 'class_master.dept_id = department_master.dept_id'
                     )
                 )
-            )->getRecord('class_master', $OrWhere, 'class_master.*,department_master.dept_id,department_master.dept_name')->result_array();
+            )->getRecord('class_master', $OrWhere, $val)->result_array();
 
         $this->pageTitle = 'Class Management';
         $this->pageData['class_data'] = $class_data;

@@ -35,6 +35,7 @@ class StartFeedback extends SiteController
             ->getRecord('section_master','',$val)->result_array();
 
         //section wise criteria list
+
         $section_list = array();
         foreach ($section_data as $row):
 
@@ -51,9 +52,9 @@ class StartFeedback extends SiteController
         foreach ($section_list as $row):
             foreach ($row['criteria_list'] as $row_criteria):
                 if($row_criteria['type_data'] == 1) {
-                    $option_list = $this->CommonModel->getRecord('option_master', array('option_master.criteria_id' => $row_criteria['criteria_id']), 'id as option_id,option_text,option_value')->result_array();
+                    $option_list = $this->CommonModel->getRecord('option_master', array('option_master.criteria_id' => $row_criteria['criteria_id']), 'option_id,option_text,option_value')->result_array();
                     $row_criteria['option_list'] = $option_list;
-                    $section_list[$row['criteria_id']]['criteria_list'][$row_criteria['criteria_id']]['option_list'] = $option_list;
+                    $section_list[$row['section_id']]['criteria_list'][$row_criteria['criteria_id']]['option_list'] = $option_list;
                 }
             endforeach;
         endforeach;
@@ -125,7 +126,7 @@ class StartFeedback extends SiteController
                         'section_id'=>$row_section['section_id'],
                         'criteria_id'=>$index,
                         'criteria_points'=>$general,
-                        'emp_code'=>0
+                        'emp_code'=>null
                     );
                     $this->CommonModel->save('analysis_master',$general_section_data);
                 endforeach;

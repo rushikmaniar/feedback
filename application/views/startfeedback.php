@@ -49,12 +49,12 @@
                                     <table id="frm_feedback_emp_table" class="table table-bordered table-hover table-responsive">
                                         <thead>
 
-                                        <input type="hidden" id="emp_section_id" name="section[<?= $row_section['id']?>][section_id]" value="<?= $row_section['id'];?>">
-                                        <input type="hidden" name="section[<?= $row_section['id']?>][section_name]" value="<?= $row_section['section_name'];?>">
+                                        <input type="hidden" id="emp_section_id" name="section[<?= $row_section['section_id']?>][section_id]" value="<?= $row_section['section_id'];?>">
+                                        <input type="hidden" name="section[<?= $row_section['section_id']?>][section_name]" value="<?= $row_section['section_name'];?>">
 
                                         <td>Teachers Name</td>
                                         <?php foreach ($row_section['criteria_list'] as $index=>$value):?>
-                                            <td data-criteriaid="<?= $value['point_id']; ?>" class="employee_criteria" data-type_data="<?= $value['type_data']?>"><?= $value['point_name']; ?></td>
+                                            <td data-criteriaid="<?= $value['criteria_id']; ?>" class="employee_criteria" data-type_data="<?= $value['type_data']?>"><?= $value['criteria_name']; ?></td>
 
                                         <?php endforeach;?>
                                         </thead>
@@ -65,7 +65,7 @@
                                     <!-- Remarks -->
                                     <div><label>Remarks</label></div>
                                     <div class="form-group col-md-12">
-                                        <textarea name="section[<?= $row_section['id']?>][remarks]" class="form-control"></textarea>
+                                        <textarea name="section[<?= $row_section['section_id']?>][remarks]" class="form-control"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -82,24 +82,24 @@
                                         <table id="frm_feedback_<?= $row_section['section_name']?>" class="table table-bordered table-hover">
                                             <thead>
 
-                                            <input type="hidden" name="section[<?= $row_section['id']?>][section_id]" value="<?= $row_section['id'];?>">
-                                            <input type="hidden" name="section[<?= $row_section['id']?>][section_name]" value="<?= $row_section['section_name'];?>">
+                                            <input type="hidden" name="section[<?= $row_section['section_id']?>][section_id]" value="<?= $row_section['section_id'];?>">
+                                            <input type="hidden" name="section[<?= $row_section['section_id']?>][section_name]" value="<?= $row_section['section_name'];?>">
 
                                             <?php foreach ($row_section['criteria_list'] as $index=>$value):?>
-                                                <td data-criteriaid="<?= $value['point_id']; ?>" class="<?= $row_section['section_name']?>_criteria"><?= $value['point_name']; ?></td>
+                                                <td data-criteriaid="<?= $value['criteria_id']; ?>" class="<?= $row_section['section_name']?>_criteria"><?= $value['criteria_name']; ?></td>
                                             <?php endforeach;?>
                                             </thead>
                                             <tbody>
                                             <?php foreach ($row_section['criteria_list'] as $index=>$value):?>
                                                 <td>
                                                     <?php if($value['type_data'] == 1):?>
-                                                        <select name="section[<?= $row_section['id']?>][points][<?= $value['point_id']?>]" class="select2 form-control">
+                                                        <select name="section[<?= $row_section['section_id']?>][points][<?= $value['criteria_id']?>]" class="select2 form-control">
                                                         <?php foreach ($value['option_list'] as $row_option): ?>
                                                             <option value="<?= $row_option['option_value']?>"><?= $row_option['option_text'];?></option>
                                                         <?php endforeach;?>
                                                         </select>
                                                     <?php else:?>
-                                                        <input type="text" name="section[<?= $row_section['id']?>][points][<?= $value['point_id']?>]" class="points form-control" pattern="^[0-5]$" title="Enter 0-5">
+                                                        <input type="text" name="section[<?= $row_section['section_id']?>][points][<?= $value['criteria_id']?>]" class="points form-control" pattern="^[0-5]$" title="Enter 0-5">
                                                     <?php endif;?>
                                                 </td>
                                             <?php endforeach;?>
@@ -108,7 +108,7 @@
                                         <!-- Remarks -->
                                         <div><label>Remarks</label></div>
                                         <div class="form-group col-md-12">
-                                            <textarea name="section[<?= $row_section['id']?>][remarks]" class="form-control"></textarea>
+                                            <textarea name="section[<?= $row_section['section_id']?>][remarks]" class="form-control"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -176,13 +176,13 @@ $(document).ready(function () {
                         html +'<input type="hidden" name="class_id" value="'+class_id+'">';
                         $.each(response.data,function (key,value) {
                            html+= '<tr>';
-                               html += '<td data-emp_code="'+value.employee_codes+'">'+value.emp_name+'</td>';
+                               html += '<td data-emp_code="'+value.emp_code+'">'+value.emp_name+'</td>';
                                 $.each(employee_criteria_list,function (index,criteria_value) {
 
                                     html += '<td>';
-                                    html+= '<input type="hidden" name="section['+emp_section_id+'][points]['+value.employee_codes+']['+criteria_value+'][emp_code]" value="'+value.employee_codes+'">';
-                                    html+= '<input type="hidden" name="section['+emp_section_id+'][points]['+value.employee_codes+']['+criteria_value+'][criteria_code]" value="'+criteria_value+'">';
-                                    html+= '<input type="text" pattern="^[0-5]$" title="Enter 0-5" required="required" class="points form-control" name="section['+emp_section_id+'][points]['+value.employee_codes+']['+criteria_value+'][emp_criteria_points]">';
+                                    html+= '<input type="hidden" name="section['+emp_section_id+'][points]['+value.emp_code+']['+criteria_value+'][emp_code]" value="'+value.emp_code+'">';
+                                    html+= '<input type="hidden" name="section['+emp_section_id+'][points]['+value.emp_code+']['+criteria_value+'][criteria_code]" value="'+criteria_value+'">';
+                                    html+= '<input type="text" pattern="^[0-5]$" title="Enter 0-5" required="required" class="points form-control" name="section['+emp_section_id+'][points]['+value.emp_code+']['+criteria_value+'][emp_criteria_points]">';
                                     html += '</td>';
                                 });
                                 html += '</tr>';

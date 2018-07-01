@@ -28,10 +28,22 @@
                                 <td><?=$row['dept_name']?></td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Employee" data-container="body" title="Edit User" onclick="ajaxModel('backoffice/Employee/viewEditEmployeeModal/<?=$row['emp_code']?>','Edit Employee',800)">
+                                        <button type="button" class="btn btn-success btn-sm"
+                                                data-tooltip=" <?= ($row['analysis_emp_code_entries'] == 0)?'Edit Employee':'Delete Entries in Entry Table To Edit Employee'?>"
+                                                data-container="body"
+                                                title="Edit User"
+                                                onclick="ajaxModel('backoffice/Employee/viewEditEmployeeModal/<?=$row['emp_code']?>','Edit Employee',800)"
+                                                <?= ($row['analysis_emp_code_entries'] != 0)?'disabled="disabled"':''?>
+                                        >
                                             <i class="fa fa-pencil"></i>
                                         </button>
-                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Employee" data-container="body" title="Delete User" onclick="deleteUser(<?=$row['emp_code']?>)">
+                                        <button type="button"
+                                                class="btn btn-danger btn-sm"
+                                                data-tooltip=" <?= ($row['analysis_emp_code_entries'] != 0)?'Delete Employee':'Delete Entries in Entry Table To Edit Employee'?>"
+                                                data-container="body" title="Delete User"
+                                                onclick="deleteUser(<?=$row['emp_code']?>)"
+                                                <?= ($row['analysis_emp_code_entries'] != 0)?'disabled="disabled"':''?>
+                                        >
                                             <i class="fa fa-remove"></i>
                                         </button>
                                     </div>

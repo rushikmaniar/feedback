@@ -25,10 +25,21 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Allocation" data-container="body" title="Edit Allocation" onclick="ajaxModel('backoffice/EmployeeAllocation/viewEditAllocationModal/<?=$row['class_id']?>/<?= $row['class_name']?>','Edit Allocation')">
+                                        <button type="button"
+                                                class="btn btn-success btn-sm"
+                                                data-tooltip="<?= ($row['entries'] == 0)?'Edit Allocation':'Delete Entries in Entry Table To Edit Allocation'?>"
+                                                data-container="body" title="Edit Allocation"
+                                                <?= ($row['entries'] != 0)?'disabled="disabled"':''?>
+                                                onclick="ajaxModel('backoffice/EmployeeAllocation/viewEditAllocationModal/<?=$row['class_id']?>/<?= $row['class_name']?>','Edit Allocation')">
                                             <i class="fa fa-pencil"></i>
                                         </button>
-                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Allocation" data-container="body" title="Delete Allocation" onclick="deleteallocation(<?=$row['class_id']?>)">
+                                        <button type="button"
+                                                class="btn btn-danger btn-sm"
+                                                data-tooltip="<?= ($row['entries'] == 0)?'Edit Allocation':'Delete Entries in Entry Table To Edit Allocation'?>"
+                                                data-container="body"
+                                                title="Delete Allocation"
+                                                <?= ($row['entries'] != 0)?' disabled="disabled" ':''?>
+                                                onclick="deleteallocation(<?=$row['class_id']?>)">
                                             <i class="fa fa-remove"></i>
                                         </button>
                                     </div>

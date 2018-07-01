@@ -3,7 +3,17 @@
         <div class="col-sm-12 col-md-12">
                 <h1 class="blink text-danger" align="center">Don't Edit Criteria Unless You Know  What You Are Doing .</h1>
                 <h1 class="blink text-danger" align="center">Analysis tables , Front site Feedback form Relies On Criterias</h1>
-                        <button type="button" class="btn btn-success btn-top" title="Add Criteria" id="btn_add_user" onclick="ajaxModel('backoffice/CriteriaManagement/viewAddCriteriaModal','Add New Criteria','modal-md')" data-toggle="modal" data-target="#feedback_admin_modal">
+                <?php if($criteria_analysis_entry != 0):?>
+                <h1 class="blink text-danger" align="center">There are Some Entries in Analysis tables . First Go And Delete It</h1>
+                <?php endif;?>
+                        <button type="button"
+                                class="btn btn-success btn-top"
+                                title="Add Criteria"
+                                id="btn_add_user"
+                                onclick="ajaxModel('backoffice/CriteriaManagement/viewAddCriteriaModal','Add New Criteria','modal-md')"
+                                <?= ($criteria_analysis_entry != 0)?'disabled="disabled"':''?>d
+                                data-toggle="modal"
+                                data-target="#feedback_admin_modal">
                             <i class="fa fa-plus"></i> Add Criteria
                         </button>
         </div>
@@ -40,10 +50,22 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Criteria" data-container="body" title="Edit Criteria" onclick="ajaxModel('backoffice/CriteriaManagement/viewEditCriteriaModal/<?=$row['criteria_id']?>','Edit Criteria',800)">
+                                        <button type="button"
+                                                <?= ($criteria_analysis_entry != 0)?'disabled="disabled"':''?>
+                                                class="btn btn-success btn-sm"
+                                                data-tooltip="Edit Criteria"
+                                                data-container="body"
+                                                title="Edit Criteria"
+                                                onclick="ajaxModel('backoffice/CriteriaManagement/viewEditCriteriaModal/<?=$row['criteria_id']?>','Edit Criteria',800)">
                                             <i class="fa fa-pencil"></i>
                                         </button>
-                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Criteria" data-container="body" title="Delete Criteria" onclick="deletecriteria(<?=$row['criteria_id']?>)">
+                                        <button type="button"
+                                                 <?= ($criteria_analysis_entry != 0)?'disabled="disabled"':''?>
+                                                class="btn btn-danger btn-sm"
+                                                data-tooltip="Delete Criteria"
+                                                data-container="body"
+                                                title="Delete Criteria"
+                                                onclick="deletecriteria(<?=$row['criteria_id']?>)">
                                             <i class="fa fa-remove"></i>
                                         </button>
                                     </div>

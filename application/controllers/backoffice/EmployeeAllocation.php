@@ -15,6 +15,8 @@ class EmployeeAllocation extends AdminController
        class_master.class_id,
        class_master.class_name,
        
+       (SELECT COUNT(`entry_id`) FROM `entry_record` WHERE entry_record.class_id = class_master.class_id) as entries,
+       
        department_master.dept_id,
        department_master.dept_name
        ';

@@ -10,6 +10,8 @@ class SectionManagement extends AdminController
     
     public function index()
     {
+        //check entry in anysis table
+        $section_analysis_entry = $this->CommonModel->getRecord('analysis_master')->num_rows();
        $OrWhere = array();
         $section_data = $this->CommonModel
             ->dbOrderBy(array('section_id'=>'DESC'))
@@ -17,6 +19,7 @@ class SectionManagement extends AdminController
 
         $this->pageTitle = 'Section Management';
         $this->pageData['section_master_data'] = $section_data;
+        $this->pageData['section_analysis_entry'] = $section_analysis_entry;
         $this->render("Section/index.php");
     }
     

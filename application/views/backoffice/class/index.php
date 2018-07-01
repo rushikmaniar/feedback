@@ -27,12 +27,15 @@
                     <td><?= ($row['dept_name']) != '' ? $row['dept_name'] : 'No Department'; ?></td>
                     <td class="text-center">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Employee"
+                            <button type="button" class="btn btn-success btn-sm" data-tooltip="<?= ($row['entries'] == 0)?'Edit class':'Delete Entries in Entry Table To Edit Class'?>"
                                     data-container="body" title="Edit User"
+                                    <?= ($row['entries'] != 0)?'disabled="disabled"':''?>
                                     onclick="ajaxModel('backoffice/ClassManagement/viewEditClassModal/<?= $row['class_id'] ?>','Edit Class',800)">
                                 <i class="fa fa-pencil"></i>
                             </button>
-                            <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Employee"
+                            <button type="button" class="btn btn-danger btn-sm"
+                                    data-tooltip="<?= ($row['entries'] == 0)?'Edit class':'Delete Entries in Entry Table To Delete Class'?>"
+                                    <?= ($row['entries'] != 0)?' disabled="disabled" ':''?>
                                     data-container="body" title="Delete Class" onclick="deleteClass(<?= $row['class_id'] ?>)">
                                 <i class="fa fa-remove"></i>
                             </button>
