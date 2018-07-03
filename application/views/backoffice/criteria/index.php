@@ -32,7 +32,7 @@
                         <tbody>
 
                         <?php foreach ($criteria_data as $row): ?>
-                            <tr>
+                            <tr id="row_<?= $row['criteria_id']?>">
                                 <!-- Criteria id -->
 
                                 <td><?=$row['criteria_id']?></td>
@@ -111,6 +111,9 @@
             success: function (result) {
                 if (result.code == 1 && result.code != '') {
                     toastr["success"](result.message, "Success");
+                    setTimeout(function () {
+                        $('#row_'+criteria_id).remove();
+                    },1000);
                 }
                 else {
                     toastr["error"](result.message, "Error");
@@ -120,9 +123,7 @@
                 console.log(result);
             }
         });
-        setTimeout(function () {
-            location.reload();
-        },1000);
+
 
 
     }).catch(swal.noop);

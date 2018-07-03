@@ -126,7 +126,7 @@ class ClassManagement extends AdminController
             {
                 $res_output['code'] = 1;
                 $res_output['status'] = "success";
-                $res_output['message'] = "Department deleted successfully";
+                $res_output['message'] = "Class deleted successfully";
                 echo json_encode($res_output);
                 exit();
             }
@@ -134,7 +134,7 @@ class ClassManagement extends AdminController
             {
                 $res_output['code'] = 0;
                 $res_output['status'] = "error";
-                $res_output['message'] = "Department not delete";
+                $res_output['message'] = "Class not deleted";
                 echo json_encode($res_output);
                 exit();
             }

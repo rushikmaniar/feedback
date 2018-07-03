@@ -26,7 +26,7 @@
                         </thead>
                         <tbody>
                         <?php foreach ($section_master_data as $row): ?>
-                            <tr>
+                            <tr id="row_<?= $row['section_id']?>">
                                 <!-- Section id -->
 
                                 <td><?=$row['section_id']?></td>
@@ -94,6 +94,9 @@
             success: function (result) {
                 if (result.code == 1 && result.code != '') {
                     toastr["success"](result.message, "Success");
+                    setTimeout(function () {
+                        $('#row_'+section_master_id).remove();
+                    },1000);
                 }
                 else {
                     toastr["error"](result.message, "Error");
@@ -103,9 +106,7 @@
                 console.log(result);
             }
         });
-        setTimeout(function () {
-            location.reload();
-        },1000);
+
 
 
     }).catch(swal.noop);

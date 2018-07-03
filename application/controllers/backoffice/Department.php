@@ -11,9 +11,24 @@ class Department extends AdminController
     public function index()
     {
        $OrWhere = array();
+       $val = '
+       department_master.*,
+       (SELECT COUNT(entry_id) FROM `entry_record` 
+       JOIN class_master ON entry_record.class_id = class_master.class_id 
+       WHERE entry_record.class_id = class_master.class_id AND department_master.dept_id = class_master.dept_id) as entries 
+       ';
         $department_data = $this->CommonModel
+            ->dbGroupBy('department_master.dept_id')
+            ->dbjoin(
+                array(
+                    array(
+                        'table' => 'class_master',
+                        'condition' => 'department_master.dept_id = class_master.dept_id'
+                    )
+                )
+            )
             ->dbOrderBy(array('dept_id'=>'DESC'))
-            ->getRecord('department_master', $OrWhere, 'department_master.*')->result_array();
+            ->getRecord('department_master', $OrWhere, $val)->result_array();
 
         $this->pageTitle = 'Department Management';
         $this->pageData['department_data'] = $department_data;

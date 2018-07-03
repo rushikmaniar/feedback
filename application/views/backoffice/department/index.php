@@ -1,7 +1,12 @@
 <div class="card">
     <div class="card-body">
         <div class="col-sm-12 col-md-12">
-                        <button type="button" class="btn btn-success btn-top" id="btn_add_user" onclick="ajaxModel('backoffice/Department/viewAddDepartmentModal','Add New Department','modal-md')" data-toggle="modal" data-target="#feedback_admin_modal">
+                        <button type="button"
+                                class="btn btn-success btn-top"
+                                id="btn_add_user"
+                                onclick="ajaxModel('backoffice/Department/viewAddDepartmentModal','Add New Department','modal-md')"
+                                data-toggle="modal"
+                                data-target="#feedback_admin_modal">
                             <i class="fa fa-plus"></i> Add Department
                         </button>
         </div>
@@ -15,17 +20,30 @@
                         </thead>
                         <tbody>
                         <?php foreach ($department_data as $row): ?>
-                            <tr>
+                            <?php if($row['dept_id'] == 0):continue;endif;?>
+                            <tr id="row_<?=$row['dept_id']?>">
                                 <!-- Department id -->
 
                                 <td><?=$row['dept_id']?></td>
                                 <td><?=$row['dept_name']?></td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-success btn-sm" data-tooltip="Edit Department" data-container="body" title="Edit Department" <?=($row['dept_id'] == 0)?'disabled':''?> onclick="ajaxModel('backoffice/Department/viewEditDepartmentModal/<?=$row['dept_id']?>','Edit Department',800)">
+                                        <button type="button"
+                                                <?= ($row['entries'] != 0)?'disabled="disabled"':''?>
+                                                class="btn btn-success btn-sm"
+                                                data-tooltip="<?=($row['entries'] == 0)?'Edit Department':'Delete Record From Entry Record'?>"
+                                                data-container="body" title="Edit Department"
+
+                                                onclick="ajaxModel('backoffice/Department/viewEditDepartmentModal/<?=$row['dept_id']?>','Edit Department',800)">
                                             <i class="fa fa-pencil"></i>
                                         </button>
-                                        <button type="button" class="btn btn-danger btn-sm" data-tooltip="Delete Department" data-container="body" title="Delete Department" <?=($row['dept_id'] == 0)?'disabled':''?> onclick="deletedepartment(<?=$row['dept_id']?>)">
+                                        <button type="button"
+                                                <?= ($row['entries'] != 0 || $row['dept_id'] == 0)?'disabled="disabled"':''?>
+                                                class="btn btn-danger btn-sm"
+                                                data-tooltip="<?=($row['entries'] == 0)?'Delete Department':'Delete Record From Entry Record'?>"
+                                                data-container="body"
+                                                title="Delete Department"
+                                                onclick="deletedepartment(<?=$row['dept_id']?>)">
                                             <i class="fa fa-remove"></i>
                                         </button>
                                     </div>
@@ -71,6 +89,9 @@
             success: function (result) {
                 if (result.code == 1 && result.code != '') {
                     toastr["success"](result.message, "Success");
+                    setTimeout(function () {
+                        $('#row_'+dept_id).remove();
+                    },1000);
                 }
                 else {
                     toastr["error"](result.message, "Error");
@@ -80,14 +101,12 @@
                 console.log(result);
             }
         });
-        setTimeout(function () {
-            location.reload();
-        },1000);
+
 
 
     }).catch(swal.noop);
     }
 	/*************************************
-				Delete User End
+				Delete Department End
 	*************************************/
 </script>
