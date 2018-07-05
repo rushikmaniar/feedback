@@ -53,24 +53,67 @@
             width = 'modal-lg';
         }
         if (url) {
-            $.ajax({
-                url: SITE_URL + url,
-                dataType: 'html',
-                success: function (responce) {
-                    $('#feedback_admin_modal .modal-title').html(title);
-                    $('#feedback_admin_modal .modal-body').html(responce);
-                    $('#feedback_admin_modal .modal-dialog').addClass(width);
+            console.log(checklogin());
+            if(checklogin() === 1) {
+                $.ajax({
+                    url: SITE_URL + url,
+                    dataType: 'html',
+                    success: function (responce) {
+                        $('#feedback_admin_modal .modal-title').html(title);
+                        $('#feedback_admin_modal .modal-body').html(responce);
+                        $('#feedback_admin_modal .modal-dialog').addClass(width);
 
-                    if (!$('#feedback_admin_modal').hasClass('show')) {
-                        $('#feedback_admin_modal').modal('show');
+                        if (!$('#feedback_admin_modal').hasClass('show')) {
+                            $('#feedback_admin_modal').modal('show');
+                        }
+
                     }
-
-                }
-            });
+                });
+            }else{
+                console.log('error');
+            }
         }
     }
+
+    function checklogin() {
+
+        var flag = 0;
+        $.ajax({
+            url: base_url + 'backoffice/Login/checkUser',
+            dataType: "json",
+            success: function (responce) {
+                console.log(responce.code);
+                if (responce.code == 0) {
+
+                    swal({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: responce.message,
+                        footer: '<a href>Why do I have this issue?</a>'
+                    });
+                    flag = 0;
+                } else if (responce.code === 2) {
+                    swal({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: responce.message,
+                        footer: '<a href>Why do I have this issue?</a>'
+                    });
+                    flag = 2;
+                }else{
+                    return 1;
+                }
+            },
+            error: function (response) {
+                console.log(response);
+                flag = 0;
+            }
+        });
+        return flag;
+    }
+
     jQuery(document).ready(function ($) {
-        
+
         //blink text
         $('.blink').modernBlink({
             duration: 3000

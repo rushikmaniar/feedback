@@ -1,3 +1,7 @@
+
+
+
+
 <?php
 class Profile extends AdminController{
     public function __construct()
@@ -11,6 +15,13 @@ class Profile extends AdminController{
         $user_data = $this->CommonModel->getRecord('user',array('user_id'=>$this->session->userdata('feedback-admin')['user_id']));
 
         $this->pageData['user_details'] = $user_data;
+        $this->render('Profile/index.php');
+    }
+    public function editProfile(){
+        echo '<pre>';
+            print_r($this->input->post());
+        echo '</pre>';
+
     }
 }
 ?>

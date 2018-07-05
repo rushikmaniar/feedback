@@ -9,7 +9,7 @@ class Login extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('UserModel');
+        $this->load->model('CommonModel');
     }
     /**
      * Login page
@@ -37,7 +37,30 @@ class Login extends CI_Controller {
         $this->load->view('backoffice/login/index','refresh');
     }
 
+    /* check user at ajax model*/
+    public function checkUser()
+    {
+        $reponse_array = array();
+        $session_user = $this->session->userdata('feedback-admin');
+        if($session_user){
+            $user_data = $this->CommonModel->getRecord('user',array('user_id'=>$session_user['user_id'],'user_email'=>$session_user['user_email']));
 
+            if($user_data->num_rows() == 1){
+                $reponse_array['code'] = 1;
+                $reponse_array['message'] = '1 User Exists in Database';
+            }
+            else {
+                $reponse_array['code'] = 0;
+                $reponse_array['message'] = 'No Unique User';
+            }
+
+
+        }else{
+            $reponse_array['code'] = 2;
+            $reponse_array['message'] = 'Session Expired.Reload Page.';
+        }
+        echo json_encode($reponse_array);exit;
+    }
     /**
      * Logout functionality
      *
