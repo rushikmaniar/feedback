@@ -5,8 +5,8 @@
                                 class="btn btn-success btn-top"
                                 id="btn_add_user"
                                 onclick="ajaxModel('backoffice/Department/viewAddDepartmentModal','Add New Department','modal-md')"
-                                data-toggle="modal"
-                                data-target="#feedback_admin_modal">
+                            <?= ($analysis_entry != 0)?'disabled="disabled"':''?>
+                        >
                             <i class="fa fa-plus"></i> Add Department
                         </button>
         </div>

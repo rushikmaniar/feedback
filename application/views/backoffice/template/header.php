@@ -189,7 +189,7 @@
                     <div class="dropdown-menu dropdown-menu-right animated zoomIn">
                         <ul class="dropdown-user">
                             <li><a href="<?= base_url('backoffice/Profile')?>"><i class="ti-user"></i> Profile</a></li>
-                            <li><a href="javascript:ajaxmodel('backoffice/change_password')"><i class="ti-settings"></i> Change Password</a></li>
+                            <li><a href="javascript:void(0);" onclick="ajaxModel('backoffice/Profile/viewChangePasswordModel','Change Password','modal-md')"><i class="ti-settings"></i> Change Password</a></li>
                             <li><a href="<?= base_url('backoffice/Login/logout')?>"><i class="fa fa-power-off"></i> Logout</a></li>
                         </ul>
                     </div>

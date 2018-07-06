@@ -58,11 +58,7 @@ class Employee extends AdminController
 
         $this->render("backoffice/Employee/view_add_employee",FALSE);
     }
-    
 
-    public function importEmployee(){
-
-    }
     
     /**
      * Add or edit Employee
@@ -70,6 +66,7 @@ class Employee extends AdminController
      */
     public function addEditEmployee()
     {
+
         if ($this->input->post('action') && $this->input->post('action') == "addEmployee")
         {
             $employee_data = array(
@@ -90,22 +87,32 @@ class Employee extends AdminController
             }
         }
         
-        if ($this->input->post('action') && $this->input->post('action') == "editEmployee")
+        if ($this->input->post('action') && $this->input->post('action') == "editEmployee" && $this->input->post('update_id'))
         {
-            $employee_data = array(
-                "emp_code" => $this->input->post('employee_frm_emp_code'),
-                "emp_name" => $this->input->post('employee_frm_emp_name'),
-                "emp_phone" => $this->input->post('employee_frm_emp_phone'),
-                "emp_email" => $this->input->post('employee_frm_emp_email'),
-                "dept_id" => $this->input->post('employee_frm_dept_id')
-            );
+            //check entry in analysis_master
+            $analysis_record = $this->CommonModel->getRecord('analysis_master',array('emp_code'=>$this->input->post('update_id')))->num_rows();
 
-            $update = $this->CommonModel->update("employee_master",$employee_data,array('emp_code'=>$this->input->post('update_id')));
-            if($update){
-                $this->session->set_flashdata("success","Employee updated successfully");
+            if($analysis_record == 0) {
+
+                $employee_data = array(
+                    "emp_code" => $this->input->post('employee_frm_emp_code'),
+                    "emp_name" => $this->input->post('employee_frm_emp_name'),
+                    "emp_phone" => $this->input->post('employee_frm_emp_phone'),
+                    "emp_email" => $this->input->post('employee_frm_emp_email'),
+                    "dept_id" => $this->input->post('employee_frm_dept_id')
+                );
+
+                $update = $this->CommonModel->update("employee_master", $employee_data, array('emp_code' => $this->input->post('update_id')));
+                if ($update) {
+                    $this->session->set_flashdata("success", "Employee updated successfully");
+                } else {
+                    $this->session->set_flashdata("error", "Problem Editing Employee.Try Later");
+                }
             }else{
-                $this->session->set_flashdata("error","Problem Editing Employee.Try Later");
+                $this->session->set_flashdata("error", "Entry Record Of this Employee Exist . First Delete That Records");
             }
+        }else{
+            $this->session->set_flashdata("error", "Problem Editing Employee.Try Later");
         }
         
         redirect("backoffice/Employee","refresh");
@@ -142,25 +149,32 @@ class Employee extends AdminController
     {
         if ($this->input->post('emp_code'))
         {
-            $result = $this->CommonModel->delete("employee_master",array('emp_code'=>$this->input->post('emp_code')));
-            if ($result)
-            {
-                if ($this->input->post('emp_pic'))
-                {
-                    unlink($this->DIR.$this->input->post('emp_pic'));
+            //check entry in analysis_master
+            $analysis_record = $this->CommonModel->getRecord('analysis_master',array('emp_code'=>$this->input->post('emp_code')))->num_rows();
+
+            if($analysis_record == 0) {
+                $result = $this->CommonModel->delete("employee_master", array('emp_code' => $this->input->post('emp_code')));
+                if ($result) {
+                    if ($this->input->post('emp_pic')) {
+                        unlink($this->DIR . $this->input->post('emp_pic'));
+                    }
+
+                    $res_output['code'] = 1;
+                    $res_output['status'] = "success";
+                    $res_output['message'] = "Employee delete successfully";
+                    echo json_encode($res_output);
+                    exit();
+                } else {
+                    $res_output['code'] = 0;
+                    $res_output['status'] = "error";
+                    $res_output['message'] = "Employee not delete";
+                    echo json_encode($res_output);
+                    exit();
                 }
-                
-                $res_output['code'] = 1;
-                $res_output['status'] = "success";
-                $res_output['message'] = "Employee delete successfully";
-                echo json_encode($res_output);
-                exit();
-            }
-            else 
-            {
+            }else{
                 $res_output['code'] = 0;
                 $res_output['status'] = "error";
-                $res_output['message'] = "Employee not delete";
+                $res_output['message'] = "EEntry Record Exist . First Delete That Records";
                 echo json_encode($res_output);
                 exit();
             }

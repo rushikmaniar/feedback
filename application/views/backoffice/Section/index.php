@@ -11,8 +11,7 @@
                                 <?= ($section_analysis_entry != 0)?'disabled="disabled"':''?>
                                 title="Add Section"
                                 onclick="ajaxModel('backoffice/SectionManagement/viewAddSectionModal','Add New Section','modal-md')"
-                                data-toggle="modal"
-                                data-target="#feedback_admin_modal">
+                                >
                             <i class="fa fa-plus"></i> Add New Section
                         </button>
         </div>

@@ -76,17 +76,28 @@ class ClassManagement extends AdminController
         
         if ($this->input->post('action') && $this->input->post('action') == "editClass")
         {
-            $class_data = array(
-                "class_id" => $this->input->post('class_frm_class_id'),
-                "class_name" => $this->input->post('class_frm_class_name'),
-                "dept_id" => $this->input->post('class_frm_dept_id')
-            );
-            
-            $update = $this->CommonModel->update("class_master",$class_data,array('class_id'=>$this->input->post('update_id')));
-            if($update){
-                $this->session->set_flashdata("success","Class updated successfully");
+            $update_id = $this->input->post('update_id');
+            if($update_id) {
+                //check entry in entry_record
+                $entry_record = $this->CommonModel->getRecord('entry_record', array('class_id' => $update_id))->num_rows();
+                if ($entry_record == 0) {
+                    $class_data = array(
+                        "class_id" => $this->input->post('class_frm_class_id'),
+                        "class_name" => $this->input->post('class_frm_class_name'),
+                        "dept_id" => $this->input->post('class_frm_dept_id')
+                    );
+
+                    $update = $this->CommonModel->update("class_master", $class_data, array('class_id' => $this->input->post('update_id')));
+                    if ($update) {
+                        $this->session->set_flashdata("success", "Class updated successfully");
+                    } else {
+                        $this->session->set_flashdata("error", "Problem Editing Class.Try Later");
+                    }
+                } else {
+                    $this->session->set_flashdata("error", "Entry Record Of this Class Exist . First Delete That Records");
+                }
             }else{
-                $this->session->set_flashdata("error","Problem Editing Class.Try Later");
+                $this->session->set_flashdata("error", "Problem Editing Class.Try Later");
             }
         }
         
@@ -121,20 +132,27 @@ class ClassManagement extends AdminController
     {
         if ($this->input->post('class_id'))
         {
-            $result = $this->CommonModel->delete("class_master",array('class_id'=>$this->input->post('class_id')));
-            if ($result)
-            {
-                $res_output['code'] = 1;
-                $res_output['status'] = "success";
-                $res_output['message'] = "Class deleted successfully";
-                echo json_encode($res_output);
-                exit();
-            }
-            else 
-            {
+            //check entry in entry_record
+            $entry_record = $this->CommonModel->getRecord('entry_record',array('class_id'=>$this->input->post('class_id')))->num_rows();
+            if($entry_record == 0) {
+                $result = $this->CommonModel->delete("class_master", array('class_id' => $this->input->post('class_id')));
+                if ($result) {
+                    $res_output['code'] = 1;
+                    $res_output['status'] = "success";
+                    $res_output['message'] = "Class deleted successfully";
+                    echo json_encode($res_output);
+                    exit();
+                } else {
+                    $res_output['code'] = 0;
+                    $res_output['status'] = "error";
+                    $res_output['message'] = "Class not deleted";
+                    echo json_encode($res_output);
+                    exit();
+                }
+            }else{
                 $res_output['code'] = 0;
                 $res_output['status'] = "error";
-                $res_output['message'] = "Class not deleted";
+                $res_output['message'] = "Entry Record Of this Class Exist . First Delete That Records";
                 echo json_encode($res_output);
                 exit();
             }

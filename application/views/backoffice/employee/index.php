@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-body">
         <div class="col-sm-12 col-md-12">
-                        <button type="button" class="btn btn-success btn-top" id="btn_add_user" onclick="ajaxModel('backoffice/Employee/viewAddEmployeeModal','Add New Employee','modal-lg')" data-toggle="modal" data-target="#feedback_admin_modal">
+                        <button type="button" class="btn btn-success btn-top" id="btn_add_user" onclick="ajaxModel('backoffice/Employee/viewAddEmployeeModal','Add New Employee','modal-lg')">
                             <i class="fa fa-plus"></i> Add Employee
                         </button>
         </div>

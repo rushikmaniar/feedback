@@ -4,8 +4,8 @@
             <div class="row col-sm-12">
 
                 <!-- User Email -->
-                <div class="col-sm-12">
-                    <div class="input-group ">
+                <div class="col-sm-12 form-group">
+                    <div class="input-group">
                         <label class="col-sm-12">User Email</label>
                             <input type="hidden" name="frm_profile_user_id" id="frm_profile_user_id" value="<?= $user_details['user_id'] ?>">
                             <input type="text" class="form-control" id="frm_profile_user_email"

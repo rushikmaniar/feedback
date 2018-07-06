@@ -12,8 +12,7 @@
                                 id="btn_add_user"
                                 onclick="ajaxModel('backoffice/CriteriaManagement/viewAddCriteriaModal','Add New Criteria','modal-md')"
                                 <?= ($criteria_analysis_entry != 0)?'disabled="disabled"':''?>d
-                                data-toggle="modal"
-                                data-target="#feedback_admin_modal">
+                                >
                             <i class="fa fa-plus"></i> Add Criteria
                         </button>
         </div>

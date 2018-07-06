@@ -39,6 +39,51 @@ class Profile extends AdminController
 
         }
     }
+
+    public function viewChangePasswordModel()
+    {
+        $session_user = $this->session->userdata('feedback-admin');
+
+        $user_id = $session_user['user_id'];
+        $this->pageData['user_id'] = $user_id;
+        $this->render("backoffice/Profile/change_password", FALSE);
+    }
+
+    public function checkPassword()
+    {
+        $session_user = $this->session->userdata('feedback-admin');
+        $old_password = $this->input->post('frm_change_password_oldpassword');
+        $result = $this->CommonModel->getRecord('user', array('user_id' => $session_user['user_id'], 'user_password' => md5($old_password)));
+
+        if ($result->num_rows() == 1) {
+            echo 'true';
+        } else {
+            echo 'false';
+        }
+    }
+
+    public function updatePassword()
+    {
+        $session_user = $this->session->userdata('feedback-admin');
+        $post_data = $this->input->post();
+
+        if ($post_data) {
+            $data = array('user_password' => md5($post_data['frm_change_password_newpassword']));
+            $where = array('user_id' => $session_user['user_id']);
+            $update = $this->CommonModel->update('user', $data, $where);
+            if ($update) {
+                $this->session->set_flashdata('success', 'Password Update successfully.');
+            } else {
+                $this->session->set_flashdata('error', 'Something went Wrong . Try Later');
+
+            }
+        } else {
+            $this->session->set_flashdata('error', 'Password Updated Successfully');
+
+        }
+
+        redirect(base_url('backoffice/Profile'));
+    }
 }
 
 ?>

@@ -70,8 +70,11 @@ class EmployeeAllocation extends AdminController
      */
     public function editAllocation()
     {
+        //check entry in entry_record
+        $entry_record = $this->CommonModel->getRecord('entry_record', array('class_id' => $this->input->post('update_id')))->num_rows();
+        if ($entry_record == 0) {
 
-            if($this->input->post('allocation_frm_emp_codes')) {
+            if ($this->input->post('allocation_frm_emp_codes')) {
                 //delete previous data
                 $delete = $this->CommonModel->delete('employee_allocation', array('class_id' => $this->input->post('update_id')));
                 $emp_codes = $this->input->post('allocation_frm_emp_codes');
@@ -86,13 +89,18 @@ class EmployeeAllocation extends AdminController
                 } else {
                     $this->session->set_flashdata("error", "Problem Editing Allocation.Try Later");
                 }
-            }else{
+            } else {
                 //delete previous data
                 $delete = $this->CommonModel->delete('employee_allocation', array('class_id' => $this->input->post('update_id')));
                 if ($delete) {
                     $this->session->set_flashdata("success", "Allocation updated successfully");
                 }
             }
+        }
+        else{
+            $this->session->set_flashdata("error", "Entry Record Of this Class Exist . First Delete That Records");
+
+        }
         redirect("backoffice/EmployeeAllocation", "refresh");
     }
 
@@ -124,17 +132,27 @@ class EmployeeAllocation extends AdminController
     public function deleteallocation()
     {
         if ($this->input->post('class_id')) {
-            $result = $this->CommonModel->delete("employee_allocation", array('class_id' => $this->input->post('class_id')));
-            if ($result) {
-                $res_output['code'] = 1;
-                $res_output['status'] = "success";
-                $res_output['message'] = "Allocation deleted successfully";
-                echo json_encode($res_output);
-                exit();
-            } else {
+            //check entry in entry_record
+            $entry_record = $this->CommonModel->getRecord('entry_record',array('class_id'=>$this->input->post('class_id')))->num_rows();
+            if($entry_record == 0) {
+                $result = $this->CommonModel->delete("employee_allocation", array('class_id' => $this->input->post('class_id')));
+                if ($result) {
+                    $res_output['code'] = 1;
+                    $res_output['status'] = "success";
+                    $res_output['message'] = "Allocation deleted successfully";
+                    echo json_encode($res_output);
+                    exit();
+                } else {
+                    $res_output['code'] = 0;
+                    $res_output['status'] = "error";
+                    $res_output['message'] = "Allocation not deleted";
+                    echo json_encode($res_output);
+                    exit();
+                }
+            }else{
                 $res_output['code'] = 0;
                 $res_output['status'] = "error";
-                $res_output['message'] = "Allocation not deleted";
+                $res_output['message'] = "Entry Record Of this Class Exist . First Delete That Records";
                 echo json_encode($res_output);
                 exit();
             }

@@ -2,8 +2,7 @@
     <div class="card-body">
         <div class="col-sm-12 col-md-12">
             <button type="button" class="btn btn-success btn-top" id="btn_add_user"
-                    onclick="ajaxModel('backoffice/ClassManagement/viewAddClassModal','Add New Class','modal-lg')"
-                    data-toggle="modal" data-target="#feedback_admin_modal">
+                    onclick="ajaxModel('backoffice/ClassManagement/viewAddClassModal','Add New Class','modal-lg')">
                 <i class="fa fa-plus"></i> Add Class
             </button>
         </div>

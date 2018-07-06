@@ -52,68 +52,58 @@
         if (typeof(width) === 'undefined') {
             width = 'modal-lg';
         }
-        if (url) {
-            console.log(checklogin());
-            /*if(checklogin() === 1) {
-                $.ajax({
-                    url: SITE_URL + url,
-                    dataType: 'html',
-                    success: function (responce) {
-                        $('#feedback_admin_modal .modal-title').html(title);
-                        $('#feedback_admin_modal .modal-body').html(responce);
-                        $('#feedback_admin_modal .modal-dialog').addClass(width);
 
-                        if (!$('#feedback_admin_modal').hasClass('show')) {
-                            $('#feedback_admin_modal').modal('show');
-                        }
-
-                    }
-                });
-            }else{
-                console.log('error');
-            }*/
-        }
-    }
-
-    function checklogin() {
-
-        var flag = 0;
+        //check user
         $.ajax({
+            async:false,
             url: base_url + 'backoffice/Login/checkUser',
             dataType: "json",
             success: function (responce) {
-                console.log(responce.code);
-                if (responce.code == 0) {
+
+                if (responce.code === 0) {
 
                     swal({
                         type: 'error',
                         title: 'Oops...',
-                        text: responce.message,
-                        footer: '<a href>Why do I have this issue?</a>'
-                    });
-                    flag = 0;
+                        text: responce.message
+                    }).then(function (result) {}).catch(swal.noop);
+
+
                 } else if (responce.code === 2) {
                     swal({
                         type: 'error',
                         title: 'Oops...',
-                        text: responce.message,
-                        footer: '<a href>Why do I have this issue?</a>'
-                    });
-                    flag = 2;
-                }else{
-                    flag = 1;
-                    console.log('flag = ' + flag);
-                }
-                return flag;
+                        text: responce.message
+                    }).then(function (result) {}).catch(swal.noop);
+
+                } else if(responce.code === 1){
+                    if (url) {
+                            $.ajax({
+                                async:false,
+                                url: SITE_URL + url,
+                                dataType: 'html',
+                                success: function (responce) {
+                                    $('#feedback_admin_modal .modal-title').html(title);
+                                    $('#feedback_admin_modal .modal-body').html(responce);
+                                    $('#feedback_admin_modal .modal-dialog').addClass(width);
+
+                                    if (!$('#feedback_admin_modal').hasClass('show')) {
+                                        $('#feedback_admin_modal').modal('show');
+                                    }
+
+                                }
+                            });
+                        } else {
+                            console.log('error');
+                        }
+                    }
             },
             error: function (response) {
-                console.log(response);
-                flag = 0;
+
             }
         });
-        console.log("outer :" + flag)
-        return flag;
-    }
+
+    }//ajaxmodel end
 
     jQuery(document).ready(function ($) {
 
@@ -126,5 +116,48 @@
         <?php elseif($this->session->flashdata('success')) : ?>
         toastr["success"]('<?= $this->session->flashdata('success') ?>', "Success");
         <?php endif; ?>
+
+
+            var checkuser = setInterval(function(){
+                //check user
+                $.ajax({
+                    async: false,
+                    url: base_url + 'backoffice/Login/checkUser',
+                    dataType: "json",
+                    success: function (responce) {
+
+                        if (responce.code === 0) {
+
+                            swal({
+                                type: 'error',
+                                title: 'Oops...',
+                                text: responce.message
+                            }).then(function (result) {
+
+                            }).catch(swal.noop);
+                            window.location = base_url + 'backoffice/login/logout';
+                            window.clearInterval(checkuser); //pause
+
+
+
+                        } else if (responce.code === 2) {
+                            swal({
+                                type: 'error',
+                                title: 'Oops...',
+                                text: responce.message
+                            }).then(function (result) {
+
+                            }).catch(swal.noop);
+                            window.location = base_url + 'backoffice/login/logout';
+                            window.clearInterval(checkuser); //pause
+                        } else if (responce.code === 1) {
+                            //continue
+                        }
+                    }, error: function (responce) {
+
+                    }
+                });
+            },3000);
+
     });
 </script>
