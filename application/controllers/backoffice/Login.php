@@ -21,7 +21,7 @@ class Login extends CI_Controller {
         if($this->input->post('LoginFormEmail'))
         {
             $whr = array("user_email"=>$this->input->post('LoginFormEmail'),"user_password"=>md5($this->input->post('LoginFormPassword')));
-            $result = $this->UserModel->getRecord("user",$whr);
+            $result = $this->CommonModel->getRecord("user",$whr);
             if ($result->num_rows() == 1)
             {
                 $user_data = $result->result_array();

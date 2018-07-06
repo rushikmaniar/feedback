@@ -54,7 +54,7 @@
         }
         if (url) {
             console.log(checklogin());
-            if(checklogin() === 1) {
+            /*if(checklogin() === 1) {
                 $.ajax({
                     url: SITE_URL + url,
                     dataType: 'html',
@@ -71,7 +71,7 @@
                 });
             }else{
                 console.log('error');
-            }
+            }*/
         }
     }
 
@@ -101,14 +101,17 @@
                     });
                     flag = 2;
                 }else{
-                    return 1;
+                    flag = 1;
+                    console.log('flag = ' + flag);
                 }
+                return flag;
             },
             error: function (response) {
                 console.log(response);
                 flag = 0;
             }
         });
+        console.log("outer :" + flag)
         return flag;
     }
 
