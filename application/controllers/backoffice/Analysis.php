@@ -29,15 +29,46 @@ class Analysis extends AdminController
         $this->render('Analysis/index.php');
     }
 
-    public function getCriteriaList()
+    public function getCriteriaEmpList()
     {
 
         $section_id = $this->input->post('section_id');
         $criteria_list = $this->CommonModel->getRecord('criteria_master',array('section_id'=>$section_id));
 
+        if($section_id == 1)
+        $employee_list = $this->CommonModel->getRecord('employee_master')->result_array();
+        else
+            $employee_list = array();
 
-        $response['data'] = $criteria_list->result_array();
+        $response['criteria_list'] = $criteria_list->result_array();
+        $response['employee_list'] = $employee_list;
         echo json_encode($response);
         exit;
     }
+    public function getEmpList()
+    {
+
+        $class_id = $this->input->post('class_id');
+
+        $val = '
+        employee_allocation.emp_code,
+        employee_master.emp_name
+        ';
+
+        $employee_list = $this->CommonModel
+
+            ->dbjoin(
+                array(
+                    array(
+                        'table' => 'employee_master',
+                        'condition' => 'employee_master.emp_code = employee_allocation.emp_code'
+                    )
+                ))
+            ->getRecord('employee_allocation',($class_id != 0)?array('class_id'=>$class_id):'class_id != 0',$val);
+
+        $response['employee_list'] = $employee_list->result_array();
+        echo json_encode($response);
+        exit;
+    }
+
 }

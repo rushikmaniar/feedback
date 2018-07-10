@@ -12,6 +12,7 @@
             <div class="col-md-3 form-group">
                 <label>Select Class</label>
                 <select name="class_select" id="class_select" class="form-control select2">
+                    <option value="">Select class</option>
                     <option value="0">All class</option>
                     <?php foreach ($class_list as $row_class): ?>
                         <option value="<?= $row_class['class_id']; ?>"><?= $row_class['class_name']?></option>
@@ -23,6 +24,7 @@
             <div class="col-md-3 form-group">
                 <label>Select Section</label>
                 <select name="section_select" id="section_select" class="form-control select2">
+                    <option value="">Select Section</option>
                     <?php foreach ($section_list as $row_section): ?>
                         <option value="<?= $row_section['section_id']; ?>"><?= $row_section['section_name']?></option>
                     <?php endforeach; ?>
@@ -73,26 +75,69 @@
         //on section change
         $('#section_select').on('change',function () {
             var sectionid = $(this).val();
-
             //get criteria list
             $.ajax({
-               url:base_url + 'backoffice/Analysis/getCriteriaList',
+               url:base_url + 'backoffice/Analysis/getCriteriaEmpList',
                 type:'post',
                 data:{'section_id':sectionid},
                 success:function (response) {
                    response = JSON.parse(response);
                    //$('#criteria_select').html('');
-                   var option = '';
-                   $.each(response.data,function (index,value) {
+
+                    //set criteria list
+                    var option = '';
+                    //option += '<option value="">Select Criteria</option>';
+                   $.each(response.criteria_list,function (index,value) {
                        option += '<option value="'+value.section_id+'">'+value.criteria_name+'</option>';
                     });
                    $('#criteria_select').html(option);
+
+                    //set employee list
+                    var option = '';
+                    //option += '<option value="">Select Employee</option>';
+                    $.each(response.employee_list,function (index,value) {
+                        option += '<option value="'+value.emp_code+'">'+value.emp_name+'</option>';
+                    });
+                    $('#employee_select').html(option);
                 },
                 error:function (response) {
                     console.log(response);
                 }
             });
         });
+
+
+        //on class change
+        $('#class_select').on('change',function () {
+            var classid = $(this).val();
+            var section_id = $('#section_select').val();
+
+            if(section_id == 1) {
+                //get criteria list
+                $.ajax({
+                    url: base_url + 'backoffice/Analysis/getEmpList',
+                    type: 'post',
+                    data: {'class_id': classid},
+                    success: function (response) {
+                        response = JSON.parse(response);
+
+
+                        //set employee list
+                        var option = '';
+                        option += '<option value="">Select Employee</option>';
+                        $.each(response.employee_list, function (index, value) {
+                            option += '<option value="' + value.emp_code + '">' + value.emp_name + '</option>';
+                        });
+                        $('#employee_select').html(option);
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    }
+                });
+            }
+        });
+
+
 
         //Section select2
         $('#class_select').select2({
