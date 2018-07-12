@@ -23,7 +23,6 @@ class Analysis extends AdminController
         $class_list = $this->CommonModel->getRecord('class_master')->result_array();
 
 
-
         $this->pageData['section_list'] = $section_list;
         $this->pageData['class_list'] = $class_list;
         $this->render('Analysis/index.php');
@@ -47,7 +46,6 @@ class Analysis extends AdminController
     }
     public function getEmpList()
     {
-
         $class_id = $this->input->post('class_id');
 
         $val = '
@@ -69,6 +67,24 @@ class Analysis extends AdminController
         $response['employee_list'] = $employee_list->result_array();
         echo json_encode($response);
         exit;
+    }
+
+    public function getAnalysisData(){
+
+        //if Analysis Parameter  is Posted
+        if($this->input->post('class_select') && $this->input->post('section_select') && $this->input->post('criteria_select')){
+
+            //if section is employee section
+            if($this->input->post('employee_select')){
+
+            }else{
+
+            }
+
+        }else{
+
+        }
+
     }
 
 }
