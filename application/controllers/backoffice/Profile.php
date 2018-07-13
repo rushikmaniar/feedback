@@ -79,7 +79,6 @@ class Profile extends AdminController
             }
         } else {
             $this->session->set_flashdata('error', 'Password Updated Successfully');
-
         }
 
         redirect(base_url('backoffice/Profile'));

@@ -12,6 +12,7 @@ class Analysis extends AdminController
     {
         parent::__construct();
     }
+
     public function index()
     {
         $this->pageTitle = "Feedback Analysis";
@@ -32,10 +33,10 @@ class Analysis extends AdminController
     {
 
         $section_id = $this->input->post('section_id');
-        $criteria_list = $this->CommonModel->getRecord('criteria_master',array('section_id'=>$section_id));
+        $criteria_list = $this->CommonModel->getRecord('criteria_master', array('section_id' => $section_id));
 
-        if($section_id == 1)
-        $employee_list = $this->CommonModel->getRecord('employee_master')->result_array();
+        if ($section_id == 1)
+            $employee_list = $this->CommonModel->getRecord('employee_master')->result_array();
         else
             $employee_list = array();
 
@@ -44,44 +45,57 @@ class Analysis extends AdminController
         echo json_encode($response);
         exit;
     }
+
     public function getEmpList()
     {
         $class_id = $this->input->post('class_id');
-
-        $val = '
-        employee_allocation.emp_code,
-        employee_master.emp_name
-        ';
-
-        $employee_list = $this->CommonModel
-
-            ->dbjoin(
-                array(
+        if ($class_id) {
+            $class_ids = $class_id;
+            if ($class_ids[0] == 0 && $class_ids . sizeof($class_ids) == 1) {
+                //all class selected
+                $where = 'class_ != 0';
+            } else {
+                //combination or 1 class except all class
+                $where = 'class_id IN ALL (\'' . implode(",", $class_ids) . '\')';
+            }
+            $val = '
+            employee_allocation.emp_code,
+            employee_master.emp_name
+            ';
+            $employee_list = $this->CommonModel
+                ->dbjoin(
                     array(
-                        'table' => 'employee_master',
-                        'condition' => 'employee_master.emp_code = employee_allocation.emp_code'
-                    )
-                ))
-            ->getRecord('employee_allocation',($class_id != 0)?array('class_id'=>$class_id):'class_id != 0',$val);
+                        array(
+                            'table' => 'employee_master',
+                            'condition' => 'employee_master.emp_code = employee_allocation.emp_code'
+                        )
+                    ))
+                ->getRecord('employee_allocation', $where, $val);
+            echo $this->db->last_query();
+            $response['employee_list'] = $employee_list->result_array();
+            echo json_encode($response);
+            exit;
 
-        $response['employee_list'] = $employee_list->result_array();
-        echo json_encode($response);
+        }
         exit;
+
+
     }
 
-    public function getAnalysisData(){
+    public function getAnalysisData()
+    {
 
         //if Analysis Parameter  is Posted
-        if($this->input->post('class_select') && $this->input->post('section_select') && $this->input->post('criteria_select')){
+        if ($this->input->post('class_select') && $this->input->post('section_select') && $this->input->post('criteria_select')) {
 
             //if section is employee section
-            if($this->input->post('employee_select')){
+            if ($this->input->post('employee_select')) {
 
-            }else{
+            } else {
 
             }
 
-        }else{
+        } else {
 
         }
 

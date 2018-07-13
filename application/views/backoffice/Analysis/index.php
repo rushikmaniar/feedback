@@ -13,11 +13,10 @@
                 <!-- Class List -->
                 <div class="col-md-3 form-group">
                     <label>Select Class</label>
-                    <select name="class_select" id="class_select" class="form-control select2">
-                        <option value="">Select class</option>
-                        <option value="0">All class</option>
+                    <select name="class_select[]" id="class_select" class="form-control select2" multiple="multiple">
+                        <option value="0" class="multi_class">All class</option>
                         <?php foreach ($class_list as $row_class): ?>
-                            <option value="<?= $row_class['class_id']; ?>"><?= $row_class['class_name'] ?></option>
+                            <option class="multi_class" value="<?= $row_class['class_id']; ?>"><?= $row_class['class_name'] ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -25,8 +24,7 @@
                 <!-- Section List -->
                 <div class="col-md-3 form-group">
                     <label>Select Section</label>
-                    <select name="section_select" id="section_select" class="form-control select2">
-                        <option value="">Select Section</option>
+                    <select name="section_select" id="section_select" class="form-control select2" >
                         <?php foreach ($section_list as $row_section): ?>
                             <option value="<?= $row_section['section_id']; ?>"><?= $row_section['section_name'] ?></option>
                         <?php endforeach; ?>
@@ -49,7 +47,7 @@
 
                 <!-- Submit  Button -->
                 <div class="col-md-12 form-group" id="employee_select_div">
-                    <button type="submit" class="btn-md btn-primary">Refresh</button>
+                    <button type="button" id="btn_refresh" class="btn-md btn-primary">Refresh</button>
                 </div>
 
 
@@ -58,10 +56,25 @@
     </div>
 </div>
 <script type="text/javascript">
-    
-    function getAnalysisData() {
 
+    function getAnalysisData(class_id, section_id, criteria_id, employee_id) {
+        if (undefined(class_id)) {
+            class_id = null;
+        }
+        if (undefined(section_id)) {
+            class_id = null;
+        }
+        if (undefined(criteria_id)) {
+            criteria_id = null;
+        }
+        if (undefined(employee_id)) {
+            employee_id = null;
+        }
+
+
+        //ajax call for data
     }
+
     $(document).ready(function () {
 
         $("#form_analysis").validate({
@@ -79,7 +92,7 @@
                 jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
             },
             rules: {
-                'class_select': {
+                'class_select[]': {
                     required: true
                 },
                 'section_select': {
@@ -87,45 +100,57 @@
                 },
                 'criteria_select': {
                     required: true
+                },
+                'employee_select':{
+                    required:{
+                        depends:function () {
+                            return $('#section_select').val() == 1
+                        }
+                    }
                 }
             },
             messages: {
-                'class_select': {
+                'class_select[]': {
                     required: "This field is required."
                 },
                 'section_select': {
                     required: "This field is required."
                 },
                 'criteria_select': {
+                    required: "This field is required."
+                },
+                'employee_select':{
                     required: "This field is required."
                 }
             }
         });
 
-        $('')
-            if (undefined(criteria_id)) {
-                criteria_id = null;
+        $('#btn_refresh').on('click', function () {
+            if ($('#form_analysis').valid()) {
+                //form is valid
+                console.log('valid');
+                var class_id = $('#class_select').select2('val');
+                console.log(class_id);
+                var section_id = $('#section_select').val();
+                var criteria_id = $('#criteria_select').val();
+                var employee_id = $('#employee_select').val();
+
+
+            } else {
+                // form is invalid
+
+                console.log('else');
             }
-            if (undefined(employee_id)) {
-                employee_id = null;
-            }
-            if (undefined(class_id)) {
-                class_id = null;
-            }
-
-            //ajax call for data
-
-
-
-
+        });
         //on section change
         $('#section_select').on('change', function () {
             var sectionid = $(this).val();
+            var class_id = $('#closeMe').val();
             //get criteria list
             $.ajax({
                 url: base_url + 'backoffice/Analysis/getCriteriaEmpList',
                 type: 'post',
-                data: {'section_id': sectionid},
+                data: {'section_id': sectionid,'class_id':class_id},
                 success: function (response) {
                     response = JSON.parse(response);
                     //$('#criteria_select').html('');
@@ -155,22 +180,22 @@
 
         //on class change
         $('#class_select').on('change', function () {
-            var classid = $(this).val();
+            var class_id = $(this).select2('val');
             var section_id = $('#section_select').val();
-
+            console.log(class_id);
             if (section_id == 1) {
                 //get criteria list
                 $.ajax({
                     url: base_url + 'backoffice/Analysis/getEmpList',
                     type: 'post',
-                    data: {'class_id': classid},
+                    data: {'class_id': class_id},
                     success: function (response) {
                         response = JSON.parse(response);
 
 
                         //set employee list
                         var option = '';
-                        option += '<option value="">Select Employee</option>';
+                        //option += '<option value="">Select Employee</option>';
                         $.each(response.employee_list, function (index, value) {
                             option += '<option value="' + value.emp_code + '">' + value.emp_name + '</option>';
                         });
