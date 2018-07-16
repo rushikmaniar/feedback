@@ -49,14 +49,13 @@ class Analysis extends AdminController
     public function getEmpList()
     {
         $class_id = $this->input->post('class_id');
+
         if ($class_id) {
-            $class_ids = $class_id;
-            if ($class_ids[0] == 0 && $class_ids . sizeof($class_ids) == 1) {
+            if ($class_id == 0) {
                 //all class selected
-                $where = 'class_ != 0';
+                $where = 'class_id != 0';
             } else {
-                //combination or 1 class except all class
-                $where = 'class_id IN ALL (\'' . implode(",", $class_ids) . '\')';
+                $where = 'class_id = '.$class_id;
             }
             $val = '
             employee_allocation.emp_code,

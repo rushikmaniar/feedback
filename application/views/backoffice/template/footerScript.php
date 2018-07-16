@@ -117,7 +117,7 @@
         toastr["success"]('<?= $this->session->flashdata('success') ?>', "Success");
         <?php endif; ?>
 
-
+/*
             var checkuser = setInterval(function(){
                 //check user
                 $.ajax({
@@ -158,6 +158,6 @@
                     }
                 });
             },3000);
-
+*/
     });
 </script>

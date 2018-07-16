@@ -13,7 +13,7 @@
                 <!-- Class List -->
                 <div class="col-md-3 form-group">
                     <label>Select Class</label>
-                    <select name="class_select[]" id="class_select" class="form-control select2" multiple="multiple">
+                    <select name="class_select[]" id="class_select" class="form-control select2">
                         <option value="0" class="multi_class">All class</option>
                         <?php foreach ($class_list as $row_class): ?>
                             <option class="multi_class" value="<?= $row_class['class_id']; ?>"><?= $row_class['class_name'] ?></option>
@@ -25,6 +25,7 @@
                 <div class="col-md-3 form-group">
                     <label>Select Section</label>
                     <select name="section_select" id="section_select" class="form-control select2" >
+                        <option>Select Section</option>
                         <?php foreach ($section_list as $row_section): ?>
                             <option value="<?= $row_section['section_id']; ?>"><?= $row_section['section_name'] ?></option>
                         <?php endforeach; ?>
@@ -180,7 +181,7 @@
 
         //on class change
         $('#class_select').on('change', function () {
-            var class_id = $(this).select2('val');
+            var class_id = $(this).val();
             var section_id = $('#section_select').val();
             console.log(class_id);
             if (section_id == 1) {
