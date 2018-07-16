@@ -50,12 +50,12 @@ class Analysis extends AdminController
     {
         $class_id = $this->input->post('class_id');
 
-        if ($class_id) {
+        if ($class_id != '') {
             if ($class_id == 0) {
                 //all class selected
                 $where = 'class_id != 0';
             } else {
-                $where = 'class_id = '.$class_id;
+                $where = 'class_id = ' . $class_id;
             }
             $val = '
             employee_allocation.emp_code,
@@ -70,10 +70,12 @@ class Analysis extends AdminController
                         )
                     ))
                 ->getRecord('employee_allocation', $where, $val);
-            echo $this->db->last_query();
+            //echo $this->db->last_query();
             $response['employee_list'] = $employee_list->result_array();
             echo json_encode($response);
             exit;
+
+        } else {
 
         }
         exit;
@@ -83,19 +85,72 @@ class Analysis extends AdminController
 
     public function getAnalysisData()
     {
-
+        echo '<pre>';
+        print_r($this->input->post());
+        echo '</pre>';
         //if Analysis Parameter  is Posted
-        if ($this->input->post('class_select') && $this->input->post('section_select') && $this->input->post('criteria_select')) {
+        if ($this->input->post('class_id') != null && $this->input->post('section_id') != null && $this->input->post('criteria_id') != null) {
 
-            //if section is employee section
-            if ($this->input->post('employee_select')) {
+            $class_id = $this->input->post('class_id');
+            $section_id = $this->input->post('section_id');
+            $criteria_id = $this->input->post('criteria_id');
+
+            //where Condition
+
+            if ($class_id == 0) {
+                $where = "analysis_master.section_id = $section_id AND analysis_master.criteria_id = $criteria_id AND entry_record.class_id != 0";
+                $analyses_where = "analysis_master.section_id = $section_id AND analysis_master.criteria_id = $criteria_id AND entry_record.class_id != 0";
 
             } else {
+                $where = "analysis_master.section_id = $section_id AND analysis_master.criteria_id = $criteria_id AND entry_record.class_id = $class_id";
+                $analyses_where = "analysis_master.section_id = $section_id AND analysis_master.criteria_id = $criteria_id AND entry_record.class_id != 0";
+            }
+            //if section is employee section
+            if ($this->input->post('employee_id') != null) {
+                $employee_id = $this->input->post('employee_id');
+
+                //fetch entry_record
+                $where = $where."AND entry_record.entry_id = $employee_id";
+                $analyses_where = $analyses_where.'AND analysis_master.emp_code = '.$employee_id;
+
+            } else {
+            //not employee section
 
             }
 
-        } else {
+            //entry record
+            $val = 'entry_record.entry_id,entry_record.class_id';
+            $entry_record = $this->CommonModel
+                ->dbjoin(
+                    array(
+                        array(
+                            'table' => 'analysis_master',
+                            'condition' => 'entry_record.entry_id = analysis_master.entry_id'
+                        )
+                    ))
+                ->getRecord('entry_record', $where, $val);
 
+            $total_student_entries = $entry_record->num_rows();
+
+            //analyses record
+            $analyses_data = $this->CommonModel
+                ->getRecord('analysis_master', $analyses_where);
+
+
+            //criteria info
+            $criteria_info = $this->CommonModel->getRecord('criteria_master', array('criteria_id' => $criteria_id, 'criteria_id,criteria_name,type_data'));
+            //check criteria data type
+            if ($criteria_info['type_data'] == 0) {
+                //0-5 get from rank table used in proportion
+                $ranklist = $this->CommonModel->getRecord('ranking')->result_array();
+            } else {
+                //fetch record from option master
+                $criteria_optionlist = $this->CommonModel->getRecord('option_master', array('criteria_id' => $criteria_id))->result_array();
+            }
+
+
+        } else {
+            //invalid parameter
         }
 
     }

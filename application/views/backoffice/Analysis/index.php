@@ -59,21 +59,39 @@
 <script type="text/javascript">
 
     function getAnalysisData(class_id, section_id, criteria_id, employee_id) {
-        if (undefined(class_id)) {
+        if (typeof class_id === 'undefined' ) {
             class_id = null;
         }
-        if (undefined(section_id)) {
-            class_id = null;
+        if (typeof section_id === 'undefined' ) {
+            section_id = null;
         }
-        if (undefined(criteria_id)) {
+        if (typeof criteria_id === 'undefined' ) {
             criteria_id = null;
         }
-        if (undefined(employee_id)) {
+        if (typeof employee_id === 'undefined' ) {
             employee_id = null;
         }
 
+        alert(class_id+'  ' + section_id + '  ' + criteria_id + '  ' + employee_id);
 
         //ajax call for data
+        $.ajax({
+            url: base_url + 'backoffice/Analysis/getAnalysisData',
+            type: 'post',
+            data: {
+                'class_id':class_id,
+                'section_id': section_id,
+                'criteria_id': criteria_id,
+                'employee_id': employee_id
+            },
+            success: function (response) {
+
+            },
+            error: function (response) {
+
+            }
+        });
+
     }
 
     $(document).ready(function () {
@@ -131,10 +149,11 @@
                 //form is valid
                 console.log('valid');
                 var class_id = $('#class_select').select2('val');
-                console.log(class_id);
                 var section_id = $('#section_select').val();
                 var criteria_id = $('#criteria_select').val();
                 var employee_id = $('#employee_select').val();
+
+                getAnalysisData(class_id,section_id,criteria_id,employee_id);
 
 
             } else {

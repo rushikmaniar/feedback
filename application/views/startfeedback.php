@@ -95,7 +95,7 @@
                                                     <?php if($value['type_data'] == 1):?>
                                                         <select name="section[<?= $row_section['section_id']?>][points][<?= $value['criteria_id']?>]" class="select2 form-control">
                                                         <?php foreach ($value['option_list'] as $row_option): ?>
-                                                            <option value="<?= $row_option['option_value']?>"><?= $row_option['option_text'];?></option>
+                                                            <option value="<?= $row_option['option_id']?>"><?= $row_option['option_text'];?></option>
                                                         <?php endforeach;?>
                                                         </select>
                                                     <?php else:?>
