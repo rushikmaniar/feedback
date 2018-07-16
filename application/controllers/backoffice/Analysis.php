@@ -35,6 +35,7 @@ class Analysis extends AdminController
         $section_id = $this->input->post('section_id');
         $criteria_list = $this->CommonModel->getRecord('criteria_master', array('section_id' => $section_id));
 
+
         if ($section_id == 1)
             $employee_list = $this->CommonModel->getRecord('employee_master')->result_array();
         else
@@ -42,6 +43,7 @@ class Analysis extends AdminController
 
         $response['criteria_list'] = $criteria_list->result_array();
         $response['employee_list'] = $employee_list;
+
         echo json_encode($response);
         exit;
     }
@@ -97,24 +99,19 @@ class Analysis extends AdminController
 
             //where Condition
 
-            if ($class_id == 0) {
-                $where = "analysis_master.section_id = $section_id AND analysis_master.criteria_id = $criteria_id AND entry_record.class_id != 0";
-                $analyses_where = "analysis_master.section_id = $section_id AND analysis_master.criteria_id = $criteria_id AND entry_record.class_id != 0";
+            $where = "analysis_master.section_id = $section_id AND " . ($criteria_id != 0 ?" analysis_master.criteria_id = $criteria_id" : "analysis_master.criteria_id != 0")." AND " . ($class_id == 0?" entry_record.class_id != 0 " : " entry_record.class_id = $class_id");
+            $analyses_where = 'analysis_master.section_id = '.$section_id .' AND '.($criteria_id == 0? 'analysis_master.criteria_id != 0 ':'analysis_master.criteria_id = '.$criteria_id);
 
-            } else {
-                $where = "analysis_master.section_id = $section_id AND analysis_master.criteria_id = $criteria_id AND entry_record.class_id = $class_id";
-                $analyses_where = "analysis_master.section_id = $section_id AND analysis_master.criteria_id = $criteria_id AND entry_record.class_id != 0";
-            }
             //if section is employee section
             if ($this->input->post('employee_id') != null) {
                 $employee_id = $this->input->post('employee_id');
 
                 //fetch entry_record
-                $where = $where."AND entry_record.entry_id = $employee_id";
-                $analyses_where = $analyses_where.'AND analysis_master.emp_code = '.$employee_id;
+                $where = $where . " AND analysis_master.emp_code = $employee_id";
+                $analyses_where = $analyses_where . ' AND analysis_master.emp_code = ' . $employee_id;
 
             } else {
-            //not employee section
+                //not employee section
 
             }
 
@@ -134,25 +131,68 @@ class Analysis extends AdminController
 
             //analyses record
             $analyses_data = $this->CommonModel
+                ->dbjoin(
+                    array(
+                        array(
+                            'table' => 'entry_record',
+                            'condition' => 'analysis_master.entry_id = entry_record.entry_id'
+                        )
+                    ))
                 ->getRecord('analysis_master', $analyses_where);
 
 
+            $analysis_data_total_rows = $analyses_data->num_rows();
+            $final_data = array();
             //criteria info
-            $criteria_info = $this->CommonModel->getRecord('criteria_master', array('criteria_id' => $criteria_id, 'criteria_id,criteria_name,type_data'));
+            $criteria_info = $this->CommonModel->getRecord('criteria_master',($criteria_id == 0?'criteria_id != 0':'criteria_id = '.$criteria_id), 'criteria_id,criteria_name,type_data')->row_array();
             //check criteria data type
             if ($criteria_info['type_data'] == 0) {
                 //0-5 get from rank table used in proportion
                 $ranklist = $this->CommonModel->getRecord('ranking')->result_array();
+
+                if ($criteria_id == 0) {
+                    //all  criteria list used in employee analysis
+                    $criteria_info = $this->CommonModel->getRecord('criteria_master', 'section_id = '.$section_id, 'criteria_id,criteria_name,type_data')->result_array();
+                    foreach ($ranklist as $row_rank) {
+                        $final_data[$row_rank['rank_id']]['rank_name'] = $row_rank['rank_name'];
+                        $final_data[$row_rank['rank_id']]['rank_value'] = $row_rank['rank_value'];
+                        foreach ($criteria_info as $row_criteria) {
+                            $final_data[$row_rank['rank_id']]['points'][$row_criteria['criteria_id']] = $this->CommonModel->getRecord('analysis_master', $analyses_where . ' AND analysis_master.criteria_points =' . $row_rank['rank_value'])->num_rows();
+                            echo $this->db->last_query();exit;
+                        }
+                    }
+
+                } else {
+                    //only one criteria
+                    foreach ($ranklist as $row_rank) {
+                        $final_data[$row_rank['rank_id']]['rank_name'] = $row_rank['rank_name'];
+                        $final_data[$row_rank['rank_id']]['rank_value'] = $row_rank['rank_value'];
+                        $final_data[$row_rank['rank_id']]['points'][$criteria_id] = $this->CommonModel->getRecord('analysis_master', $analyses_where . ' AND analysis_master.criteria_points =' . $row_rank['rank_value'])->num_rows();
+
+                    }
+                }
+
             } else {
                 //fetch record from option master
                 $criteria_optionlist = $this->CommonModel->getRecord('option_master', array('criteria_id' => $criteria_id))->result_array();
+
+                //foreach option
+                foreach ($criteria_optionlist as $row_option) {
+                    $final_data[$row_option['option_name']];
+                    $final_data[$row_option['option_value']];
+                    $final_data[$row_option['option_id']]['points'][$criteria_id] = $this->CommonModel->getRecord('analysis_master', $analyses_where . ' AND analysis_master.criteria_points =' . $row_option['option_id'])->num_rows();
+                }
             }
 
 
         } else {
             //invalid parameter
+            echo 'else';
         }
 
+        echo '<pre>';
+            print_r($final_data);
+        echo '</pre>';exit;
     }
 
 }

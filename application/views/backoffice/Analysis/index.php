@@ -51,6 +51,8 @@
                     <button type="button" id="btn_refresh" class="btn-md btn-primary">Refresh</button>
                 </div>
 
+                <div id="morris-bar-chart"></div>
+                <div id="morris-pie-chart"></div>
 
             </div>
         </form>
@@ -96,6 +98,62 @@
 
     $(document).ready(function () {
 
+        //static morris chart
+        // Morris bar chart
+        Morris.Bar( {
+            element: 'morris-bar-chart',
+            data: [ {
+                y: '2006',
+                a: 100,
+                b: 90,
+                c: 60
+            }, {
+                y: '2007',
+                a: 75,
+                b: 65,
+                c: 40
+            }, {
+                y: '2008',
+                a: 50,
+                b: 40,
+                c: 30
+            }, {
+                y: '2009',
+                a: 75,
+                b: 65,
+                c: 40
+            }, {
+                y: '2010',
+                a: 50,
+                b: 40,
+                c: 30
+            }, {
+                y: '2011',
+                a: 75,
+                b: 65,
+                c: 40
+            }, {
+                y: '2012',
+                a: 100,
+                b: 90,
+                c: 40
+            } ],
+            xkey: 'y',
+            ykeys: [ 'a', 'b', 'c' ],
+            labels: [ 'A', 'B', 'C' ],
+            barColors: [ '#26DAD2', '#fc6180', '#4680ff' ],
+            hideHover: 'auto',
+            gridLineColor: '#eef0f2',
+            resize: true
+        } );
+
+        Morris.Pie
+
+
+
+
+
+
         $("#form_analysis").validate({
             errorClass: 'invalid-feedback animated fadeInDown',
             /*errorPlacement: function(error, element) {
@@ -111,7 +169,7 @@
                 jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
             },
             rules: {
-                'class_select[]': {
+                'class_select': {
                     required: true
                 },
                 'section_select': {
@@ -165,7 +223,14 @@
         //on section change
         $('#section_select').on('change', function () {
             var sectionid = $(this).val();
-            var class_id = $('#closeMe').val();
+            var class_id = $('#class_id').val();
+            $('#class_select option[value = 0]').remove();
+            if(sectionid != 1){
+                $('#class_select').append($('<option>', {
+                    value: 0,
+                    text: 'All Class'
+                }));
+            }
             //get criteria list
             $.ajax({
                 url: base_url + 'backoffice/Analysis/getCriteriaEmpList',
@@ -173,23 +238,31 @@
                 data: {'section_id': sectionid,'class_id':class_id},
                 success: function (response) {
                     response = JSON.parse(response);
+
+
                     //$('#criteria_select').html('');
 
                     //set criteria list
                     var option = '';
-                    //option += '<option value="">Select Criteria</option>';
+                    if(response.employee_list.length > 0)
+                    option += '<option value="0">All Criterias</option>';
                     $.each(response.criteria_list, function (index, value) {
-                        option += '<option value="' + value.section_id + '">' + value.criteria_name + '</option>';
+                        option += '<option value="' + value.criteria_id + '">' + value.criteria_name + '</option>';
                     });
                     $('#criteria_select').html(option);
 
-                    //set employee list
-                    var option = '';
-                    //option += '<option value="">Select Employee</option>';
-                    $.each(response.employee_list, function (index, value) {
-                        option += '<option value="' + value.emp_code + '">' + value.emp_name + '</option>';
-                    });
-                    $('#employee_select').html(option);
+
+                        //set employee list
+                        var option = '';
+
+                        // option += '<option value="0">All Employees</option>';
+                        $.each(response.employee_list, function (index, value) {
+                            option += '<option value="' + value.emp_code + '">' + value.emp_name + '</option>';
+                        });
+                        $('#employee_select').html(option);
+
+
+
                 },
                 error: function (response) {
                     console.log(response);
@@ -213,13 +286,14 @@
                         response = JSON.parse(response);
 
 
-                        //set employee list
-                        var option = '';
-                        //option += '<option value="">Select Employee</option>';
-                        $.each(response.employee_list, function (index, value) {
-                            option += '<option value="' + value.emp_code + '">' + value.emp_name + '</option>';
-                        });
-                        $('#employee_select').html(option);
+                            //set employee list
+                            var option = '';
+                            //option += '<option value="">Select Employee</option>';
+                            $.each(response.employee_list, function (index, value) {
+                                option += '<option value="' + value.emp_code + '">' + value.emp_name + '</option>';
+                            });
+                            $('#employee_select').html(option);
+
                     },
                     error: function (response) {
                         console.log(response);
