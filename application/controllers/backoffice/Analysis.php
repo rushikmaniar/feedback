@@ -142,48 +142,99 @@ class Analysis extends AdminController
 
 
             $analysis_data_total_rows = $analyses_data->num_rows();
-            $final_data = array();
-            //criteria info
-            $criteria_info = $this->CommonModel->getRecord('criteria_master',($criteria_id == 0?'criteria_id != 0':'criteria_id = '.$criteria_id), 'criteria_id,criteria_name,type_data')->row_array();
-            //check criteria data type
-            if ($criteria_info['type_data'] == 0) {
-                //0-5 get from rank table used in proportion
-                $ranklist = $this->CommonModel->getRecord('ranking')->result_array();
 
-                if ($criteria_id == 0) {
-                    //all  criteria list used in employee analysis
-                    $criteria_info = $this->CommonModel->getRecord('criteria_master', 'section_id = '.$section_id, 'criteria_id,criteria_name,type_data')->result_array();
+
+            $final_data = array();
+
+
+            //criteria info
+            $criteria_info = $this->CommonModel->getRecord('criteria_master','section_id = '.$section_id . ' AND '.($criteria_id == 0?'criteria_id != 0':'criteria_id = '.$criteria_id), 'criteria_id,criteria_name,type_data');
+
+            foreach ($criteria_info->result_array() as $row_criteria){
+                if($row_criteria['type_data'] == 0){
+                    //simple data
+                    $ranklist = $this->CommonModel->getRecord('ranking')->result_array();
                     foreach ($ranklist as $row_rank) {
-                        $final_data[$row_rank['rank_id']]['rank_name'] = $row_rank['rank_name'];
-                        $final_data[$row_rank['rank_id']]['rank_value'] = $row_rank['rank_value'];
-                        foreach ($criteria_info as $row_criteria) {
-                            $final_data[$row_rank['rank_id']]['points'][$row_criteria['criteria_id']] = $this->CommonModel->getRecord('analysis_master', $analyses_where . ' AND analysis_master.criteria_points =' . $row_rank['rank_value'])->num_rows();
-                            echo $this->db->last_query();exit;
+                        $final_data['rank_'.$row_rank['rank_id']]['rank_name'] = $row_rank['rank_name'];
+                        $final_data['rank_'.$row_rank['rank_id']]['rank_value'] = $row_rank['rank_value'];
+                        $final_data['rank_'.$row_rank['rank_id']]['points'][$row_criteria['criteria_id']] = $this->CommonModel->getRecord('analysis_master','section_id = '.$section_id.' AND criteria_id = '.$row_criteria['criteria_id'] .' AND analysis_master.criteria_points =' . $row_rank['rank_value'] . (isset($employee_id)? ' AND emp_code = '.$employee_id:''))->num_rows();
+
+                        //calculating rank row total
+                        if(isset($final_data['rank_'.$row_rank['rank_id']]['row_total'])){
+                            $final_data['rank_'.$row_rank['rank_id']]['row_total'] += $final_data['rank_'.$row_rank['rank_id']]['points'][$row_criteria['criteria_id']];
+                        }else{
+                            $final_data['rank_'.$row_rank['rank_id']]['row_total'] = 0;
+                            $final_data['rank_'.$row_rank['rank_id']]['row_total'] += $final_data['rank_'.$row_rank['rank_id']]['points'][$row_criteria['criteria_id']];
+                        }
+
+                        //calculating rank column total
+                        if(isset($final_data['col_total'][$row_criteria['criteria_id']])){
+                            $final_data['col_total'][$row_criteria['criteria_id']] += $final_data['rank_'.$row_rank['rank_id']]['points'][$row_criteria['criteria_id']];
+                        }else{
+                            $final_data['col_total'][$row_criteria['criteria_id']] = 0;
+                            $final_data['col_total'][$row_criteria['criteria_id']] += $final_data['rank_'.$row_rank['rank_id']]['points'][$row_criteria['criteria_id']];
+                        }
+
+                        //calculating final column row  total
+                        if(isset($final_data['col_total']['final_total'])){
+                            $final_data['col_total']['final_total'] += $final_data['rank_'.$row_rank['rank_id']]['points'][$row_criteria['criteria_id']];
+                        }else{
+                            $final_data['col_total']['final_total'] = 0;
+                            $final_data['col_total']['final_total'] += $final_data['rank_'.$row_rank['rank_id']]['points'][$row_criteria['criteria_id']];
                         }
                     }
 
-                } else {
-                    //only one criteria
-                    foreach ($ranklist as $row_rank) {
-                        $final_data[$row_rank['rank_id']]['rank_name'] = $row_rank['rank_name'];
-                        $final_data[$row_rank['rank_id']]['rank_value'] = $row_rank['rank_value'];
-                        $final_data[$row_rank['rank_id']]['points'][$criteria_id] = $this->CommonModel->getRecord('analysis_master', $analyses_where . ' AND analysis_master.criteria_points =' . $row_rank['rank_value'])->num_rows();
+                }else{
+                    //option data
+                    //fetch record from option master
+                    $criteria_optionlist = $this->CommonModel->getRecord('option_master', array('criteria_id' => $criteria_id))->result_array();
+
+                    //foreach option
+                    foreach ($criteria_optionlist as $row_option) {
+                        $final_data['option_'.$row_option['option_id']]['option_name'] = $row_option['option_text'];
+                        $final_data['option_'.$row_option['option_id']]['option_value'] = $row_option['option_value'];
+                        $final_data['option_'.$row_option['option_id']]['points'][$row_criteria['criteria_id']] = $this->CommonModel->getRecord('analysis_master','section_id = '.$section_id.' AND criteria_id = '.$row_criteria['criteria_id'].' AND analysis_master.criteria_points =' . $row_option['option_id'].(isset($employee_id)? ' AND emp_code = '.$employee_id : ''))->num_rows();
+
+                        //calculating option row total
+                        if(isset($final_data[$row_option['option_id']]['row_total'])){
+                            $final_data['option_'.$row_option['option_id']]['row_total'] += $final_data['option_'.$row_option['option_id']]['points'][$row_criteria['criteria_id']];
+                        }else{
+                            $final_data['option_'.$row_option['option_id']]['row_total'] = 0;
+                            $final_data['option_'.$row_option['option_id']]['row_total'] += $final_data['option_'.$row_option['option_id']]['points'][$row_criteria['criteria_id']];
+                        }
+
+                        //calculating option column total
+                        if(isset($final_data['col_total'][$row_criteria['criteria_id']])){
+                            $final_data['col_total'][$row_criteria['criteria_id']] += $final_data['option_'.$row_option['option_id']]['points'][$row_criteria['criteria_id']];
+                        }else{
+                            $final_data['col_total'][$row_criteria['criteria_id']] = 0;
+                            $final_data['col_total'][$row_criteria['criteria_id']] += $final_data['option_'.$row_option['option_id']]['points'][$row_criteria['criteria_id']];
+                        }
+
+                        //calculating final column row  total
+                        if(isset($final_data['col_total']['final_total'])){
+                            $final_data['col_total']['final_total'] += $final_data['option_'.$row_option['option_id']]['points'][$row_criteria['criteria_id']];
+                        }else{
+                            $final_data['col_total']['final_total'] = 0;
+                            $final_data['col_total']['final_total'] += $final_data['option_'.$row_option['option_id']]['points'][$row_criteria['criteria_id']];
+                        }
+
 
                     }
                 }
-
-            } else {
-                //fetch record from option master
-                $criteria_optionlist = $this->CommonModel->getRecord('option_master', array('criteria_id' => $criteria_id))->result_array();
-
-                //foreach option
-                foreach ($criteria_optionlist as $row_option) {
-                    $final_data[$row_option['option_name']];
-                    $final_data[$row_option['option_value']];
-                    $final_data[$row_option['option_id']]['points'][$criteria_id] = $this->CommonModel->getRecord('analysis_master', $analyses_where . ' AND analysis_master.criteria_points =' . $row_option['option_id'])->num_rows();
-                }
             }
 
+            //push column row  total  to last
+            $temp = $final_data['col_total']['final_total'];
+            unset($final_data['col_total']['final_total']);
+            $final_data['col_total']['final_total'] = $temp;
+
+
+            //move col total to last
+
+            $temp = $final_data['col_total'];
+            unset($final_data['col_total']);
+            $final_data['col_total'] = $temp;
 
         } else {
             //invalid parameter
