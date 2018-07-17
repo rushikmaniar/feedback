@@ -52,7 +52,7 @@
                 </div>
 
                 <div id="morris-bar-chart"></div>
-                <div id="morris-pie-chart"></div>
+                <div id="morris-donut-chart"></div>
 
             </div>
         </form>
@@ -87,7 +87,9 @@
                 'employee_id': employee_id
             },
             success: function (response) {
-
+                if(response.status == 1){
+                    if(response.chart_type == 1)
+                }
             },
             error: function (response) {
 
@@ -147,7 +149,25 @@
             resize: true
         } );
 
-        Morris.Pie
+
+        // Morris donut chart
+
+        Morris.Donut( {
+            element: 'morris-donut-chart',
+            data: [ {
+                label: "Download Sales",
+                value: 12,
+
+            }, {
+                label: "In-Store Sales",
+                value: 30
+            }, {
+                label: "Mail-Order Sales",
+                value: 20
+            } ],
+            resize: true,
+            colors: [ '#4680ff', '#26DAD2', '#fc6180' ]
+        } );
 
 
 

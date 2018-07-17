@@ -87,9 +87,8 @@ class Analysis extends AdminController
 
     public function getAnalysisData()
     {
-        echo '<pre>';
-        print_r($this->input->post());
-        echo '</pre>';
+        //final rsponse json string
+        $response_array = array('status'=>0,'data'=>array(),'chart_type'=>0,'error'=>0);
         //if Analysis Parameter  is Posted
         if ($this->input->post('class_id') != null && $this->input->post('section_id') != null && $this->input->post('criteria_id') != null) {
 
@@ -236,14 +235,33 @@ class Analysis extends AdminController
             unset($final_data['col_total']);
             $final_data['col_total'] = $temp;
 
+
+
+            //for morris
+            //if 1 criteria donout chart
+            $response_array['status'] = 1;
+
+            if($criteria_info->num_rows() == 1){
+                $response_array['data']['criteria'] = $criteria_info->result_array()[0]['criteria_name'];
+                $response_array['data']['total_feedback'] = $final_data['col_total']['final_total'];
+                $response_array['data']['donut_data'] = array();
+                $response_array['chart_type'] = "donut";
+
+                $temp = $final_data;
+                unset($temp['col_total']);
+                foreach ($temp as $row){
+                    $response_array['data']['donut_data'][] = array('label'=>((isset($row['rank_name'])?$row['rank_name']:$row['option_name'])),'value' => (isset($row['points'][$criteria_id])?$row['points'][$criteria_id]:0));
+                }
+
+            }
         } else {
             //invalid parameter
             echo 'else';
         }
 
-        echo '<pre>';
-            print_r($final_data);
-        echo '</pre>';exit;
+        echo json_encode($response_array);
+
+
     }
 
 }
