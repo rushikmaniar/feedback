@@ -7,6 +7,31 @@
  */ ?>
 <div class="card">
     <div class="card-body">
+        <style type="text/css">
+            #chartdiv {
+                width: 100%;
+                height: 500px;
+                font-size: 11px;
+            }
+
+            .amcharts-pie-slice {
+                transform: scale(1);
+                transform-origin: 50% 50%;
+                transition-duration: 0.3s;
+                transition: all .3s ease-out;
+                -webkit-transition: all .3s ease-out;
+                -moz-transition: all .3s ease-out;
+                -o-transition: all .3s ease-out;
+                cursor: pointer;
+                box-shadow: 0 0 30px 0 #000;
+            }
+
+            .amcharts-pie-slice:hover {
+                transform: scale(1.1);
+                filter: url(#shadow);
+            }
+        </style>
+
         <form id="form_analysis" method="post" action="">
             <div class="row">
 
@@ -14,9 +39,9 @@
                 <div class="col-md-3 form-group">
                     <label>Select Class</label>
                     <select name="class_select[]" id="class_select" class="form-control select2">
-                        <option value="0" class="multi_class">All class</option>
+                        <option value="0">All class</option>
                         <?php foreach ($class_list as $row_class): ?>
-                            <option class="multi_class" value="<?= $row_class['class_id']; ?>"><?= $row_class['class_name'] ?></option>
+                            <option value="<?= $row_class['class_id']; ?>"><?= $row_class['class_name'] ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -24,7 +49,7 @@
                 <!-- Section List -->
                 <div class="col-md-3 form-group">
                     <label>Select Section</label>
-                    <select name="section_select" id="section_select" class="form-control select2" >
+                    <select name="section_select" id="section_select" class="form-control select2">
                         <option>Select Section</option>
                         <?php foreach ($section_list as $row_section): ?>
                             <option value="<?= $row_section['section_id']; ?>"><?= $row_section['section_name'] ?></option>
@@ -51,45 +76,73 @@
                     <button type="button" id="btn_refresh" class="btn-md btn-primary">Refresh</button>
                 </div>
 
-                <div id="morris-bar-chart"></div>
-                <div id="morris-donut-chart"></div>
+                <div id="CriteriaHeading"></div>
+                <div id="TotalFeedback"></div>
+                <div id="chartdiv"></div>
 
             </div>
         </form>
     </div>
 </div>
+
+
+<script src="<?= base_url() ?>assets/backoffice/js/lib/amcharts/amcharts.js"></script>
+<script src="<?= base_url() ?>assets/backoffice/js/lib/amcharts/pie.js"></script>
+<script src="<?= base_url() ?>assets/backoffice/js/lib/amcharts/serial.js"></script>
+<script src="<?= base_url() ?>assets/backoffice/js/lib/amcharts/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="<?= base_url() ?>assets/backoffice/css/lib/amchart/export.css" type="text/css"
+      media="all"/>
+<script src="<?= base_url() ?>assets/backoffice/js/lib/amcharts/themes/light.js"></script>
+<script src="//www.amcharts.com/lib/3/plugins/responsive/responsive.min.js"></script>
+
 <script type="text/javascript">
 
     function getAnalysisData(class_id, section_id, criteria_id, employee_id) {
-        if (typeof class_id === 'undefined' ) {
+        if (typeof class_id === 'undefined') {
             class_id = null;
         }
-        if (typeof section_id === 'undefined' ) {
+        if (typeof section_id === 'undefined') {
             section_id = null;
         }
-        if (typeof criteria_id === 'undefined' ) {
+        if (typeof criteria_id === 'undefined') {
             criteria_id = null;
         }
-        if (typeof employee_id === 'undefined' ) {
+        if (typeof employee_id === 'undefined') {
             employee_id = null;
         }
 
-        alert(class_id+'  ' + section_id + '  ' + criteria_id + '  ' + employee_id);
+        alert(class_id + '  ' + section_id + '  ' + criteria_id + '  ' + employee_id);
 
         //ajax call for data
         $.ajax({
             url: base_url + 'backoffice/Analysis/getAnalysisData',
             type: 'post',
             data: {
-                'class_id':class_id,
+                'class_id': class_id,
                 'section_id': section_id,
                 'criteria_id': criteria_id,
                 'employee_id': employee_id
             },
             success: function (response) {
-                if(response.status == 1){
-                    if(response.chart_type == 1)
+                response = JSON.parse(response);
+                if (response.status == 1 && response.data.total_feedback > 0 && response.chart_type == "donut") {
+                    console.log(response.data.donut_data);
+                    var temp = '';
+                    if($('#employee_select').val() != 'undefined'){
+                        temp = '          ' + $('#employee_select option:selected').text();
+                    }
+                    makeDonut(response.data.criteria + temp,response.data.titleField , response.data.valueField , response.data.donut_data,response.data.total_feedback);
+                } else if (response.status == 1 && response.data.total_feedback > 0 && response.chart_type == "bar") {
+                    console.log('else if');
+                    var bar_chart_data = response.data.bar_chart_data;
+                    var bar_graph_array = response.data.bar_graph_array;
+                    var bar_category_field = response.data.bar_category_field;
+                    makebar(bar_chart_data,bar_graph_array,bar_category_field);
                 }
+                else{
+                    console.log('else');
+                }
+
             },
             error: function (response) {
 
@@ -98,81 +151,122 @@
 
     }
 
+    //function for amchart
+
+    function handleInit() {
+        chart.legend.addListener("rollOverItem", handleRollOver);
+    }
+
+    function handleRollOver(e) {
+        var wedge = e.dataItem.wedge.node;
+        wedge.parentNode.appendChild(wedge);
+    }
+
+    function makeDonut(title,titlefield, valuefield, donutdata,totalfeedback) {
+        var chart = AmCharts.makeChart("chartdiv", {
+            "type": "pie",
+            "startDuration": 1,
+            "theme": "light",
+            "addClassNames": true,
+            "legend": {
+                "position": "right",
+                "marginRight": 100,
+                "autoMargins": false
+            },
+            "innerRadius": "30%",
+            "defs": {
+                "filter": [{
+                    "id": "shadow",
+                    "width": "200%",
+                    "height": "200%",
+                    "feOffset": {
+                        "result": "offOut",
+                        "in": "SourceAlpha",
+                        "dx": 0,
+                        "dy": 0
+                    },
+                    "feGaussianBlur": {
+                        "result": "blurOut",
+                        "in": "offOut",
+                        "stdDeviation": 5
+                    },
+                    "feBlend": {
+                        "in": "SourceGraphic",
+                        "in2": "blurOut",
+                        "mode": "normal"
+                    }
+                }]
+            },
+            "dataProvider": donutdata,
+            "valueField": valuefield,
+            "titleField": titlefield,
+            "export": {
+                "enabled": true
+            },
+            "responsive": {
+                "enabled": true
+            },
+            "titles": [
+                {
+                    "text": title,
+                    "size": 35
+                }
+            ],
+            "radius": 100
+        });
+
+        chart.addListener("init", handleInit);
+
+        chart.addListener("rollOverSlice", function (e) {
+            handleRollOver(e);
+        });
+    }
+
+    function makebar(bar_chart_data,bar_graph_array,bar_category_field) {
+        var chart = AmCharts.makeChart("chartdiv", {
+            "type": "serial",
+            "theme": "light",
+            "categoryField": bar_category_field,
+            "rotate": true,
+            "startDuration": 1,
+            "categoryAxis": {
+                "gridPosition": "start",
+                "position": "left"
+            },
+            "trendLines": [],
+            "graphs": bar_graph_array,
+            "guides": [],
+            "valueAxes": [
+                {
+                    "id": "ValueAxis-1",
+                    "position": "top",
+                    "axisAlpha": 0
+                }
+            ],
+            "allLabels": [],
+            "balloon": {},
+            "titles": [],
+            "dataProvider": bar_chart_data,
+            "export": {
+                "enabled": true
+            }
+
+        });
+        // LEGEND
+        var legend = new AmCharts.AmLegend();
+        legend = new AmCharts.AmLegend();
+        legend.position = "bottom";
+        legend.align = "center";
+        legend.markerType = "square";
+        legend.valueText = "aa";
+        chart.addLegend(legend);
+        // WRITE
+        chart.write("chartdiv");
+
+    }
+
+
     $(document).ready(function () {
-
-        //static morris chart
-        // Morris bar chart
-        Morris.Bar( {
-            element: 'morris-bar-chart',
-            data: [ {
-                y: '2006',
-                a: 100,
-                b: 90,
-                c: 60
-            }, {
-                y: '2007',
-                a: 75,
-                b: 65,
-                c: 40
-            }, {
-                y: '2008',
-                a: 50,
-                b: 40,
-                c: 30
-            }, {
-                y: '2009',
-                a: 75,
-                b: 65,
-                c: 40
-            }, {
-                y: '2010',
-                a: 50,
-                b: 40,
-                c: 30
-            }, {
-                y: '2011',
-                a: 75,
-                b: 65,
-                c: 40
-            }, {
-                y: '2012',
-                a: 100,
-                b: 90,
-                c: 40
-            } ],
-            xkey: 'y',
-            ykeys: [ 'a', 'b', 'c' ],
-            labels: [ 'A', 'B', 'C' ],
-            barColors: [ '#26DAD2', '#fc6180', '#4680ff' ],
-            hideHover: 'auto',
-            gridLineColor: '#eef0f2',
-            resize: true
-        } );
-
-
-        // Morris donut chart
-
-        Morris.Donut( {
-            element: 'morris-donut-chart',
-            data: [ {
-                label: "Download Sales",
-                value: 12,
-
-            }, {
-                label: "In-Store Sales",
-                value: 30
-            }, {
-                label: "Mail-Order Sales",
-                value: 20
-            } ],
-            resize: true,
-            colors: [ '#4680ff', '#26DAD2', '#fc6180' ]
-        } );
-
-
-
-
-
 
         $("#form_analysis").validate({
             errorClass: 'invalid-feedback animated fadeInDown',
@@ -198,9 +292,9 @@
                 'criteria_select': {
                     required: true
                 },
-                'employee_select':{
-                    required:{
-                        depends:function () {
+                'employee_select': {
+                    required: {
+                        depends: function () {
                             return $('#section_select').val() == 1
                         }
                     }
@@ -216,7 +310,7 @@
                 'criteria_select': {
                     required: "This field is required."
                 },
-                'employee_select':{
+                'employee_select': {
                     required: "This field is required."
                 }
             }
@@ -231,7 +325,7 @@
                 var criteria_id = $('#criteria_select').val();
                 var employee_id = $('#employee_select').val();
 
-                getAnalysisData(class_id,section_id,criteria_id,employee_id);
+                getAnalysisData(class_id, section_id, criteria_id, employee_id);
 
 
             } else {
@@ -245,7 +339,7 @@
             var sectionid = $(this).val();
             var class_id = $('#class_id').val();
             $('#class_select option[value = 0]').remove();
-            if(sectionid != 1){
+            if (sectionid != 1) {
                 $('#class_select').append($('<option>', {
                     value: 0,
                     text: 'All Class'
@@ -255,7 +349,7 @@
             $.ajax({
                 url: base_url + 'backoffice/Analysis/getCriteriaEmpList',
                 type: 'post',
-                data: {'section_id': sectionid,'class_id':class_id},
+                data: {'section_id': sectionid, 'class_id': class_id},
                 success: function (response) {
                     response = JSON.parse(response);
 
@@ -264,23 +358,22 @@
 
                     //set criteria list
                     var option = '';
-                    if(response.employee_list.length > 0)
-                    option += '<option value="0">All Criterias</option>';
+                    if (response.employee_list.length > 0)
+                        option += '<option value="0">All Criterias</option>';
                     $.each(response.criteria_list, function (index, value) {
                         option += '<option value="' + value.criteria_id + '">' + value.criteria_name + '</option>';
                     });
                     $('#criteria_select').html(option);
 
 
-                        //set employee list
-                        var option = '';
+                    //set employee list
+                    var option = '';
 
-                        // option += '<option value="0">All Employees</option>';
-                        $.each(response.employee_list, function (index, value) {
-                            option += '<option value="' + value.emp_code + '">' + value.emp_name + '</option>';
-                        });
-                        $('#employee_select').html(option);
-
+                    // option += '<option value="0">All Employees</option>';
+                    $.each(response.employee_list, function (index, value) {
+                        option += '<option value="' + value.emp_code + '">' + value.emp_name + '</option>';
+                    });
+                    $('#employee_select').html(option);
 
 
                 },
@@ -306,13 +399,13 @@
                         response = JSON.parse(response);
 
 
-                            //set employee list
-                            var option = '';
-                            //option += '<option value="">Select Employee</option>';
-                            $.each(response.employee_list, function (index, value) {
-                                option += '<option value="' + value.emp_code + '">' + value.emp_name + '</option>';
-                            });
-                            $('#employee_select').html(option);
+                        //set employee list
+                        var option = '';
+                        //option += '<option value="">Select Employee</option>';
+                        $.each(response.employee_list, function (index, value) {
+                            option += '<option value="' + value.emp_code + '">' + value.emp_name + '</option>';
+                        });
+                        $('#employee_select').html(option);
 
                     },
                     error: function (response) {
