@@ -5,6 +5,7 @@ class Profile extends AdminController
     public function __construct()
     {
         parent::__construct();
+        $this->load->library('upload');
     }
 
     public function index()
@@ -29,8 +30,19 @@ class Profile extends AdminController
         $update = $this->CommonModel->update('user', array('user_email' => $user_details['frm_profile_user_email']), array('user_id' => $session_user['user_id']));
         if ($update) {
             //update session
+
             $session_user['user_email'] = $user_details['frm_profile_user_email'];
             $this->session->set_userdata('feedback-admin', $session_user);
+
+            if($_FILES['frm_profile_user_image']){
+                $filename = 'user_img_'.$session_user['user_id'];
+                $path = FCPATH.'\\uploads\\user\\profile';
+                $isupload = $this->CommonModel->doUpload('frm_profile_user_image',$path,$filename,'jpg|png');
+                if($isupload){
+                    $image = $this->CommonModel->update('user', array('user_image' => $filename), array('user_id' => $session_user['user_id']));
+                }
+
+            }
 
             $this->session->set_flashdata('success', 'Profile Updated successfully');
 
@@ -38,6 +50,7 @@ class Profile extends AdminController
             $this->session->set_flashdata('error', 'Fail To  Update Profile.Try Again');
 
         }
+        redirect(base_url('backoffice/Profile'));
     }
 
     public function viewChangePasswordModel()

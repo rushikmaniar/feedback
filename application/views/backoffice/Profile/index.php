@@ -1,8 +1,22 @@
 <div class="card">
     <div class="card-body">
-        <form id="frm_profile" method="post" action="<?= base_url('backoffice/Profile/editProfile')?>">
+        <form id="frm_profile" method="post" action="<?= base_url('backoffice/Profile/editProfile')?>" enctype="multipart/form-data">
             <div class="row col-sm-12">
+                <!-- User Image -->
+                <div class="col-sm-3 form-group thumbnail">
+                    <div class="input-group image">
 
+                            <input type="file" name="frm_profile_user_image" id="frm_profile_user_image" style="display:none" onchange="readURL(this)">
+                            <a href="javscript:void()" onclick="$('#frm_profile_user_image').click()">
+                                <img src="<?= base_url('uploads/user/profile/user_img_').$user_details['user_id']?>" id="user_image"
+
+                                     class="img-responsive img-circle img-fluid"
+                                                            onerror="this.src='<?= base_url('images/person-noimage-found.png')?>'">
+                            </a>
+
+                    </div>
+                </div>
+                
                 <!-- User Email -->
                 <div class="col-sm-12 form-group">
                     <div class="input-group">
@@ -30,6 +44,7 @@
 </div>
 <script>
     $(document).ready(function () {
+
         var update_id = $('#frm_profile_user_id').val();
         $("#frm_profile").validate({
             errorClass: 'invalid-feedback animated fadeInDown',
@@ -59,6 +74,9 @@
                             }
                         }
                     }
+                },
+                'frm_profile_user_image':{
+                    accept: "image/jpeg, image/png"
                 }
 
 
@@ -67,9 +85,26 @@
                 'frm_profile_user_email': {
                     required: "This field is required.",
                     remote: "User Email already Exists"
+                },
+                'frm_profile_user_image':{
+                    accept: "Invalid File Type . JPEG / PNG Accepted"
                 }
             }
         });
+
     });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#user_image')
+                    .attr('src', e.target.result)
+                    .width(150)
+                    .height(150);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 
 </script>

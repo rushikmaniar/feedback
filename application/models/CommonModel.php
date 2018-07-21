@@ -317,6 +317,7 @@ class CommonModel extends CI_Model
     		$type = implode('|', $this->imageExtensions);
     	}
     	$configParam = array();
+    	$configParam['overwrite']= true;
     	$configParam['upload_path']          = $path;
     	$configParam['allowed_types']        = $type;
     	if ($fileName){
@@ -330,7 +331,7 @@ class CommonModel extends CI_Model
     		return $this->upload->data();
     	}
     	else {
-    		//echo $this->upload->display_errors();
+    		echo $this->upload->display_errors();
     		return false;
     	}
     }

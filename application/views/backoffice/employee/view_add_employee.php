@@ -1,9 +1,16 @@
-<?= form_open("backoffice/Employee/addEditEmployee", array('id' => 'employee_frm', 'method' => 'post')) ?>
+<?= form_open_multipart("backoffice/Employee/addEditEmployee", array('id' => 'employee_frm', 'method' => 'post')) ?>
 <?= form_input(array('type' => 'hidden', 'name' => 'action', 'id' => 'action', 'value' => (isset($employee_data)) ? 'editEmployee' : 'addEmployee')) ?>
 <?= form_input(array('type' => 'hidden', 'name' => 'update_id', 'id' => 'update_id', 'value' => (isset($employee_data)) ? $employee_data['emp_code'] : '')) ?>
 
 <div class="row">
 
+    <!-- Employee Image  -->
+    <div class="col-sm-12">
+        <div class="input-group form-group">
+            <input type="file" id="employee_frm_emp_image" name="employee_frm_emp_image" style="display: none" onchange="readURL(this)">
+            <a href="javascript:void()" onclick="$('#employee_frm_emp_image').click()"><img id="emp_image" class="img-circle" src="<?= base_url('uploads/empoyee/').(isset($employee_data['emp_image'])?$employee_data['emp_image']:'')?>" style="height: 80px;width: 80px;" onerror="this.src='<?= base_url('images/person-noimage-found.png')?>'"></a>
+        </div>
+    </div>
     <!-- Employee Code  -->
     <div class="col-sm-6">
         <div class="input-group form-group">
@@ -72,7 +79,18 @@
             update_field = 'emp_code'
         }
 
-
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#emp_image')
+                        .attr('src', e.target.result)
+                        .width(80)
+                        .height(80);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
         $(document).ready(function () {
             $('#employee_frm_dept_id').select2({
                 dropdownAutoWidth : true

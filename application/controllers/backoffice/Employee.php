@@ -81,6 +81,15 @@ class Employee extends AdminController
            $save = $this->CommonModel->save("employee_master",$employee_data);
 
            if($save){
+               if($_FILES['employee_frm_emp_image']){
+                   $filename = 'emp_img_'.$save;
+                   $path = FCPATH.'\\uploads\\employee';
+                   $isupload = $this->CommonModel->doUpload('employee_frm_emp_image',$path,$filename,'jpg|png');
+                   if($isupload){
+                       $image = $this->CommonModel->update('emploee_master', array('emp_image' => $filename), array('emp_code' => $save));
+                   }
+
+               }
                 $this->session->set_flashdata("success","Employee added successfully");
             }else{
                 $this->session->set_flashdata("error","problem adding employee. Try Later");
@@ -104,6 +113,15 @@ class Employee extends AdminController
 
                 $update = $this->CommonModel->update("employee_master", $employee_data, array('emp_code' => $this->input->post('update_id')));
                 if ($update) {
+                    if($_FILES['employee_frm_emp_image']){
+                        $filename = 'emp_img_'.$this->input->post('update_id');
+                        $path = FCPATH.'\\uploads\\employee';
+                        $isupload = $this->CommonModel->doUpload('employee_frm_emp_image',$path,$filename,'jpg|png');
+                        if($isupload){
+                            $image = $this->CommonModel->update('employee_master', array('emp_image' => $filename), array('emp_code' => $this->input->post('update_id')));
+                        }
+
+                    }
                     $this->session->set_flashdata("success", "Employee updated successfully");
                 } else {
                     $this->session->set_flashdata("error", "Problem Editing Employee.Try Later");
@@ -155,9 +173,9 @@ class Employee extends AdminController
             if($analysis_record == 0) {
                 $result = $this->CommonModel->delete("employee_master", array('emp_code' => $this->input->post('emp_code')));
                 if ($result) {
-                    if ($this->input->post('emp_pic')) {
-                        unlink($this->DIR . $this->input->post('emp_pic'));
-                    }
+                        //delete employee image
+                        unlink(FCPATH.'uploads\\employee\\'.$this->input->post('emp_code'));
+
 
                     $res_output['code'] = 1;
                     $res_output['status'] = "success";

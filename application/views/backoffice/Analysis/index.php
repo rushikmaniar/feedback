@@ -79,6 +79,7 @@
 
                 <div id="TotalFeedback"></div>
                 <div id="chartdiv"></div>
+                <div id="charttable"></div>
 
             </div>
         </form>
@@ -110,7 +111,7 @@
         if (typeof employee_id === 'undefined') {
             employee_id = null;
         }
-
+        $('#charttable').html('');
         alert(class_id + '  ' + section_id + '  ' + criteria_id + '  ' + employee_id);
 
         //ajax call for data
@@ -126,34 +127,42 @@
             success: function (response) {
                 response = JSON.parse(response);
                 if (response.status == 1 && response.data.total_feedback > 0 && response.chart_type == "donut") {
-                    $('#TotalFeedback').html('<h2>Total Feedback : '+ response.data.total_feedback +'</h2>');
-                    console.log(response.data.donut_data);
-                    var temp = '';
-                    if ($('#employee_select').val() != 'undefined') {
-                        temp = '          ' + $('#employee_select option:selected').text();
-                    }
-                    makeDonut(response.data.criteria + temp, response.data.titleField, response.data.valueField, response.data.donut_data, response.data.total_feedback);
+
+                    var charttitle = '';
+                    charttitle += $('#employee_select option:selected').text();
+                    charttitle += ' : ' + response.data.criteria;
+
+                    var chartsubtitle = ' Class : ' + $('#class_select option:selected').text();
+                    chartsubtitle += '  Total Feedback : ' + response.data.total_feedback;
+
+
+                    makeDonut(charttitle,chartsubtitle, response.data.titleField, response.data.valueField, response.data.donut_data, response.data.total_feedback);
+
                 } else if (response.status == 1 && response.data.total_feedback > 0 && response.chart_type == "bar") {
-                    $('#TotalFeedback').html('<h2>Total Feedback : '+ response.data.total_feedback +'</h2>');
-                    var temp = '';
-                    if ($('#employee_select').val() != 'undefined') {
-                        temp = '          ' + $('#employee_select option:selected').text();
-                    }
-                    console.log('else if');
+
+                    var charttitle = '';
+                    charttitle += $('#employee_select option:selected').text();
+                    charttitle += ' : ' + $('#criteria_select option:selected').text();
+
+                    var chartsubtitle = ' Class : ' + $('#class_select option:selected').text();
+                    chartsubtitle += '  Total Feedback : ' + response.data.total_feedback;
+
                     var bar_chart_data = response.data.bar_chart_data;
                     var bar_graph_array = response.data.bar_graph_array;
                     var bar_category_field = response.data.bar_category_field;
-                    makebar(bar_chart_data, bar_graph_array, bar_category_field,temp);
+                    makebar(charttitle,chartsubtitle,bar_chart_data, bar_graph_array, bar_category_field);
+                    makeEmpTable(charttitle,chartsubtitle,response.data.bar_table_data,bar_graph_array);
                 }
                 else {
                     $('#TotalFeedback').html('<h2>Total Feedback : '+ response.data.total_feedback +'</h2>');
                     $('#chartdiv').html('<h2 align="center" class="text-danger">No Data Found</h2>');
+
                     console.log('else');
                 }
 
             },
             error: function (response) {
-
+                console.log(' ajax request error');
             }
         });
 
@@ -170,7 +179,47 @@
         wedge.parentNode.appendChild(wedge);
     }
 
-    function makeDonut(title, titlefield, valuefield, donutdata, totalfeedback) {
+    function makeEmpTable(title,subtitle,bar_table_data,bar_graph_array) {
+        var html = '';
+            html += '<table class="display nowrap table table-hover table-striped table-bordered dataTable" id="EmpTable">';
+
+            html += '<thead>';
+            html += '<tr>';
+
+                $.each(bar_graph_array,function(index,value){
+                    html += '<td>' + value['title'] + '</td>';
+                });
+                html += '<td>Total</td>';
+            html += '</tr>';
+            html += '</thead>';
+
+            html += '<tbody>';
+            $.each(bar_table_data,function(rowindex,row){
+                html += '<tr>';
+                $.each(row,function(colindex,col){
+                    html += '<td>' + col + '</td>';
+                });
+                html +='</tr>';
+            });
+            html += '</tbody>';
+
+            html += '</table>';
+
+
+            $('#charttable').html('');
+            $('#charttable').html(html);
+
+        $('#EmpTable').dataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+
+
+    }
+
+    function makeDonut(charttitle,chartsubtitle, titlefield, valuefield, donutdata, totalfeedback) {
         var chart = AmCharts.makeChart("chartdiv", {
             "type": "pie",
             "startDuration": 1,
@@ -216,8 +265,11 @@
             },
             "titles": [
                 {
-                    "text": title,
+                    "text": charttitle,
                     "size": 35
+                },{
+                    "text": chartsubtitle,
+                    "size": 25
                 }
             ],
             "radius": 100
@@ -230,7 +282,7 @@
         });
     }
 
-    function makebar(bar_chart_data, bar_graph_array, bar_category_field,title) {
+    function makebar(charttitle,chartsubtitle,bar_chart_data, bar_graph_array, bar_category_field) {
         var chart = AmCharts.makeChart("chartdiv", {
             "type": "serial",
             "theme": "light",
@@ -254,8 +306,11 @@
             "allLabels": [],
             "balloon": {},
             "titles": [ {
-                "text": title,
+                "text": charttitle,
                 "size": 35
+            },{
+                "text": chartsubtitle,
+                "size": 25
             }],
             "dataProvider": bar_chart_data,
             "export": {

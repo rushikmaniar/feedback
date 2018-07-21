@@ -59,7 +59,6 @@
     <link href="<?= base_url();?>assets/backoffice/plugins/sweet-alert2/sweetalert2.min.css" rel="stylesheet">
     <script src="<?= base_url()?>assets/backoffice/plugins/sweet-alert2/sweetalert2.min.js"></script>
 
-
     <script type="text/javascript">
         var base_url = "<?= base_url();?>";
         var SITE_URL = "<?= site_url(); ?>";

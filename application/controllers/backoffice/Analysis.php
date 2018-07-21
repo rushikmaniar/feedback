@@ -288,6 +288,7 @@ class Analysis extends AdminController
                             $bar_table_data['col_total'][$criteria_name] = (isset($bar_table_data['col_total'][$criteria_name]) ? $bar_table_data['col_total'][$criteria_name] + $cols : 0);
                         }
                         $bar_table_data[$rank_name]['row_total'] = $row['row_total'];
+                        $bar_table_data['col_total']['row_total'] = (isset($bar_table_data['col_total']['row_total']) ? $bar_table_data['col_total']['row_total'] + $row['row_total'] : 0);
                     }
 
                     //move col_data to end

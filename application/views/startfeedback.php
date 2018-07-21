@@ -52,6 +52,7 @@
                                         <input type="hidden" id="emp_section_id" name="section[<?= $row_section['section_id']?>][section_id]" value="<?= $row_section['section_id'];?>">
                                         <input type="hidden" name="section[<?= $row_section['section_id']?>][section_name]" value="<?= $row_section['section_name'];?>">
 
+                                        <td>Teachers Image</td>
                                         <td>Teachers Name</td>
                                         <?php foreach ($row_section['criteria_list'] as $index=>$value):?>
                                             <td data-criteriaid="<?= $value['criteria_id']; ?>" class="employee_criteria" data-type_data="<?= $value['type_data']?>"><?= $value['criteria_name']; ?></td>
@@ -176,6 +177,7 @@ $(document).ready(function () {
                         html +'<input type="hidden" name="class_id" value="'+class_id+'">';
                         $.each(response.data,function (key,value) {
                            html+= '<tr>';
+                                html += '<td><img src="' + base_url + '/uploads/employee/emp_img_"' + value.emp_image +' onerror="this.src=\''+base_url+'/images/person-noimage-found.png\'" style="height:80px;width:80px" class="img-circle"></td>';
                                html += '<td data-emp_code="'+value.emp_code+'">'+value.emp_name+'</td>';
                                 $.each(employee_criteria_list,function (index,criteria_value) {
 
