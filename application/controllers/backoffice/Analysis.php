@@ -303,21 +303,24 @@ class Analysis extends AdminController
                     $i=0;
                     foreach ($temp2 as $key => $value):
                         unset($value['row_total']);
-                        $bar_chart_data[$key] = $value;
-                        $bar_chart_data[$key]['criteria_name'] = $key;
+                        $value['criteria_name'] = $key;
+                        $bar_chart_data[] = $value;
+                    endforeach;
+                    unset($bar_chart_data['col_total']);
 
+                    foreach ($criteria_info->result_array() as $value){
                         //for graph
                         $graph_array[] = array(
-                            "balloonText"=>$key.':'.'[[percents]]',
+                            "balloonText"=>$value['criteria_name'].':'.'[[percents]]',
                             'fillAlphas'=> 0.8,
                             'id'=>'AmGraph-'.++$i,
                             'lineAlpha'=>0.2,
-                            'title'=>$key,
+                            'title'=>$value['criteria_name'],
                             'type'=>'column',
-                            'valueField'=>$key
+                            'valueField'=>$value['criteria_name']
                         );
-                    endforeach;
-                    unset($bar_chart_data['col_total']);
+
+                    }
 
                     //set data to response array
                     $response_array['status'] = 1;

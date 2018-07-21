@@ -128,18 +128,22 @@
                 if (response.status == 1 && response.data.total_feedback > 0 && response.chart_type == "donut") {
                     console.log(response.data.donut_data);
                     var temp = '';
-                    if($('#employee_select').val() != 'undefined'){
+                    if ($('#employee_select').val() != 'undefined') {
                         temp = '          ' + $('#employee_select option:selected').text();
                     }
-                    makeDonut(response.data.criteria + temp,response.data.titleField , response.data.valueField , response.data.donut_data,response.data.total_feedback);
+                    makeDonut(response.data.criteria + temp, response.data.titleField, response.data.valueField, response.data.donut_data, response.data.total_feedback);
                 } else if (response.status == 1 && response.data.total_feedback > 0 && response.chart_type == "bar") {
+                    var temp = '';
+                    if ($('#employee_select').val() != 'undefined') {
+                        temp = '          ' + $('#employee_select option:selected').text();
+                    }
                     console.log('else if');
                     var bar_chart_data = response.data.bar_chart_data;
                     var bar_graph_array = response.data.bar_graph_array;
                     var bar_category_field = response.data.bar_category_field;
-                    makebar(bar_chart_data,bar_graph_array,bar_category_field);
+                    makebar(bar_chart_data, bar_graph_array, bar_category_field,temp);
                 }
-                else{
+                else {
                     console.log('else');
                 }
 
@@ -162,7 +166,7 @@
         wedge.parentNode.appendChild(wedge);
     }
 
-    function makeDonut(title,titlefield, valuefield, donutdata,totalfeedback) {
+    function makeDonut(title, titlefield, valuefield, donutdata, totalfeedback) {
         var chart = AmCharts.makeChart("chartdiv", {
             "type": "pie",
             "startDuration": 1,
@@ -222,12 +226,12 @@
         });
     }
 
-    function makebar(bar_chart_data,bar_graph_array,bar_category_field) {
+    function makebar(bar_chart_data, bar_graph_array, bar_category_field,title) {
         var chart = AmCharts.makeChart("chartdiv", {
             "type": "serial",
             "theme": "light",
             "categoryField": bar_category_field,
-            "rotate": true,
+            "rotate": false,
             "startDuration": 1,
             "categoryAxis": {
                 "gridPosition": "start",
@@ -245,7 +249,10 @@
             ],
             "allLabels": [],
             "balloon": {},
-            "titles": [],
+            "titles": [ {
+                "text": title,
+                "size": 35
+            }],
             "dataProvider": bar_chart_data,
             "export": {
                 "enabled": true
