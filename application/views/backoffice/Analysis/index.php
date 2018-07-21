@@ -76,7 +76,7 @@
                     <button type="button" id="btn_refresh" class="btn-md btn-primary">Refresh</button>
                 </div>
 
-                <div id="CriteriaHeading"></div>
+
                 <div id="TotalFeedback"></div>
                 <div id="chartdiv"></div>
 
@@ -126,6 +126,7 @@
             success: function (response) {
                 response = JSON.parse(response);
                 if (response.status == 1 && response.data.total_feedback > 0 && response.chart_type == "donut") {
+                    $('#TotalFeedback').html('<h2>Total Feedback : '+ response.data.total_feedback +'</h2>');
                     console.log(response.data.donut_data);
                     var temp = '';
                     if ($('#employee_select').val() != 'undefined') {
@@ -133,6 +134,7 @@
                     }
                     makeDonut(response.data.criteria + temp, response.data.titleField, response.data.valueField, response.data.donut_data, response.data.total_feedback);
                 } else if (response.status == 1 && response.data.total_feedback > 0 && response.chart_type == "bar") {
+                    $('#TotalFeedback').html('<h2>Total Feedback : '+ response.data.total_feedback +'</h2>');
                     var temp = '';
                     if ($('#employee_select').val() != 'undefined') {
                         temp = '          ' + $('#employee_select option:selected').text();
@@ -144,6 +146,8 @@
                     makebar(bar_chart_data, bar_graph_array, bar_category_field,temp);
                 }
                 else {
+                    $('#TotalFeedback').html('<h2>Total Feedback : '+ response.data.total_feedback +'</h2>');
+                    $('#chartdiv').html('<h2 align="center" class="text-danger">No Data Found</h2>');
                     console.log('else');
                 }
 
