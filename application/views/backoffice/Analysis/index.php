@@ -185,7 +185,7 @@
 
             html += '<thead>';
             html += '<tr>';
-
+                    html += '<td>Rank</td>';
                 $.each(bar_graph_array,function(index,value){
                     html += '<td>' + value['title'] + '</td>';
                 });
@@ -194,6 +194,7 @@
             html += '</thead>';
 
             html += '<tbody>';
+
             $.each(bar_table_data,function(rowindex,row){
                 html += '<tr>';
                 $.each(row,function(colindex,col){

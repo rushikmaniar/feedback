@@ -74,7 +74,8 @@ class Employee extends AdminController
                 "emp_name" => $this->input->post('employee_frm_emp_name'),
                 "emp_phone" => $this->input->post('employee_frm_emp_phone'),
                 "emp_email" => $this->input->post('employee_frm_emp_email'),
-                "dept_id" => $this->input->post('employee_frm_dept_id')
+                "dept_id" => $this->input->post('employee_frm_dept_id'),
+                "emp_image" => null
             );
 
 
@@ -133,8 +134,6 @@ class Employee extends AdminController
             }else{
                 $this->session->set_flashdata("error", "Entry Record Of this Employee Exist . First Delete That Records");
             }
-        }else{
-            $this->session->set_flashdata("error", "Problem Editing Employee.Try Later");
         }
         
         redirect("backoffice/Employee","refresh");
@@ -178,7 +177,7 @@ class Employee extends AdminController
                 $result = $this->CommonModel->delete("employee_master", array('emp_code' => $this->input->post('emp_code')));
                 if ($result) {
                         //delete employee image
-                        unlink(FCPATH.'uploads\\employee\\'.$this->input->post('emp_code'));
+                        unlink(FCPATH.'uploads\\employee\\'.$this->input->post('emp_image'));
 
 
                     $res_output['code'] = 1;

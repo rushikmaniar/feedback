@@ -41,9 +41,9 @@
                                         </button>
                                         <button type="button"
                                                 class="btn btn-danger btn-sm"
-                                                data-tooltip=" <?= ($row['analysis_emp_code_entries'] != 0)?'Delete Employee':'Delete Entries in Entry Table To Edit Employee'?>"
+                                                data-tooltip=" <?= ($row['analysis_emp_code_entries'] == 0)?'Delete Employee':'Delete Entries in Entry Table To Delete Employee'?>"
                                                 data-container="body" title="Delete User"
-                                                onclick="deleteUser(<?=$row['emp_code']?>)"
+                                                onclick="deleteEmployee(<?=$row['emp_code']?>,'<?= $row['emp_image'] ?>')"
                                                 <?= ($row['analysis_emp_code_entries'] != 0)?'disabled="disabled"':''?>
                                         >
                                             <i class="fa fa-remove"></i>
@@ -69,9 +69,9 @@
 
     });
 	/*************************************
-				Delete User
+				Delete Employee
 	*************************************/
-    function deleteUser(emp_code)
+    function deleteEmployee(emp_code,emp_image)
     {
         swal({
             title: 'Are you sure?',
@@ -87,7 +87,7 @@
             url: base_url + "backoffice/Employee/deleteEmployee",
             type: "POST",
             dataType: "json",
-            data: {"emp_code": emp_code},
+            data: {"emp_code": emp_code,"emp_image":emp_image},
             success: function (result) {
                 if (result.code == 1 && result.code != '') {
                     toastr["success"](result.message, "Success");
@@ -109,6 +109,6 @@
     }).catch(swal.noop);
     }
 	/*************************************
-				Delete User End
+				Delete Employee End
 	*************************************/
 </script>

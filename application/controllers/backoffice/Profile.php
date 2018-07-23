@@ -29,10 +29,7 @@ class Profile extends AdminController
 
         $update = $this->CommonModel->update('user', array('user_email' => $user_details['frm_profile_user_email']), array('user_id' => $session_user['user_id']));
         if ($update) {
-            //update session
 
-            $session_user['user_email'] = $user_details['frm_profile_user_email'];
-            $this->session->set_userdata('feedback-admin', $session_user);
 
             if($_FILES['frm_profile_user_image']){
                 $path =  $_FILES['frm_profile_user_image']['name'];
@@ -45,6 +42,11 @@ class Profile extends AdminController
                 }
 
             }
+            //update session
+
+            $session_user['user_email'] = $user_details['frm_profile_user_email'];
+            $session_user['user_image'] = $filename.'.'.$ext;
+            $this->session->set_userdata('feedback-admin', $session_user);
 
             $this->session->set_flashdata('success', 'Profile Updated successfully');
 

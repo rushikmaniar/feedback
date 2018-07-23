@@ -270,16 +270,19 @@ class Analysis extends AdminController
                 $response_array['chart_type'] = "bar";
 
                 $ranks_data = $final_data;
+
                 unset($ranks_data['col_total']);
                 $bar_table_data = array();
 
 
+
                 if ($response_array['data']['total_feedback'] > 0):
                     //rows
-
+                    $bar_table_data['col_total']['rank'] = 'Total';
                     foreach ($ranks_data as $row) {
 
                         $rank_name = (isset($row['rank_name']) ? $row['rank_name'] : $row['option_name']);
+                        $bar_table_data[$rank_name]['rank'] = $rank_name;
 
                         //for each columns
                         foreach ($row['points'] as $key => $cols) {
@@ -291,10 +294,14 @@ class Analysis extends AdminController
                         $bar_table_data['col_total']['row_total'] = (isset($bar_table_data['col_total']['row_total']) ? $bar_table_data['col_total']['row_total'] + $row['row_total'] : 0);
                     }
 
+
                     //move col_data to end
                     $temp_bar = $bar_table_data['col_total'];
                     unset($bar_table_data['col_total']);
                     $bar_table_data['col_total'] = $temp_bar;
+
+
+
                     $graph_array = array();
 
                     //from bar table data
@@ -308,6 +315,7 @@ class Analysis extends AdminController
                         $bar_chart_data[] = $value;
                     endforeach;
                     unset($bar_chart_data['col_total']);
+
 
                     foreach ($criteria_info->result_array() as $value){
                         //for graph

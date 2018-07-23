@@ -177,7 +177,10 @@ $(document).ready(function () {
                         html +'<input type="hidden" name="class_id" value="'+class_id+'">';
                         $.each(response.data,function (key,value) {
                            html+= '<tr>';
-                                html += '<td><img src="' + base_url + '/uploads/employee/emp_img_"' + value.emp_image +' onerror="this.src=\''+base_url+'/images/person-noimage-found.png\'" style="height:80px;width:80px" class="img-circle"></td>';
+                                if(value.emp_image != null)
+                                html += '<td><img src="' + base_url + '/uploads/employee/' + value.emp_image + '" onerror="this.src= base_url + \'/images/person-noimage-found.png\'" style="height:80px;width:80px" class="img-circle"></td>';
+                                else
+                                    html += '<td><img src="' + base_url + '/images/person-noimage-found.png"' + 'style="height:80px;width:80px" class="img-circle"></td>';
                                html += '<td data-emp_code="'+value.emp_code+'">'+value.emp_name+'</td>';
                                 $.each(employee_criteria_list,function (index,criteria_value) {
 

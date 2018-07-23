@@ -22,7 +22,7 @@
             <ul class="navbar-nav my-lg-0">
                 <!-- Profile -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-muted  " href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="<?= base_url(); ?>assets/backoffice/images/users/5.jpg" alt="user" class="profile-pic" /></a>
+                    <a class="nav-link dropdown-toggle text-muted  " href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="<?= base_url('uploads/user/profile/').$this->session->userdata('feedback-admin')['user_image']?>" onerror="this.src='<?= base_url(); ?>assets/backoffice/images/users/5.jpg'" alt="user" class="profile-pic" /></a>
                     <div class="dropdown-menu dropdown-menu-right animated zoomIn">
                         <ul class="dropdown-user">
                             <li><a href="<?= base_url('backoffice/Profile')?>"><i class="ti-user"></i> Profile</a></li>
