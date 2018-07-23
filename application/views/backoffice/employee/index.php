@@ -22,7 +22,7 @@
                             <tr id="row_<?= $row['emp_code']?>">
                                 <!-- Employee Code -->
 
-                                <td><img src="<?= base_url().'uploads/employee/'.$row['emp_image']?>" onerror="this.src='<?= base_url('images/person-noimage-found')?>'" class="img-responsive img-circle" style="height: 100px;width: 100px"></td>
+                                <td><img src="<?= base_url().'uploads/employee/'.$row['emp_image']?>" onerror="this.src='<?= base_url('images/person-noimage-found.png')?>'" class="img-responsive img-circle" style="height: 100px;width: 100px"></td>
                                 <td><?=$row['emp_code']?></td>
                                 <td><?=$row['emp_name']?></td>
                                 <td><?=$row['emp_email']?></td>

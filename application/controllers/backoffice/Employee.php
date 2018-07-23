@@ -82,11 +82,13 @@ class Employee extends AdminController
 
            if($save){
                if($_FILES['employee_frm_emp_image']){
+                   $path =  $_FILES['employee_frm_emp_image']['name'];
+                   $ext = pathinfo($path, PATHINFO_EXTENSION);
                    $filename = 'emp_img_'.$save;
                    $path = FCPATH.'\\uploads\\employee';
                    $isupload = $this->CommonModel->doUpload('employee_frm_emp_image',$path,$filename,'jpg|png');
                    if($isupload){
-                       $image = $this->CommonModel->update('emploee_master', array('emp_image' => $filename), array('emp_code' => $save));
+                       $image = $this->CommonModel->update('employee_master', array('emp_image' => $filename.'.'.$ext), array('emp_code' => $save));
                    }
 
                }
@@ -114,11 +116,13 @@ class Employee extends AdminController
                 $update = $this->CommonModel->update("employee_master", $employee_data, array('emp_code' => $this->input->post('update_id')));
                 if ($update) {
                     if($_FILES['employee_frm_emp_image']){
+                        $path =  $_FILES['employee_frm_emp_image']['name'];
+                        $ext = pathinfo($path, PATHINFO_EXTENSION);
                         $filename = 'emp_img_'.$this->input->post('update_id');
                         $path = FCPATH.'\\uploads\\employee';
                         $isupload = $this->CommonModel->doUpload('employee_frm_emp_image',$path,$filename,'jpg|png');
                         if($isupload){
-                            $image = $this->CommonModel->update('employee_master', array('emp_image' => $filename), array('emp_code' => $this->input->post('update_id')));
+                            $image = $this->CommonModel->update('employee_master', array('emp_image' => $filename.'.'.$ext), array('emp_code' => $this->input->post('update_id')));
                         }
 
                     }

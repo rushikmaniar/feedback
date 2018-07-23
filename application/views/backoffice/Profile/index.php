@@ -8,7 +8,7 @@
 
                             <input type="file" name="frm_profile_user_image" id="frm_profile_user_image" style="display:none" onchange="readURL(this)">
                             <a href="javscript:void()" onclick="$('#frm_profile_user_image').click()">
-                                <img src="<?= base_url('uploads/user/profile/user_img_').$user_details['user_id']?>" id="user_image"
+                                <img src="<?= base_url('uploads/user/profile/').$user_details['user_image']?>" id="user_image"
 
                                      class="img-responsive img-circle img-fluid"
                                                             onerror="this.src='<?= base_url('images/person-noimage-found.png')?>'">

@@ -35,11 +35,13 @@ class Profile extends AdminController
             $this->session->set_userdata('feedback-admin', $session_user);
 
             if($_FILES['frm_profile_user_image']){
+                $path =  $_FILES['frm_profile_user_image']['name'];
+                $ext = pathinfo($path, PATHINFO_EXTENSION);
                 $filename = 'user_img_'.$session_user['user_id'];
                 $path = FCPATH.'\\uploads\\user\\profile';
                 $isupload = $this->CommonModel->doUpload('frm_profile_user_image',$path,$filename,'jpg|png');
                 if($isupload){
-                    $image = $this->CommonModel->update('user', array('user_image' => $filename), array('user_id' => $session_user['user_id']));
+                    $image = $this->CommonModel->update('user', array('user_image' => $filename.'.'.$ext), array('user_id' => $session_user['user_id']));
                 }
 
             }

@@ -8,7 +8,7 @@
     <div class="col-sm-12">
         <div class="input-group form-group">
             <input type="file" id="employee_frm_emp_image" name="employee_frm_emp_image" style="display: none" onchange="readURL(this)">
-            <a href="javascript:void()" onclick="$('#employee_frm_emp_image').click()"><img id="emp_image" class="img-circle" src="<?= base_url('uploads/empoyee/').(isset($employee_data['emp_image'])?$employee_data['emp_image']:'')?>" style="height: 80px;width: 80px;" onerror="this.src='<?= base_url('images/person-noimage-found.png')?>'"></a>
+            <a href="javascript:void()" onclick="$('#employee_frm_emp_image').click()"><img id="emp_image" class="img-circle" src="<?= base_url('uploads/employee/').(isset($employee_data['emp_image'])?$employee_data['emp_image']:'')?>" style="height: 80px;width: 80px;" onerror="this.src='<?= base_url('images/person-noimage-found.png')?>'"></a>
         </div>
     </div>
     <!-- Employee Code  -->
