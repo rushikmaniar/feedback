@@ -23,7 +23,7 @@
                 <li class="nav-devider"></li>
                 <li class="nav-label">Records</li>
                 <li> <a href="<?= base_url('backoffice/EntryRecord')?>" aria-expanded="false"><i class="fa fa-user"></i>Entry Record</a></li>
-                <li> <a href="<?= base_url('backoffice/AnalysisRecord')?>" aria-expanded="false"><i class="fa fa-user"></i>Analysis Record</a></li>
+                <li> <a href="<?= base_url('backoffice/AnalysisRecord')?>" aria-expanded="false"><i class="fa fa-"></i>Analysis Record</a></li>
                 <li> <a href="<?= base_url('backoffice/RemarksRecord')?>" aria-expanded="false"><i class="fa fa-user"></i>Remarks Record</a></li>
 
                 <!-- Analysis  -->

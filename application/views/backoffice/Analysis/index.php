@@ -150,8 +150,9 @@
                     var bar_chart_data = response.data.bar_chart_data;
                     var bar_graph_array = response.data.bar_graph_array;
                     var bar_category_field = response.data.bar_category_field;
+                    var criteria_list = response.data.criteria_list;
                     makebar(charttitle,chartsubtitle,bar_chart_data, bar_graph_array, bar_category_field);
-                    makeEmpTable(charttitle,chartsubtitle,response.data.bar_table_data,bar_graph_array);
+                    makeEmpTable(charttitle,chartsubtitle,response.data.bar_table_data,criteria_list);
                 }
                 else {
                     $('#TotalFeedback').html('<h2>Total Feedback : '+ response.data.total_feedback +'</h2>');
@@ -179,22 +180,21 @@
         wedge.parentNode.appendChild(wedge);
     }
 
-    function makeEmpTable(title,subtitle,bar_table_data,bar_graph_array) {
+    function makeEmpTable(title,subtitle,bar_table_data,criteria_list) {
         var html = '';
             html += '<table class="display nowrap table table-hover table-striped table-bordered dataTable" id="EmpTable">';
 
             html += '<thead>';
             html += '<tr>';
-                    html += '<td>Rank</td>';
-                $.each(bar_graph_array,function(index,value){
-                    html += '<td>' + value['title'] + '</td>';
+                html += '<td>Rank</td>';
+                $.each(criteria_list,function(index,value){
+                    html += '<td>' + value + '</td>';
                 });
                 html += '<td>Total</td>';
             html += '</tr>';
             html += '</thead>';
 
             html += '<tbody>';
-
             $.each(bar_table_data,function(rowindex,row){
                 html += '<tr>';
                 $.each(row,function(colindex,col){
@@ -288,7 +288,7 @@
             "type": "serial",
             "theme": "light",
             "categoryField": bar_category_field,
-            "rotate": false,
+            "rotate": true,
             "startDuration": 1,
             "categoryAxis": {
                 "gridPosition": "start",
@@ -319,6 +319,8 @@
             }
 
         });
+
+
         // LEGEND
         var legend = new AmCharts.AmLegend();
         legend = new AmCharts.AmLegend();

@@ -270,28 +270,39 @@ class Analysis extends AdminController
                 $response_array['chart_type'] = "bar";
 
                 $ranks_data = $final_data;
-
                 unset($ranks_data['col_total']);
                 $bar_table_data = array();
 
 
-
                 if ($response_array['data']['total_feedback'] > 0):
                     //rows
-                    $bar_table_data['col_total']['rank'] = 'Total';
+                    $bar_chart_data = array();
                     foreach ($ranks_data as $row) {
 
                         $rank_name = (isset($row['rank_name']) ? $row['rank_name'] : $row['option_name']);
-                        $bar_table_data[$rank_name]['rank'] = $rank_name;
 
                         //for each columns
                         foreach ($row['points'] as $key => $cols) {
                             $criteria_name = $this->CommonModel->getRecord('criteria_master', array('criteria_id' => $key))->row_array()['criteria_name'];
+                            $bar_table_data[$rank_name]['rank'] = $rank_name;
                             $bar_table_data[$rank_name][$criteria_name] = $cols;
+                            $bar_table_data['col_total']['rank'] = 'Total';
                             $bar_table_data['col_total'][$criteria_name] = (isset($bar_table_data['col_total'][$criteria_name]) ? $bar_table_data['col_total'][$criteria_name] + $cols : 0);
+
+                            $bar_chart_data[$criteria_name]['criteria_name'] = $criteria_name;
+                            $bar_chart_data[$criteria_name][$rank_name] = $cols;
+
+
                         }
+
                         $bar_table_data[$rank_name]['row_total'] = $row['row_total'];
                         $bar_table_data['col_total']['row_total'] = (isset($bar_table_data['col_total']['row_total']) ? $bar_table_data['col_total']['row_total'] + $row['row_total'] : 0);
+                    }
+
+                    //bar chart data
+                    $bar_data = array();
+                    foreach ($bar_chart_data as $row) {
+                        $bar_data[] = $row;
                     }
 
 
@@ -299,44 +310,38 @@ class Analysis extends AdminController
                     $temp_bar = $bar_table_data['col_total'];
                     unset($bar_table_data['col_total']);
                     $bar_table_data['col_total'] = $temp_bar;
-
-
-
                     $graph_array = array();
 
-                    //from bar table data
-                    $bar_chart_data = array();
-                    $temp2 = $bar_table_data;
-                    unset($temp2['col_total']);
-                    $i=0;
-                    foreach ($temp2 as $key => $value):
-                        unset($value['row_total']);
-                        $value['criteria_name'] = $key;
-                        $bar_chart_data[] = $value;
-                    endforeach;
-                    unset($bar_chart_data['col_total']);
+                    $i = 1;
 
-
-                    foreach ($criteria_info->result_array() as $value){
+                    foreach ($ranklist as $value) {
                         //for graph
                         $graph_array[] = array(
-                            "balloonText"=>$value['criteria_name'].':'.'[[percents]]',
-                            'fillAlphas'=> 0.8,
-                            'id'=>'AmGraph-'.++$i,
-                            'lineAlpha'=>0.2,
-                            'title'=>$value['criteria_name'],
-                            'type'=>'column',
-                            'valueField'=>$value['criteria_name']
+                            "balloonText" => $value['rank_name'] . ':' . '[[percents]]',
+                            'fillAlphas' => 0.8,
+                            'id' => 'AmGraph-' . ++$i,
+                            'lineAlpha' => 0.2,
+                            'title' => $value['rank_name'],
+                            'type' => 'column',
+                            'valueField' => $value['rank_name']
                         );
 
                     }
 
+                    $criteria_list = array();
+                    foreach ($criteria_info->result_array() as $row) {
+                        $criteria_list[] = $row['criteria_name'];
+                    }
+
+
+
                     //set data to response array
                     $response_array['status'] = 1;
-                    $response_array['data']['bar_chart_data']=$bar_chart_data;
-                    $response_array['data']['bar_table_data']=$bar_table_data;
-                    $response_array['data']['bar_graph_array']=$graph_array;
-                    $response_array['data']['bar_category_field']='criteria_name';
+                    $response_array['data']['bar_chart_data'] = $bar_data;
+                    $response_array['data']['bar_table_data'] = $bar_table_data;
+                    $response_array['data']['bar_graph_array'] = $graph_array;
+                    $response_array['data']['criteria_list'] = $criteria_list;
+                    $response_array['data']['bar_category_field'] = 'criteria_name';
 
 
                 else:
@@ -347,18 +352,18 @@ class Analysis extends AdminController
 
 
             } else {
+                    $response_array['status'] = 0;
+                    $response_array['error'] = "Criteria Not found.Internal Error . try Later";
+                }
+            } else {
+                //invalid parameter
                 $response_array['status'] = 0;
-                $response_array['error'] = "Criteria Not found.Internal Error . try Later";
+                $response_array['error'] = "Invalid Or Insufficient Parameters";
             }
-        } else {
-            //invalid parameter
-            $response_array['status'] = 0;
-            $response_array['error'] = "Invalid Or Insufficient Parameters";
+
+            echo json_encode($response_array);
+
+
         }
 
-        echo json_encode($response_array);
-
-
     }
-
-}
