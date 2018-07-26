@@ -9,7 +9,7 @@
                 <b><img src="<?= base_url('assets/backoffice')?>/images/logo.png" alt="homepage" class="dark-logo" /></b>
                 <!--End Logo icon -->
                 <!-- Logo text -->
-                <span><img src="<?= base_url('assets/backoffice')?>/images/logo-text.png" alt="homepage" class="dark-logo" /></span>
+               <!-- <span><img src="<?/*= base_url('assets/backoffice')*/?>/images/logo-text.png" alt="homepage" class="dark-logo" /></span>-->
             </a>
         </div>
         <!-- End Logo -->

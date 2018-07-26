@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/ico" sizes="16x16" href="<?= base_url();?>/assets/backoffice/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url();?>images/favicon.png">
     <title><?= $this->pageTitle ?></title>
     <!-- Bootstrap Core CSS -->
     <link href="<?= base_url('assets/backoffice/');?>css/lib/bootstrap/bootstrap.min.css" rel="stylesheet">
