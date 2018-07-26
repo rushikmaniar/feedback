@@ -77,12 +77,13 @@
                 </div>
 
 
-                <div id="TotalFeedback"></div>
-                <div id="chartdiv"></div>
-                <div id="charttable"></div>
+
 
             </div>
         </form>
+        <div id="TotalFeedback"></div>
+        <div id="chartdiv"></div>
+        <div id="charttable"></div>
     </div>
 </div>
 
@@ -182,7 +183,7 @@
 
     function makeEmpTable(title,subtitle,bar_table_data,criteria_list) {
         var html = '';
-            html += '<table class="display nowrap table table-hover table-striped table-bordered dataTable" id="EmpTable">';
+            html += '<table class="display nowrap table table-hover table-striped table-bordered table-responsive dataTable" id="EmpTable">';
 
             html += '<thead>';
             html += '<tr>';
@@ -284,6 +285,21 @@
     }
 
     function makebar(charttitle,chartsubtitle,bar_chart_data, bar_graph_array, bar_category_field) {
+        /**
+         * Use addInitHandler to do operations on the chart object
+         * before it is drawn
+         */
+        AmCharts.addInitHandler( function ( chart ) {
+            // set base values
+            var categoryWidth = 150;
+
+            // calculate bottom margin based on number of data points
+            var chartHeight = categoryWidth * chart.dataProvider.length;
+
+            // set the value
+            chart.div.style.height = chartHeight + 'px';
+
+        }, ['serial'] );
         var chart = AmCharts.makeChart("chartdiv", {
             "type": "serial",
             "theme": "light",
@@ -316,7 +332,9 @@
             "dataProvider": bar_chart_data,
             "export": {
                 "enabled": true
-            }
+            },
+
+
 
         });
 
@@ -329,6 +347,7 @@
         legend.markerType = "square";
         legend.valueText = "aa";
         chart.addLegend(legend);
+
         // WRITE
         chart.write("chartdiv");
 
