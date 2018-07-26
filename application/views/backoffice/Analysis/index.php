@@ -170,16 +170,6 @@
 
     }
 
-    //function for amchart
-
-    function handleInit() {
-        chart.legend.addListener("rollOverItem", handleRollOver);
-    }
-
-    function handleRollOver(e) {
-        var wedge = e.dataItem.wedge.node;
-        wedge.parentNode.appendChild(wedge);
-    }
 
     function makeEmpTable(title,subtitle,bar_table_data,criteria_list) {
         var html = '';
@@ -276,30 +266,12 @@
             ],
             "radius": 100
         });
+        chart.div.style.height = '500px';
 
-        chart.addListener("init", handleInit);
-
-        chart.addListener("rollOverSlice", function (e) {
-            handleRollOver(e);
-        });
     }
 
     function makebar(charttitle,chartsubtitle,bar_chart_data, bar_graph_array, bar_category_field) {
-        /**
-         * Use addInitHandler to do operations on the chart object
-         * before it is drawn
-         */
-        AmCharts.addInitHandler( function ( chart ) {
-            // set base values
-            var categoryWidth = 150;
 
-            // calculate bottom margin based on number of data points
-            var chartHeight = categoryWidth * chart.dataProvider.length;
-
-            // set the value
-            chart.div.style.height = chartHeight + 'px';
-
-        }, ['serial'] );
         var chart = AmCharts.makeChart("chartdiv", {
             "type": "serial",
             "theme": "light",
@@ -332,12 +304,19 @@
             "dataProvider": bar_chart_data,
             "export": {
                 "enabled": true
-            },
+            }
 
 
 
         });
+        // set base values
+        var categoryWidth = 150;
 
+        // calculate bottom margin based on number of data points
+        var chartHeight = categoryWidth * chart.dataProvider.length;
+
+        // set the value
+        chart.div.style.height = chartHeight + 'px';
 
         // LEGEND
         var legend = new AmCharts.AmLegend();
