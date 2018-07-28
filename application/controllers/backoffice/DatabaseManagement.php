@@ -12,6 +12,7 @@ class DatabaseManagement extends AdminController
     {
         parent::__construct();
     }
+
     public function index()
     {
         $this->pageTitle = 'Database Management';
@@ -19,26 +20,31 @@ class DatabaseManagement extends AdminController
     }
 
     /* Truncate Almost tables */
-        public function truncatedatabase()
+    public function truncatedatabase()
     {
-        $tables=$this->db->query("SELECT t.TABLE_NAME AS myTables FROM INFORMATION_SCHEMA.TABLES AS t WHERE t.TABLE_SCHEMA = 'feedback'")->result_array();
-        foreach($tables as $key => $val) {
-            echo $val['myTables']."<br>";// myTables is the alias used in query.
+        $tables = $this->db->query("SELECT t.TABLE_NAME AS myTables FROM INFORMATION_SCHEMA.TABLES AS t WHERE t.TABLE_SCHEMA = 'feedback' AND  t.TABLE_NAME NOT IN ('user','ranking','section_master','criteria_master')")->result_array();
+        $final = array_map(function ($data) {
+            return $data['myTables'];
+        }, $tables);
+        foreach ($final as $key => $val) {
+            $this->CommonModel->db->empty_table($val);
         }
+
+        $this->session->set_flashdata('success', 'Tables Truncated Successfully');
+        redirect(base_url('backoffice/DatabaseManagement'));
     }
 
     /* Export Full database */
     public function exportdatabase()
     {
         $this->load->dbutil();
-        $db_name = 'feedback'.date('Y').'.zip';
+        $db_name = 'feedback' . date('Y') . '.zip';
 
 
+        $backup =& $this->dbutil->backup(array('format'=>'zip','filename'=>$db_name));
 
-        $backup =& $this->dbutil->backup();
 
-
-        $save = FCPATH.'backup\\'.$db_name;
+        $save = FCPATH . 'backup/' . $db_name;
 
         $this->load->helper('file');
         write_file($save, $backup);
@@ -48,17 +54,5 @@ class DatabaseManagement extends AdminController
         force_download($db_name, $backup);
         redirect(base_url('backoffice/DatabaseManagement'));
     }
-    public function viewTruncateModal(){
-        $tables=$this->db->query("SELECT t.TABLE_NAME AS myTables FROM INFORMATION_SCHEMA.TABLES AS t WHERE t.TABLE_SCHEMA = 'feedback'")->result_array();
 
-        unset($tables['user']);
-        unset($tables['ranking']);
-        $newtables = array();
-
-        $this->pageData['tablelist'] = array_map(function ($data){return $data['myTables'];},$newtables);
-        echo '<pre>';
-        print_r($this->pageData['tablelist']);
-        echo '</pre>';exit;
-        $this->render("backoffice/databasemanagement/truncatedatabaseModal.php",FALSE);
-    }
 }
