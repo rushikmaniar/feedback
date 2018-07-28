@@ -45,7 +45,8 @@ class ClassManagement extends AdminController
             ->dbOrderBy(array('dept_id'=>'ASC'))
             ->getRecord('department_master', $OrWhere, 'department_master.*')->result_array();
 
-        $this->pageData['department_list'] = $department_data; $this->render("backoffice/Class/view_add_class",FALSE);
+        $this->pageData['department_list'] = $department_data;
+        $this->render("backoffice/Class/view_add_class",FALSE);
 
     }
 

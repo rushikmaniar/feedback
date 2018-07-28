@@ -27,7 +27,7 @@
                 <li> <a href="<?= base_url('backoffice/RemarksRecord')?>" aria-expanded="false"><i class="fa fa-arrow-circle-right"></i>Remarks Record</a></li>
 
                 <!-- Analysis  -->
-                <li class="nav-devider"></li>
+                <li class="nav-devider"></li>`
                 <li class="nav-label">Analysis</li>
                 <li> <a href="<?= base_url('backoffice/Analysis')?>" aria-expanded="false"><i class="fa fa-arrow-circle-right"></i>Analysis</a></li>
 
@@ -37,6 +37,13 @@
                 <li> <a href="<?= base_url('backoffice/SectionManagement')?>" aria-expanded="false"><i class="fa fa-arrow-circle-right"></i>Section Management</a></li>
                 <li> <a href="<?= base_url('backoffice/CriteriaManagement')?>" aria-expanded="false"><i class="fa fa-arrow-circle-right"></i>Criteria management</a></li>
 
+                <!--site Settings -->
+                <li class="nav-devider"></li>
+                <li class="nav-label">Database Settings</li>
+                <li> <a href="<?= base_url('backoffice/DatabaseManagement')?>" aria-expanded="false"><i class="fa fa-database"></i>Database Management</a></li>
+
+
+                <!-- Database Settings -->
                 <!-- <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-envelope"></i><span class="hide-menu">Email</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="email-compose.html">Compose</a></li>
