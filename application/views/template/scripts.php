@@ -1,7 +1,7 @@
 <?php //Scripts to include  ?>
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<title>Shards Demo - A free and modern UI toolkit for web makers</title>
+<title><?= $this->pageTitle; ?></title>
 <meta name="description" content="A free and modern UI toolkit for web makers based on the popular Bootstrap 4 framework.">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -20,6 +20,9 @@
 
 <!-- shards -->
 <link rel="stylesheet" href="<?= base_url().'assets/fronted/css/shards.min.css'; ?>">
+
+<!-- Favicon icon -->
+<link rel="icon" type="image/png" sizes="16x16" href="<?= base_url();?>images/favicon.png">
 
 <!-- js -->
 <script src="<?= base_url().'assets/fronted/js/jquery/jquery.min.js';?>"></script>

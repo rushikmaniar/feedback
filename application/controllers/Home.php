@@ -11,6 +11,7 @@ class Home extends SiteController{
         parent::__construct();
     }
     public function index(){
+        $this->pageTitle = 'Home';
         $this->render('home');
     }
 }

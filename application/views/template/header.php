@@ -2,9 +2,9 @@
 <div class="loader">
     <div class="page-loader"></div>
 </div>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-    <img src="<?= base_url().'zip/Shards-Version-2.0.2/images/demo/shards-logo.svg';?>" alt="Example Navbar 1" class="mr-2" height="30">
-    <a class="navbar-brand" href="#">Shards</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <img src="<?= base_url().'images/front-logo.png';?>" style="background:none;" alt="Feedback 1" class="mr-2" height="80">
+    <a class="navbar-brand" href="<?= base_url(); ?>">Feedback</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown-1" aria-controls="navbarNavDropdown-1"
             aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -17,21 +17,10 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
+                <a class="nav-link" href="#">Contact</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Pricing</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="https://designrevision.com" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    Services
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Design</a>
-                    <a class="dropdown-item" href="#">Development</a>
-                    <a class="dropdown-item" href="#">Marketing</a>
-                </div>
             </li>
         </ul>
 
