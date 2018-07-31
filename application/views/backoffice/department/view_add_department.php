@@ -55,6 +55,7 @@
                     {
                         'department_frm_dept_id': {
                             required: true,
+                            digits:true,
                             remote: {
                                 url: base_url+"backoffice/Employee/checkexists/"+"dept_id"+"/"+update_id,
                                 type: "post",
@@ -75,7 +76,8 @@
                     {
                         'department_frm_dept_id': {
                             required: "This field is required.",
-                            remote:"Department Code already Exists"
+                            remote:"Department Code already Exists",
+                            digits: "Only Numeric Accepted"
                         },
                         'department_frm_dept_name': {
                             required: "This field is required."

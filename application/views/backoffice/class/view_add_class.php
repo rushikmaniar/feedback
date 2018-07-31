@@ -72,6 +72,7 @@
                 rules: {
                     'class_frm_class_id': {
                         required: true,
+                        digits:true,
                         remote: {
                             url: base_url + "backoffice/ClassManagement/checkexists/" +"class_id"+"/"+ update_id,
                             type: "post",
@@ -96,7 +97,8 @@
                 messages: {
                     'class_frm_class_id': {
                         required: "This field is required.",
-                        remote: "Class code already Exists"
+                        remote: "Class code already Exists",
+                        digits: "Only Numeric Accepted"
                     },
                     'class_frm_class_name': {
                         required: "This field is required."

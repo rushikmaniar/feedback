@@ -117,6 +117,7 @@
                     {
                         'employee_frm_emp_code': {
                             required: true,
+                            digits:true,
                             remote: {
                                 url: base_url+"backoffice/Employee/checkexists/"+update_field+"/"+update_id,
                                 type: "post",
@@ -166,6 +167,7 @@
                 messages:
                     {
                         'employee_frm_emp_code': {
+                            digits: "Only Numeric Accepted",
                             required: "This field is required.",
                             remote:"Employee code already Exists"
                         },

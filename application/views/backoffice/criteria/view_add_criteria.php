@@ -163,7 +163,8 @@
                 },
                 rules: {
                     criteria_frm_section_id: {
-                        required: true
+                        required: true,
+                        digits:true
                     },
                     'criteria_frm_criteria_name': {
                         required: true,
@@ -194,7 +195,8 @@
                         remote: "Criteria already Exists"
                     },
                     criteria_frm_section_id: {
-                        required: "This field is required."
+                        required: "This field is required.",
+                        digits: "Only Numeric Accepted"
                     },
                     "options[option_text][]":{
                         required: "This field is required."
