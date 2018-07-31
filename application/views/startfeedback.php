@@ -14,13 +14,7 @@
 <div class="container-fluid">
     <form id="frm_feedback" name="frm_feedback" method="post" action="<?= base_url().'StartFeedback/InsertFeedbackData'?>">
         <div>
-            <style>
-                .myclass{
-                    width: auto;
-                    height: auto;
-                    overflow: auto;
-                }
-            </style>
+
             <h3>Select Class</h3>
             <section>
                 <div class="row">
@@ -125,6 +119,7 @@
 <script type="text/javascript">
 $(document).ready(function () {
 
+
     //multi step form
     $('#frm_feedback').children('div').steps({
         headerTag: "h3",
@@ -132,6 +127,7 @@ $(document).ready(function () {
         transitionEffect: "slideLeft",
         onStepChanging: function (event, currentIndex, newIndex)
         {
+
             $('#frm_feedback').validate().settings.ignore = ":disabled,:hidden";
             return $('#frm_feedback').valid();
             return true;
@@ -148,6 +144,7 @@ $(document).ready(function () {
         }
     });
 
+    $('.content clearfix').css({'overflow-x':'scroll','overflow-y':'scroll'});
     $('#frm_feedback_class').on('change',function () {
         var class_id = $(this).val();
         var emp_section_id = $('#emp_section_id').val();
