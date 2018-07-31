@@ -110,7 +110,7 @@ class EmployeeAllocation extends AdminController
      *
      * @param int $class_id
      */
-    public function viewEditAllocationModal($class_id,$class_name)
+    public function viewEditAllocationModal($class_id)
     {
 
         //get employee_list
@@ -118,7 +118,7 @@ class EmployeeAllocation extends AdminController
         $allocation_data = array_map(function ($data){return $data['emp_code'];},$this->CommonModel->getRecord("employee_allocation", array('class_id' => $class_id),'emp_code')->result_array());
         $this->pageData['allocation_data'] = $allocation_data;
         $this->pageData['class_id'] = $class_id;
-        $this->pageData['class_name'] = $class_name;
+        $this->pageData['class_name'] = $this->CommonModel->getRecord('class_master','class_id = '.$class_id,'class_name')->row_array()['class_name'];;
         $this->pageData['employee_list'] = $employee_list;
         $this->pageData['emp_codes'] = array_map(function ($data){return $data['emp_code'];},$employee_list);
         $this->render("backoffice/Allocation/view_add_allocation", FALSE);

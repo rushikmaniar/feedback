@@ -29,7 +29,7 @@
 </div>
 
 <footer class="main-footer py-5">
-    <p class="text-muted text-center small p-0 mb-4">&copy; Copyright 2018 — DesignRevision</p>
+    <p class="text-muted text-center small p-0 mb-4">&copy; Copyright 2018 — Rushik</p>
     <div class="social d-table mx-auto">
         <a class="twitter mx-3 h4 d-inline-block text-secondary" href="https://twitter.com/DesignRevision" target="_blank">
             <i class="fa fa-twitter"></i>

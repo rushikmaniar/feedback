@@ -30,7 +30,7 @@
                                                 data-tooltip="<?= ($row['entries'] == 0)?'Edit Allocation':'Delete Entries in Entry Table To Edit Allocation'?>"
                                                 data-container="body" title="Edit Allocation"
                                                 <?= ($row['entries'] != 0)?'disabled="disabled"':''?>
-                                                onclick="ajaxModel('backoffice/EmployeeAllocation/viewEditAllocationModal/<?=$row['class_id']?>/<?= $row['class_name']?>','Edit Allocation')">
+                                                onclick="ajaxModel('backoffice/EmployeeAllocation/viewEditAllocationModal/<?=$row['class_id']?>','Edit Allocation')">
                                             <i class="fa fa-pencil"></i>
                                         </button>
                                         <button type="button"

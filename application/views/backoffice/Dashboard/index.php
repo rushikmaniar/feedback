@@ -16,7 +16,7 @@
                         <span><i class="ti-user f-s-40 color-primary"></i></span>
                     </div>
                     <div class="media-body media-text-right">
-                        <h2>568120</h2>
+                        <h2><?= $records['total_employees']?></h2>
                         <p class="m-b-0">Employees</p>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                         <span><i class="ti-blackboard f-s-40 color-success"></i></span>
                     </div>
                     <div class="media-body media-text-right">
-                        <h2>1178</h2>
+                        <h2><?= $records['total_class']?></h2>
                         <p class="m-b-0">Classes</p>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                         <span><i class="ti-write f-s-40 color-warning"></i></span>
                     </div>
                     <div class="media-body media-text-right">
-                        <h2>25</h2>
+                        <h2><?= $records['total_entries']?></h2>
                         <p class="m-b-0">Total Feedback</p>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                         <span><i class="ti-settings f-s-40 color-danger"></i></span>
                     </div>
                     <div class="media-body media-text-right">
-                        <h2>847</h2>
+                        <h2><?= $records['total_criterias']?></h2>
                         <p class="m-b-0">Criterias</p>
                     </div>
                 </div>
