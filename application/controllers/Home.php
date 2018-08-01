@@ -8,9 +8,14 @@
 class Home extends SiteController{
     public function __construct()
     {
+
         parent::__construct();
     }
     public function index(){
+        $this->load->helper('directory');
+
+            $this->pageData['imagelist'] = directory_map(FCPATH.'\images\slider-image');
+
         $this->pageTitle = 'feedback | Home';
         $this->render('home');
     }

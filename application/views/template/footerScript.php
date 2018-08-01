@@ -16,8 +16,10 @@
 <!-- select2.js -->
 <script src="<?= base_url().'assets/fronted/plugins/select2/js/select2.min.js';?>"></script>
 <!-- tostr -->
-
 <script src="<?= base_url().'assets/fronted/plugins/toastr/toastr.min.js';?>"></script>
+
+<!-- responsiveslide -->
+<script src="<?= base_url().'assets/fronted/plugins/responsiveslides/responsiveslides.min.js';?>"></script>
 
 <script src="<?= base_url().'assets/fronted/js/shards.min.js'?>"></script>
 
