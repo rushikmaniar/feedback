@@ -144,7 +144,7 @@ class StartFeedback extends SiteController
         endforeach;
 
         $this->session->set_flashdata('success',"Feedback Stored Successfully");
-        redirect(base_url());
+        redirect(base_url('thankyou'));
 
     }
 }
