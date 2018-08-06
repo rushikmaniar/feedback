@@ -99,7 +99,7 @@ class Analysis extends AdminController
             //where Condition
 
             $where = "analysis_master.section_id = $section_id AND " . ($criteria_id != 0 ? " analysis_master.criteria_id = $criteria_id" : "analysis_master.criteria_id != 0") . " AND " . ($class_id == 0 ? " entry_record.class_id != 0 " : " entry_record.class_id = $class_id");
-            $analyses_where = 'analysis_master.section_id = ' . $section_id . ' AND ' . ($criteria_id == 0 ? 'analysis_master.criteria_id != 0 ' : 'analysis_master.criteria_id = ' . $criteria_id);
+            $analyses_where = 'analysis_master.section_id = ' . $section_id . ' AND ' . ($criteria_id == 0 ? 'analysis_master.criteria_id != 0 ' : 'analysis_master.criteria_id = ' . $criteria_id) . " AND " . ($class_id == 0 ? " entry_record.class_id != 0 " : " entry_record.class_id = $class_id");
 
             //if section is employee section
             if ($this->input->post('employee_id') != null) {
@@ -121,10 +121,12 @@ class Analysis extends AdminController
                     array(
                         array(
                             'table' => 'analysis_master',
-                            'condition' => 'entry_record.entry_id = analysis_master.entry_id'
+                            'condition' => 'entry_record.entry_id = analysis_master.entry_id',
+                            'jointype' => 'INNER'
                         )
                     ))
                 ->getRecord('entry_record', $where, $val);
+
 
             $total_student_entries = $entry_record->num_rows();
 
@@ -134,11 +136,11 @@ class Analysis extends AdminController
                     array(
                         array(
                             'table' => 'entry_record',
-                            'condition' => 'analysis_master.entry_id = entry_record.entry_id'
+                            'condition' => 'analysis_master.entry_id = entry_record.entry_id',
+                            'jointype' => 'INNER'
                         )
                     ))
                 ->getRecord('analysis_master', $analyses_where);
-
 
             $analysis_data_total_rows = $analyses_data->num_rows();
 
@@ -148,38 +150,44 @@ class Analysis extends AdminController
 
             //criteria info
             $criteria_info = $this->CommonModel->getRecord('criteria_master', 'section_id = ' . $section_id . ' AND ' . ($criteria_id == 0 ? 'criteria_id != 0' : 'criteria_id = ' . $criteria_id), 'criteria_id,criteria_name,type_data');
+            if ($criteria_id == 0)
+                $total_student_entries /= $criteria_info->num_rows();
 
             foreach ($criteria_info->result_array() as $row_criteria) {
                 if ($row_criteria['type_data'] == 0) {
                     //simple data
                     $ranklist = $this->CommonModel->getRecord('ranking')->result_array();
+
                     foreach ($ranklist as $row_rank) {
+
                         $final_data['rank_' . $row_rank['rank_id']]['rank_name'] = $row_rank['rank_name'];
                         $final_data['rank_' . $row_rank['rank_id']]['rank_value'] = $row_rank['rank_value'];
-                        $final_data['rank_' . $row_rank['rank_id']]['points'][$row_criteria['criteria_id']] = $this->CommonModel->getRecord('analysis_master', 'section_id = ' . $section_id . ' AND criteria_id = ' . $row_criteria['criteria_id'] . ' AND analysis_master.criteria_points =' . $row_rank['rank_value'] . (isset($employee_id) ? ' AND emp_code = ' . $employee_id : ''))->num_rows();
+
+                        $final_data['rank_' . $row_rank['rank_id']]['points'][$row_criteria['criteria_id']] = $this->CommonModel->getRecord('analysis_master', 'section_id = ' . $section_id . ' AND criteria_id = ' . $row_criteria['criteria_id'] . " AND " . ($class_id == 0 ? " analysis_master.class_id != 0 " : " analysis_master.class_id = $class_id") . ' AND analysis_master.criteria_points =' . $row_rank['rank_value'] . (isset($employee_id) ? ' AND emp_code = ' . $employee_id : ''))->num_rows();
+                        $row_temp = $final_data['rank_' . $row_rank['rank_id']]['points'][$row_criteria['criteria_id']];
 
                         //calculating rank row total
-                        if (isset($final_data['rank_' . $row_rank['rank_id']]['row_total'])) {
-                            $final_data['rank_' . $row_rank['rank_id']]['row_total'] += $final_data['rank_' . $row_rank['rank_id']]['points'][$row_criteria['criteria_id']];
+                        if ((isset($final_data['rank_' . $row_rank['rank_id']]['row_total']))) {
+                            $final_data['rank_' . $row_rank['rank_id']]['row_total'] += $row_temp;
                         } else {
                             $final_data['rank_' . $row_rank['rank_id']]['row_total'] = 0;
-                            $final_data['rank_' . $row_rank['rank_id']]['row_total'] += $final_data['rank_' . $row_rank['rank_id']]['points'][$row_criteria['criteria_id']];
+                            $final_data['rank_' . $row_rank['rank_id']]['row_total'] += $row_temp;
                         }
 
                         //calculating rank column total
-                        if (isset($final_data['col_total'][$row_criteria['criteria_id']])) {
-                            $final_data['col_total'][$row_criteria['criteria_id']] += $final_data['rank_' . $row_rank['rank_id']]['points'][$row_criteria['criteria_id']];
+                        if ((isset($final_data['col_total'][$row_criteria['criteria_id']]))) {
+                            $final_data['col_total'][$row_criteria['criteria_id']] += $row_temp;
                         } else {
                             $final_data['col_total'][$row_criteria['criteria_id']] = 0;
-                            $final_data['col_total'][$row_criteria['criteria_id']] += $final_data['rank_' . $row_rank['rank_id']]['points'][$row_criteria['criteria_id']];
+                            $final_data['col_total'][$row_criteria['criteria_id']] += $row_temp;
                         }
 
                         //calculating final column row  total
-                        if (isset($final_data['col_total']['final_total'])) {
-                            $final_data['col_total']['final_total'] += $final_data['rank_' . $row_rank['rank_id']]['points'][$row_criteria['criteria_id']];
+                        if ((isset($final_data['col_total']['final_total']))) {
+                            $final_data['col_total']['final_total'] += $row_temp;
                         } else {
                             $final_data['col_total']['final_total'] = 0;
-                            $final_data['col_total']['final_total'] += $final_data['rank_' . $row_rank['rank_id']]['points'][$row_criteria['criteria_id']];
+                            $final_data['col_total']['final_total'] += $row_temp;
                         }
                     }
 
@@ -192,7 +200,7 @@ class Analysis extends AdminController
                     foreach ($criteria_optionlist as $row_option) {
                         $final_data['option_' . $row_option['option_id']]['option_name'] = $row_option['option_text'];
                         $final_data['option_' . $row_option['option_id']]['option_value'] = $row_option['option_value'];
-                        $final_data['option_' . $row_option['option_id']]['points'][$row_criteria['criteria_id']] = $this->CommonModel->getRecord('analysis_master', 'section_id = ' . $section_id . ' AND criteria_id = ' . $row_criteria['criteria_id'] . ' AND analysis_master.criteria_points =' . $row_option['option_id'] . (isset($employee_id) ? ' AND emp_code = ' . $employee_id : ''))->num_rows();
+                        $final_data['option_' . $row_option['option_id']]['points'][$row_criteria['criteria_id']] = $this->CommonModel->getRecord('analysis_master', 'section_id = ' . $section_id . ' AND criteria_id = ' . $row_criteria['criteria_id'] . " AND " . ($class_id == 0 ? " analysis_master.class_id != 0 " : " analysis_master.class_id = $class_id") . ' AND analysis_master.criteria_points =' . $row_option['option_id'] . (isset($employee_id) ? ' AND emp_code = ' . $employee_id : ''))->num_rows();
 
                         //calculating option row total
                         if (isset($final_data[$row_option['option_id']]['row_total'])) {
@@ -243,7 +251,7 @@ class Analysis extends AdminController
 
             if ($criteria_info->num_rows() == 1) {
                 $response_array['data']['criteria'] = $criteria_info->result_array()[0]['criteria_name'];
-                $response_array['data']['total_feedback'] = $final_data['col_total']['final_total'];
+                $response_array['data']['total_feedback'] = $total_student_entries;
                 $response_array['data']['valueField'] = 'value';
                 $response_array['data']['titleField'] = 'label';
                 $response_array['data']['donut_data'] = array();
@@ -266,7 +274,7 @@ class Analysis extends AdminController
 
             } else if ($criteria_info->num_rows() > 1) {
                 //multiple criteria
-                $response_array['data']['total_feedback'] = $final_data['col_total']['final_total'];
+                $response_array['data']['total_feedback'] = $total_student_entries;
                 $response_array['chart_type'] = "bar";
 
                 $ranks_data = $final_data;
@@ -334,7 +342,6 @@ class Analysis extends AdminController
                     }
 
 
-
                     //set data to response array
                     $response_array['status'] = 1;
                     $response_array['data']['bar_chart_data'] = $bar_data;
@@ -352,18 +359,18 @@ class Analysis extends AdminController
 
 
             } else {
-                    $response_array['status'] = 0;
-                    $response_array['error'] = "Criteria Not found.Internal Error . try Later";
-                }
-            } else {
-                //invalid parameter
                 $response_array['status'] = 0;
-                $response_array['error'] = "Invalid Or Insufficient Parameters";
+                $response_array['error'] = "Criteria Not found.Internal Error . try Later";
             }
-
-            echo json_encode($response_array);
-
-
+        } else {
+            //invalid parameter
+            $response_array['status'] = 0;
+            $response_array['error'] = "Invalid Or Insufficient Parameters";
         }
 
+        echo json_encode($response_array);
+
+
     }
+
+}

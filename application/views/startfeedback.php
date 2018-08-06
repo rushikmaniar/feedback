@@ -94,7 +94,7 @@
                                                         <?php endforeach;?>
                                                         </select>
                                                     <?php else:?>
-                                                        <input type="text" name="section[<?= $row_section['section_id']?>][points][<?= $value['criteria_id']?>]" class="points form-control" pattern="^[0-5]$" title="Enter 0-5">
+                                                        <input type="text" name="section[<?= $row_section['section_id']?>][points][<?= $value['criteria_id']?>]" class="points form-control" pattern="^[0-5]$" title="Enter 1-5">
                                                     <?php endif;?>
                                                 </td>
                                             <?php endforeach;?>
@@ -184,7 +184,7 @@ $(document).ready(function () {
                                     html += '<td>';
                                     html+= '<input type="hidden" name="section['+emp_section_id+'][points]['+value.emp_code+']['+criteria_value+'][emp_code]" value="'+value.emp_code+'">';
                                     html+= '<input type="hidden" name="section['+emp_section_id+'][points]['+value.emp_code+']['+criteria_value+'][criteria_code]" value="'+criteria_value+'">';
-                                    html+= '<input type="text" pattern="^[0-5]$" title="Enter 0-5" required="required" class="points form-control" name="section['+emp_section_id+'][points]['+value.emp_code+']['+criteria_value+'][emp_criteria_points]">';
+                                    html+= '<input type="text" pattern="^[0-5]$" title="Enter 0-5" required="required" class="emppoints form-control" name="section['+emp_section_id+'][points]['+value.emp_code+']['+criteria_value+'][emp_criteria_points]">';
                                     html += '</td>';
                                 });
                                 html += '</tr>';
@@ -225,9 +225,16 @@ $(document).ready(function () {
     });
 
     jQuery.validator.addClassRules({
-        points:{
+        emppoints:{
             required:true,
             regex:"^[0-5]$"
+        }
+    });
+
+    jQuery.validator.addClassRules({
+        points:{
+            required:true,
+            regex:"^[1-5]$"
         }
     });
 
