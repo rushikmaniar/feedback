@@ -22,13 +22,13 @@
             </ol>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="d-block w-100" src="<?= base_url('images/slider-image/') . $imagelist[0]; ?>"
+                    <img class="d-block w-100" style="height: 500px;width: 500px" src="<?= base_url('images/slider-image/') . $imagelist[0]; ?>"
                          alt="not image found">
                 </div>
                 <?php unset($imagelist[0]);?>
                 <?php foreach ($imagelist as $row): ?>
                     <div class="carousel-item">
-                        <img class="d-block w-100" src="<?= base_url('images/slider-image/') . $row; ?>"
+                        <img class="d-block w-100" style="height: 500px;width: 500px" src="<?= base_url('images/slider-image/') . $row; ?>"
                              alt="not image found">
                     </div>
                 <?php endforeach; ?>

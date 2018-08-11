@@ -36,6 +36,7 @@
                 <li class="nav-label">Site Settings</li>
                 <li> <a href="<?= base_url('backoffice/SectionManagement')?>" aria-expanded="false"><i class="fa fa-arrow-circle-right"></i>Section Management</a></li>
                 <li> <a href="<?= base_url('backoffice/CriteriaManagement')?>" aria-expanded="false"><i class="fa fa-arrow-circle-right"></i>Criteria management</a></li>
+                <li> <a href="<?= base_url('backoffice/SiteManagement')?>" aria-expanded="false"><i class="fa fa-arrow-circle-right"></i>Site Management</a></li>
 
                 <!--site Settings -->
                 <li class="nav-devider"></li>

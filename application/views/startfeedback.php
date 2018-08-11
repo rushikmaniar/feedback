@@ -48,6 +48,7 @@
 
                                         <td>Teachers Image</td>
                                         <td>Teachers Name</td>
+                                        <td>Is Subject Optional</td>
                                         <?php foreach ($row_section['criteria_list'] as $index=>$value):?>
                                             <td data-criteriaid="<?= $value['criteria_id']; ?>" class="employee_criteria" data-type_data="<?= $value['type_data']?>"><?= $value['criteria_name']; ?></td>
 
@@ -173,18 +174,23 @@ $(document).ready(function () {
                         var html = '';
                         html +'<input type="hidden" name="class_id" value="'+class_id+'">';
                         $.each(response.data,function (key,value) {
-                           html+= '<tr>';
+                           html+= '<tr id="emp_row_'+value.emp_code+'">';
                                 if(value.emp_image != null)
                                 html += '<td><img src="' + base_url + '/uploads/employee/' + value.emp_image + '" onerror="this.src= base_url + \'/images/person-noimage-found.png\'" style="height:80px;width:80px" class="img-circle"></td>';
                                 else
                                     html += '<td><img src="' + base_url + '/images/person-noimage-found.png"' + 'style="height:80px;width:80px" class="img-circle"></td>';
                                html += '<td data-emp_code="'+value.emp_code+'">'+value.emp_name+'</td>';
+
+                               if(value.is_optional == 1)
+                                html += '<td><input type="checkbox" onchange="disablerow(this)" data-empno="'+value.emp_code+'"> </td>';
+                               else
+                                   html += '<td></td>';
                                 $.each(employee_criteria_list,function (index,criteria_value) {
 
                                     html += '<td>';
                                     html+= '<input type="hidden" name="section['+emp_section_id+'][points]['+value.emp_code+']['+criteria_value+'][emp_code]" value="'+value.emp_code+'">';
                                     html+= '<input type="hidden" name="section['+emp_section_id+'][points]['+value.emp_code+']['+criteria_value+'][criteria_code]" value="'+criteria_value+'">';
-                                    html+= '<input type="text" pattern="^[0-5]$" title="Enter 0-5" required="required" class="emppoints form-control" name="section['+emp_section_id+'][points]['+value.emp_code+']['+criteria_value+'][emp_criteria_points]">';
+                                    html+= '<input type="text" pattern="^[1-5]$" title="Enter 1-5" required="required" class="points form-control" name="section['+emp_section_id+'][points]['+value.emp_code+']['+criteria_value+'][emp_criteria_points]">';
                                     html += '</td>';
                                 });
                                 html += '</tr>';
@@ -224,12 +230,6 @@ $(document).ready(function () {
 
     });
 
-    jQuery.validator.addClassRules({
-        emppoints:{
-            required:true,
-            regex:"^[0-5]$"
-        }
-    });
 
     jQuery.validator.addClassRules({
         points:{
@@ -250,4 +250,15 @@ $(document).ready(function () {
         dropdownAutoWidth : true
     });
 });
+function disablerow(el) {
+    var empno = $(el).data('empno');
+
+    if($(el).is(':checked')){
+        $('#emp_row_'+empno + ' td :input[type=text]').attr('disabled',true);
+    }else{
+        $('#emp_row_'+empno + ' td :input[type=text]').attr('disabled',false);
+    }
+
+}
+
 </script>

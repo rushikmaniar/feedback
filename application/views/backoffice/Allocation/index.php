@@ -4,7 +4,7 @@
                         <thead>
                         <tr>
                             <th>Class Name</th>
-                            <th>Emplyoees Allocated</th>
+                            <th>IS Optional  / Emplyoees Allocated</th>
                             <th class="text-center">Action</th>
                         </tr>
                         </thead>
@@ -16,9 +16,9 @@
                                 <td><?=$row['class_name']?></td>
                                 <td>
                                     <?php if(!empty($allocation_data[$row['class_id']])):?>
-                                    <?php foreach ($allocation_data[$row['class_id']] as $emp):
-                                            echo $emp['emp_name']."<br>";
-                                        endforeach;?>
+                                    <?php foreach ($allocation_data[$row['class_id']] as $emp):?>
+                                            <input type='checkbox' data-empno="<?= $emp['emp_code']?>" data-classid="<?= $row['class_id']?>" <?php echo ($emp['is_optional'] == 1 ?  'checked':'')?> onchange="updateisOptional(this)" <?= ($row['entries'] != 0)?'disabled="disabled"':''?>> <?=$emp['emp_name']?><br>
+                                        <?php endforeach;?>
                                         <?php else:?>
                                         No Employees Allocated to this class
                                     <?php endif;?>
@@ -104,4 +104,34 @@
 	/*************************************
 				Delete Allocation End
 	*************************************/
+
+	function updateisOptional(el) {
+        console.log(el);
+        var val = $(el).is(":checked");
+        var empno = $(el).data('empno');
+        var class_id = $(el).data('classid');
+
+        $.ajax({
+            url: base_url + "backoffice/EmployeeAllocation/updateIsOptional",
+            type: "POST",
+            dataType: "json",
+            data: {
+                "class_id": class_id,
+                "empno": empno,
+                "val": val
+            },
+            success: function (result) {
+                if (result.code == 1 && result.code != '') {
+                    toastr["success"](result.message, "Success");
+                }
+                else {
+                    toastr["error"](result.message, "Error");
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+
+    }
 </script>

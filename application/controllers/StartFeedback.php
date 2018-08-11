@@ -77,7 +77,7 @@ class StartFeedback extends SiteController
                             'condition' => 'employee_allocation.emp_code = employee_master.emp_code'
                         )
                     ))
-                ->getRecord("employee_allocation", array('class_id' => $class_id),'employee_allocation.emp_code,employee_master.emp_name,employee_master.emp_image')->result_array();
+                ->getRecord("employee_allocation", array('class_id' => $class_id),'employee_allocation.emp_code,employee_allocation.is_optional,employee_master.emp_name,employee_master.emp_image')->result_array();
             /*$employee_code_list = array_map(function ($data){return $data['employee_codes'];},$emp_list);
             $employee_name_list = array_map(function ($data){return $data['emp_name'];},$emp_list);*/
 

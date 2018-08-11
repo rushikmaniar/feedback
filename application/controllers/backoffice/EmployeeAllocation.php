@@ -41,7 +41,8 @@ class EmployeeAllocation extends AdminController
                 $where = array('employee_allocation.class_id' => $row['class_id']);
                 $val = '
                 employee_master.emp_code,
-                employee_master.emp_name
+                employee_master.emp_name,
+                employee_allocation.is_optional
                 ';
                 $data = $this->CommonModel
                     ->dbOrderBy(array('employee_allocation.class_id' => 'DESC'))
@@ -163,6 +164,35 @@ class EmployeeAllocation extends AdminController
             echo json_encode($res_output);
             exit();
         }
+    }
+
+    //to update is optional in employee allocation
+    public function updateIsOptional()
+    {
+        $response_array = array('code'=>0,'message'=>'');
+        if($this->input->post()){
+            $class_id = $this->input->post('class_id');
+            $empno = $this->input->post('empno');
+            $val = $this->input->post('val');
+            if($val == "true"){
+                $val = 1;
+            }else{
+                $val = 0;
+            }
+
+            $update = $this->CommonModel->update('employee_allocation',array('is_optional'=>$val),array('class_id'=>$class_id,'emp_code'=>$empno));
+
+            if($update){
+                $response_array['code'] = 1;
+                $response_array['message'] = "Is Optional Updated Successfully";
+            }else{
+                $response_array['message'] = "Some Problem . Try Later";
+            }
+
+        }else{
+            $response_array['message'] = "Insufficient Parameter";
+        }
+        echo json_encode($response_array);
     }
 }
 

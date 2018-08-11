@@ -22,7 +22,7 @@
         <select name="allocation_frm_emp_codes[]" id="allocation_frm_emp_codes" style="width: 50%" class="form-control" multiple="multiple">
             <?php foreach ($employee_list as $row): ?>
                 <?php if (in_array($row['emp_code'],$allocation_data)): ?>
-                        <option value="<?= $row['emp_code'] ?>" selected><?= $row['emp_name'] ?></option>
+                    <option value="<?= $row['emp_code'] ?>" selected><?= $row['emp_name'] ?> </option>
                     <?php else: ?>
                     <option value="<?= $row['emp_code'] ?>"><?= $row['emp_name'] ?></option>
                 <?php endif; ?>
