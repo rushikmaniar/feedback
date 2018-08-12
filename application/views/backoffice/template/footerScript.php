@@ -111,6 +111,10 @@
         $('.blink').modernBlink({
             duration: 3000
         });
+
+        //summernote
+        $('.summernote').summernote();
+
         <?php if($this->session->flashdata('error')) : ?>
         toastr["error"]('<?= $this->session->flashdata('error') ?>', "Error");
         <?php elseif($this->session->flashdata('success')) : ?>

@@ -22,6 +22,9 @@ class Home extends SiteController
         $imagelist = directory_map(FCPATH . '\images\slider-image');
         $this->pageData['imagelist'] = $imagelist;
 
+        //site settings
+        $site_settings = $this->CommonModel->getRecord('site_settings');
+        $this->pageData['site_settings'] = $site_settings->result_array();
         $this->pageTitle = 'feedback | Home';
         $this->render('home');
     }

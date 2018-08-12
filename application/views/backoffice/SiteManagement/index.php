@@ -1,31 +1,30 @@
 <div class="card">
     <div class="card-body">
-        <form id="frm_sitesetting" method="post" action="<?= base_url('backoffice/Profile/editProfile')?>" enctype="multipart/form-data">
+        <form id="frm_sitesettings" method="post" action="<?= base_url('backoffice/SiteManagement/editSettings')?>" enctype="multipart/form-data">
             <div class="row col-sm-12">
-                <!-- User Image -->
-                <div class="col-sm-3 form-group thumbnail">
-                    <div class="input-group image">
 
-                        <input type="file" name="frm_profile_user_image" id="frm_profile_user_image" style="display:none" onchange="readURL(this)">
-                        <a href="javscript:void()" onclick="$('#frm_profile_user_image').click()">
-                            <img src="<?= base_url('uploads/user/profile/').$user_details['user_image']?>" id="user_image"
+                <!-- Front HomePage Heading -->
+                <div class="col-sm-12 form-group">
+                    <div class="input-group">
+                        <label class="col-sm-12">Front Home Page Heading (html)</label>
+                        <textarea class="form-control frm_sitesettings summernote"
+                                  name="frm_sitesettings[<?= $site_settings[0]['settings_id'] ?>]"
+                        placeholder="Enter Html For Front Home Page Heading">
+                            <?= $site_settings[0]['settings_value'] ?>
+                        </textarea>
 
-                                 class="img-responsive img-circle img-fluid"
-                                 onerror="this.src='<?= base_url('images/person-noimage-found.png')?>'">
-                        </a>
 
                     </div>
                 </div>
-
-                <!-- User Email -->
+                <!-- Front HomePage Footer -->
                 <div class="col-sm-12 form-group">
                     <div class="input-group">
-                        <label class="col-sm-12">User Email</label>
-                        <input type="hidden" name="frm_profile_user_id" id="frm_profile_user_id" value="<?= $user_details['user_id'] ?>">
-                        <input type="text" class="form-control" id="frm_profile_user_email"
-                               name="frm_profile_user_email" value="<?= $user_details['user_email'] ?>"
-                               placeholder="Enter User Email">
-
+                        <label class="col-sm-12">Front Home Page Footer (html)</label>
+                        <textarea class="form-control frm_sitesettings summernote"
+                                  name="frm_sitesettings[<?= $site_settings[1]['settings_id'] ?>]"
+                                  placeholder="Enter Html For Front Home Page Footer">
+                            <?= $site_settings[1]['settings_value'] ?>
+                        </textarea>
                     </div>
                 </div>
 

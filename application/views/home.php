@@ -4,13 +4,11 @@
  * Date: 010 10-06-2018
  * Time: 01:12 PM
  */ ?>
+<div id="fronthome_heading">
+    <?= $site_settings[0]['settings_value']; ?>
+</div>
 <div class="row">
-    <div class="col-md-12 col-sm-12 jumbotron">
 
-        <h1>Welcome To Feedback System</h1>
-        <p>christ college feedback.</p>
-
-    </div>
     <?php if (isset($imagelist) && !empty($imagelist)):?>
     <div class="col-md-12 col-sm-12">
         <div id="MiddleCarousel" class="carousel slide UACarousel" data-ride="carousel">
