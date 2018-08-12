@@ -276,3 +276,14 @@ jQuery.validator.addMethod(
 $.validator.addMethod("valueNotEquals", function(value, element, arg){
     return arg !== value;
 }, jQuery.validator.messages.valueNotEquals);
+
+// check file type
+$.validator.addMethod("checkFileType", function(value, element, arg){
+    console.log('as');
+    var ext = value.split('.').pop().toLowerCase();
+    if($.inArray(ext, arg) == -1) {
+        return false;
+    }else{
+        return true;
+    }
+}, jQuery.validator.messages.checkFileType);

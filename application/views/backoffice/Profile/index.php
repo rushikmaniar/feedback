@@ -6,7 +6,7 @@
                 <div class="col-sm-3 form-group thumbnail">
                     <div class="input-group image">
 
-                            <input type="file" name="frm_profile_user_image" id="frm_profile_user_image" style="display:none" onchange="readURL(this)">
+                            <input type="file" name="frm_profile_user_image" id="frm_profile_user_image" style="display:none" accept="image/x-png,image/gif,image/jpeg" onchange="readURL(this)">
                             <a href="javscript:void()" onclick="$('#frm_profile_user_image').click()">
                                 <img src="<?= base_url('uploads/user/profile/').$user_details['user_image']?>" id="user_image"
 
@@ -76,7 +76,7 @@
                     }
                 },
                 'frm_profile_user_image':{
-                    accept: "image/jpeg, image/png"
+                    checkFileType: "['jpg','jpeg','png']"
                 }
 
 
@@ -87,7 +87,7 @@
                     remote: "User Email already Exists"
                 },
                 'frm_profile_user_image':{
-                    accept: "Invalid File Type . JPEG / PNG Accepted"
+                    checkFileType: "Invalid File Type . JPEG / PNG Accepted"
                 }
             }
         });

@@ -63,6 +63,10 @@
     <link href="<?= base_url();?>assets/backoffice/plugins/summernote/summernote.css" rel="stylesheet">
     <script src="<?= base_url()?>assets/backoffice/plugins/summernote/summernote.min.js"></script>
 
+    <!-- Drop Zone-->
+    <link href="<?= base_url();?>assets/backoffice/plugins/dropzone/dropzone.css" rel="stylesheet">
+    <script src="<?= base_url()?>assets/backoffice/plugins/dropzone/dropzone.js"></script>
+
     <script type="text/javascript">
         var base_url = "<?= base_url();?>";
         var SITE_URL = "<?= site_url(); ?>";
