@@ -152,8 +152,10 @@
                     var bar_graph_array = response.data.bar_graph_array;
                     var bar_category_field = response.data.bar_category_field;
                     var criteria_list = response.data.criteria_list;
+                    var ranklist = response.data.ranklist;
+
                     makebar(charttitle,chartsubtitle,bar_chart_data, bar_graph_array, bar_category_field);
-                    makeEmpTable(charttitle,chartsubtitle,response.data.bar_table_data,criteria_list);
+                    makeEmpTable(charttitle,chartsubtitle,response.data.bar_table_data,criteria_list,ranklist);
                 }
                 else {
                     $('#TotalFeedback').html('<h2>Total Feedback : '+ response.data.total_feedback +'</h2>');
@@ -171,9 +173,9 @@
     }
 
 
-    function makeEmpTable(title,subtitle,bar_table_data,criteria_list) {
+    function makeEmpTable(title,subtitle,bar_table_data,criteria_list,ranklist) {
         var html = '';
-            html += '<table class="display nowrap table table-hover table-striped table-bordered table-responsive dataTable" id="EmpTable">';
+            html += '<table class="display nowrap table table-hover table-striped table-bordered table-responsive dataTable" id="EmpTable" style="white-space: nowrap;">';
 
             html += '<thead>';
             html += '<tr>';
@@ -186,7 +188,13 @@
             html += '</thead>';
 
             html += '<tbody>';
+            //console.log(ranklist);
+            $.each(ranklist,function (value) {
+              // console.log(ranklist[0]['rank_name']);
+            });
+            console.log(bar_table_data[ranklist[0]['rank_name']]);
             $.each(bar_table_data,function(rowindex,row){
+
                 html += '<tr>';
                 $.each(row,function(colindex,col){
                     html += '<td>' + col + '</td>';

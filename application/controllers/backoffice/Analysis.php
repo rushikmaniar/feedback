@@ -189,6 +189,7 @@ class Analysis extends AdminController
                             $final_data['col_total']['final_total'] = 0;
                             $final_data['col_total']['final_total'] += $row_temp;
                         }
+
                     }
 
                 } else {
@@ -282,6 +283,7 @@ class Analysis extends AdminController
                 $bar_table_data = array();
 
 
+
                 if ($response_array['data']['total_feedback'] > 0):
                     //rows
                     $bar_chart_data = array();
@@ -290,12 +292,14 @@ class Analysis extends AdminController
                         $rank_name = (isset($row['rank_name']) ? $row['rank_name'] : $row['option_name']);
 
                         //for each columns
+
                         foreach ($row['points'] as $key => $cols) {
                             $criteria_name = $this->CommonModel->getRecord('criteria_master', array('criteria_id' => $key))->row_array()['criteria_name'];
                             $bar_table_data[$rank_name]['rank'] = $rank_name;
-                            $bar_table_data[$rank_name][$criteria_name] = $cols;
+                            $bar_table_data[$rank_name][$criteria_name] = $cols . ' (' .number_format((float)$cols / $final_data['col_total'][$key]*100,2,'.','') . '%)';
                             $bar_table_data['col_total']['rank'] = 'Total';
-                            $bar_table_data['col_total'][$criteria_name] = (isset($bar_table_data['col_total'][$criteria_name]) ? $bar_table_data['col_total'][$criteria_name] + $cols : 0);
+                            $bar_table_data['col_total'][$criteria_name] =  $final_data['col_total'][$key];
+
 
                             $bar_chart_data[$criteria_name]['criteria_name'] = $criteria_name;
                             $bar_chart_data[$criteria_name][$rank_name] = $cols;
@@ -303,9 +307,10 @@ class Analysis extends AdminController
 
                         }
 
-                        $bar_table_data[$rank_name]['row_total'] = $row['row_total'];
+                        $bar_table_data[$rank_name]['row_total'] = $row['row_total'] . ' (' .number_format((float)$row['row_total'] / $final_data['col_total']['final_total']*100,2,'.','') . '%)';
                         $bar_table_data['col_total']['row_total'] = (isset($bar_table_data['col_total']['row_total']) ? $bar_table_data['col_total']['row_total'] + $row['row_total'] : 0);
                     }
+
 
                     //bar chart data
                     $bar_data = array();
@@ -347,6 +352,7 @@ class Analysis extends AdminController
                     $response_array['data']['bar_chart_data'] = $bar_data;
                     $response_array['data']['bar_table_data'] = $bar_table_data;
                     $response_array['data']['bar_graph_array'] = $graph_array;
+                    $response_array['data']['ranklist'] = $ranklist;
                     $response_array['data']['criteria_list'] = $criteria_list;
                     $response_array['data']['bar_category_field'] = 'criteria_name';
 
