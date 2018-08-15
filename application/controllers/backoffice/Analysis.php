@@ -352,7 +352,7 @@ class Analysis extends AdminController
                     $response_array['data']['bar_chart_data'] = $bar_data;
                     $response_array['data']['bar_table_data'] = $bar_table_data;
                     $response_array['data']['bar_graph_array'] = $graph_array;
-                    $response_array['data']['ranklist'] = $ranklist;
+
                     $response_array['data']['criteria_list'] = $criteria_list;
                     $response_array['data']['bar_category_field'] = 'criteria_name';
 

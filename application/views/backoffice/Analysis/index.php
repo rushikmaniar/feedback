@@ -77,8 +77,6 @@
                 </div>
 
 
-
-
             </div>
         </form>
         <div id="TotalFeedback"></div>
@@ -113,7 +111,7 @@
             employee_id = null;
         }
         $('#charttable').html('');
-        alert(class_id + '  ' + section_id + '  ' + criteria_id + '  ' + employee_id);
+        //alert(class_id + '  ' + section_id + '  ' + criteria_id + '  ' + employee_id);
 
         //ajax call for data
         $.ajax({
@@ -137,7 +135,7 @@
                     chartsubtitle += '  Total Feedback : ' + response.data.total_feedback;
 
 
-                    makeDonut(charttitle,chartsubtitle, response.data.titleField, response.data.valueField, response.data.donut_data, response.data.total_feedback);
+                    makeDonut(charttitle, chartsubtitle, response.data.titleField, response.data.valueField, response.data.donut_data, response.data.total_feedback);
 
                 } else if (response.status == 1 && response.data.total_feedback > 0 && response.chart_type == "bar") {
 
@@ -152,13 +150,13 @@
                     var bar_graph_array = response.data.bar_graph_array;
                     var bar_category_field = response.data.bar_category_field;
                     var criteria_list = response.data.criteria_list;
-                    var ranklist = response.data.ranklist;
 
-                    makebar(charttitle,chartsubtitle,bar_chart_data, bar_graph_array, bar_category_field);
-                    makeEmpTable(charttitle,chartsubtitle,response.data.bar_table_data,criteria_list,ranklist);
+
+                    makebar(charttitle, chartsubtitle, bar_chart_data, bar_graph_array, bar_category_field);
+                    makeEmpTable(charttitle, chartsubtitle, response.data.bar_table_data, criteria_list);
                 }
                 else {
-                    $('#TotalFeedback').html('<h2>Total Feedback : '+ response.data.total_feedback +'</h2>');
+                    $('#TotalFeedback').html('<h2>Total Feedback : ' + response.data.total_feedback + '</h2>');
                     $('#chartdiv').html('<h2 align="center" class="text-danger">No Data Found</h2>');
 
                     console.log('else');
@@ -173,41 +171,43 @@
     }
 
 
-    function makeEmpTable(title,subtitle,bar_table_data,criteria_list,ranklist) {
+    function makeEmpTable(title, subtitle, bar_table_data, criteria_list) {
         var html = '';
-            html += '<table class="display nowrap table table-hover table-striped table-bordered table-responsive dataTable" id="EmpTable" style="white-space: nowrap;">';
+        html += '<table class="display nowrap table table-hover table-striped table-bordered table-responsive dataTable" id="EmpTable" style="white-space: nowrap;">';
 
-            html += '<thead>';
+        html += '<thead>';
+        html += '<tr>';
+        html += '<td>Sr</td>';
+        html += '<td>Rank</td>';
+        $.each(criteria_list, function (index, value) {
+            html += '<td>' + value + '</td>';
+        });
+        html += '<td>Total</td>';
+        html += '</tr>';
+        html += '</thead>';
+
+        html += '<tbody>';
+
+        var i = 0;
+        $.each(bar_table_data, function (rowindex, row) {
+
             html += '<tr>';
-                html += '<td>Rank</td>';
-                $.each(criteria_list,function(index,value){
-                    html += '<td>' + value + '</td>';
-                });
-                html += '<td>Total</td>';
+            html += '<td>' + i++ + '</td>';
+            $.each(row, function (colindex, col) {
+
+                html += '<td>' + col + '</td>';
+            });
             html += '</tr>';
-            html += '</thead>';
-
-            html += '<tbody>';
-            //console.log(ranklist);
-            $.each(ranklist,function (value) {
-              // console.log(ranklist[0]['rank_name']);
-            });
-            console.log(bar_table_data[ranklist[0]['rank_name']]);
-            $.each(bar_table_data,function(rowindex,row){
-
-                html += '<tr>';
-                $.each(row,function(colindex,col){
-                    html += '<td>' + col + '</td>';
-                });
-                html +='</tr>';
-            });
-            html += '</tbody>';
-
-            html += '</table>';
+        });
 
 
-            $('#charttable').html('');
-            $('#charttable').html(html);
+        html += '</tbody>';
+
+        html += '</table>';
+
+
+        $('#charttable').html('');
+        $('#charttable').html(html);
 
         $('#EmpTable').dataTable({
             dom: 'Bfrtip',
@@ -219,7 +219,7 @@
 
     }
 
-    function makeDonut(charttitle,chartsubtitle, titlefield, valuefield, donutdata, totalfeedback) {
+    function makeDonut(charttitle, chartsubtitle, titlefield, valuefield, donutdata, totalfeedback) {
         var chart = AmCharts.makeChart("chartdiv", {
             "type": "pie",
             "startDuration": 1,
@@ -267,7 +267,7 @@
                 {
                     "text": charttitle,
                     "size": 35
-                },{
+                }, {
                     "text": chartsubtitle,
                     "size": 25
                 }
@@ -278,7 +278,7 @@
 
     }
 
-    function makebar(charttitle,chartsubtitle,bar_chart_data, bar_graph_array, bar_category_field) {
+    function makebar(charttitle, chartsubtitle, bar_chart_data, bar_graph_array, bar_category_field) {
 
         var chart = AmCharts.makeChart("chartdiv", {
             "type": "serial",
@@ -302,10 +302,10 @@
             ],
             "allLabels": [],
             "balloon": {},
-            "titles": [ {
+            "titles": [{
                 "text": charttitle,
                 "size": 35
-            },{
+            }, {
                 "text": chartsubtitle,
                 "size": 25
             }],
@@ -313,7 +313,6 @@
             "export": {
                 "enabled": true
             }
-
 
 
         });
@@ -394,7 +393,7 @@
         $('#btn_refresh').on('click', function () {
             if ($('#form_analysis').valid()) {
                 //form is valid
-                console.log('valid');
+                //console.log('valid');
                 var class_id = $('#class_select').select2('val');
                 var section_id = $('#section_select').val();
                 var criteria_id = $('#criteria_select').val();
