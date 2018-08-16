@@ -14,6 +14,9 @@ class SiteController extends CI_Controller
     {
         parent::__construct();
         $this->load->model('CommonModel');
+        //site settings
+        $site_settings = $this->CommonModel->getRecord('site_settings');
+        $this->pageData['site_settings'] = $site_settings->result_array();
     }
 
     public function render($the_view = null, $template = 'main')

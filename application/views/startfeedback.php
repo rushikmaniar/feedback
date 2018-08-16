@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="frm_feedback_class" class="col-form-label-lg"><h4>Select Class</h4></label>
-                        <select name="frm_feedback_class" id="frm_feedback_class" class="select2 form-control" style="width: 80%">
+                        <select name="frm_feedback_class" id="frm_feedback_class" class="select2 form-control" style="width: auto">
                             <option value="">Select Class</option>
                             <?php foreach ($class_list as $row):?>
                                 <option value="<?= $row['class_id']; ?>"><?= $row['class_name']; ?></option>
@@ -145,7 +145,7 @@ $(document).ready(function () {
         }
     });
 
-    $('.content clearfix').css({'overflow-x':'scroll','overflow-y':'scroll'});
+    $('.content clearfix').css({'overflow-x':'scroll','overflow-y':'scroll','white-space': 'nowrap'});
     $('#frm_feedback_class').on('change',function () {
         var class_id = $(this).val();
         var emp_section_id = $('#emp_section_id').val();

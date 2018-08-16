@@ -143,10 +143,10 @@
     display: block;
     margin: 0.5em;
     min-height: 35em;
-    overflow: hidden;
+    overflow: scroll;
     position: relative;
     width: auto;
-
+    white-space: nowrap;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -164,11 +164,12 @@
 {
     float: left;
     position: absolute;
-    width: 95%;
+    width: auto;
+    /*width: 95%;
     height: 95%;
     padding: 2.5%;
     overflow-x: scroll;
-    overflow-y: scroll;
+    overflow-y: scroll;*/
 }
 
 .wizard > .content > .body ul
