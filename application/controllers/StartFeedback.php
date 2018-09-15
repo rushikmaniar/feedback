@@ -14,7 +14,17 @@ class StartFeedback extends SiteController
     }
     public function index()
     {
-        $classlist = $this->CommonModel->getRecord('class_master')->result_array();
+        $classlist = $this->CommonModel
+            ->dbjoin(
+                array(
+                    array(
+                        'table' => 'employee_allocation',
+                        'condition' => 'class_master.class_id = employee_allocation.class_id',
+                        'jointype' => 'INNER'
+                    )
+                ))
+            ->getRecord('class_master')->result_array();
+
         $val = '
         section_master.section_id,
         section_master.section_name,
