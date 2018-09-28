@@ -29,8 +29,6 @@ class Profile extends AdminController
 
         $update = $this->CommonModel->update('user', array('user_email' => $user_details['frm_profile_user_email']), array('user_id' => $session_user['user_id']));
         if ($update) {
-
-
             if($_FILES['frm_profile_user_image']){
                 $path =  $_FILES['frm_profile_user_image']['name'];
                 $ext = pathinfo($path, PATHINFO_EXTENSION);
