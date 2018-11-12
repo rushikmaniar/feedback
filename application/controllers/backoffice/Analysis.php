@@ -6,6 +6,7 @@
  * Date: 26/6/2018
  * Time: 1:05 PM
  */
+defined('BASEPATH') OR exit('No direct script access allowed');
 class Analysis extends AdminController
 {
     public function __construct()
@@ -310,7 +311,6 @@ class Analysis extends AdminController
                         $bar_table_data[$rank_name]['row_total'] = $row['row_total'] . ' (' .number_format((float)$row['row_total'] / $final_data['col_total']['final_total']*100,2,'.','') . '%)';
                         $bar_table_data['col_total']['row_total'] = (isset($bar_table_data['col_total']['row_total']) ? $bar_table_data['col_total']['row_total'] + $row['row_total'] : 0);
                     }
-
 
                     //bar chart data
                     $bar_data = array();

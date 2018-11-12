@@ -7,7 +7,7 @@
                     <div class="input-group image">
 
                             <input type="file" name="frm_profile_user_image" id="frm_profile_user_image" style="display:none" accept="image/x-png,image/gif,image/jpeg" onchange="readURL(this)">
-                            <a href="javscript:void()" onclick="$('#frm_profile_user_image').click()">
+                            <a href="javascript:void(0)" onclick="$('#frm_profile_user_image').click()">
                                 <img src="<?= base_url('uploads/user/profile/').$user_details['user_image']?>" id="user_image"
 
                                      class="img-responsive img-circle img-fluid"

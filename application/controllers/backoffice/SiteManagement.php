@@ -5,7 +5,7 @@
  * Date: 012 12-08-2018
  * Time: 12:18 PM
  */
-
+defined('BASEPATH') OR exit('No direct script access allowed');
 class SiteManagement extends AdminController
 {
     public function __construct()

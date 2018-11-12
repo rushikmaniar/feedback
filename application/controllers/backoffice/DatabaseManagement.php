@@ -6,6 +6,7 @@
  * Date: 28/7/2018
  * Time: 10:04 AM
  */
+defined('BASEPATH') OR exit('No direct script access allowed');
 class DatabaseManagement extends AdminController
 {
     public function __construct()

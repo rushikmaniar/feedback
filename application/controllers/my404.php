@@ -5,7 +5,7 @@
  * Date: 003 03-05-2018
  * Time: 08:46 PM
  */
-
+defined('BASEPATH') OR exit('No direct script access allowed');
 class my404 extends CI_Controller
 {
     public function __construct()

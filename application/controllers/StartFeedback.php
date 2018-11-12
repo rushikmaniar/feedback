@@ -6,6 +6,7 @@
  * Date: 010 10-06-2018
  * Time: 01:39 PM
  */
+defined('BASEPATH') OR exit('No direct script access allowed');
 class StartFeedback extends SiteController
 {
     public function __construct()
