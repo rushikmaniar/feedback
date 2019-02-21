@@ -15,7 +15,12 @@ class StartFeedback extends SiteController
     }
     public function index()
     {
+        $val = '
+        class_master.class_id,
+        class_master.class_name
+        ';
         $classlist = $this->CommonModel
+            ->dbGroupBy('class_master.class_name')
             ->dbjoin(
                 array(
                     array(
@@ -23,7 +28,8 @@ class StartFeedback extends SiteController
                         'condition' => 'class_master.class_id = employee_allocation.class_id',
                         'jointype' => 'INNER'
                     )
-                ))
+                )
+            )
             ->getRecord('class_master')->result_array();
 
         $val = '

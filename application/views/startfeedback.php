@@ -198,6 +198,7 @@ $(document).ready(function () {
                         });
                         $('#frm_feedback_emp_table tbody').html(html);
                     }else{
+
                         toastr["error"](response.message, "Error");
                     }
                 },
@@ -255,8 +256,12 @@ function disablerow(el) {
 
     if($(el).is(':checked')){
         $('#emp_row_'+empno + ' td :input[type=text]').attr('disabled',true);
+        $('#emp_row_'+empno + ' td :input[type=hidden]').attr('disabled',true);
+        $('#emp_row_'+empno + ' td :input[type=hidden]').attr('disabled',true);
     }else{
         $('#emp_row_'+empno + ' td :input[type=text]').attr('disabled',false);
+        $('#emp_row_'+empno + ' td :input[type=hidden]').attr('disabled',false);
+        $('#emp_row_'+empno + ' td :input[type=hidden]').attr('disabled',false);
     }
 
 }

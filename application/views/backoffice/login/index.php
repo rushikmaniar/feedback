@@ -103,6 +103,19 @@
 <script src="<?= base_url() ?>/assets/backoffice/js/lib/form-validation/additional-methods.js"></script>
 <script type="text/javascript">
     $("#LoginForm").validate({
+        errorClass: 'invalid-feedback animated fadeInDown',
+        /*errorPlacement: function(error, element) {
+         error.appendTo(element.parent().parent());
+         },*/
+        errorPlacement: function (e, a) {
+            jQuery(a).parents(".input-group").append(e)
+        },
+        highlight: function (e) {
+            jQuery(e).closest(".input-group").removeClass("is-invalid").addClass("is-invalid")
+        },
+        success: function (e) {
+            jQuery(e).closest(".input-group").removeClass("is-invalid"), jQuery(e).remove()
+        },
         rules:
             {
                 LoginFormEmail: {
