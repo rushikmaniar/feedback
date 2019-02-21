@@ -143,6 +143,7 @@ class Analysis extends AdminController
                     ))
                 ->getRecord('analysis_master', $analyses_where);
 
+
             $analysis_data_total_rows = $analyses_data->num_rows();
 
 
@@ -151,6 +152,7 @@ class Analysis extends AdminController
 
             //criteria info
             $criteria_info = $this->CommonModel->getRecord('criteria_master', 'section_id = ' . $section_id . ' AND ' . ($criteria_id == 0 ? 'criteria_id != 0' : 'criteria_id = ' . $criteria_id), 'criteria_id,criteria_name,type_data');
+
             if ($criteria_id == 0)
                 $total_student_entries /= $criteria_info->num_rows();
 
@@ -158,7 +160,6 @@ class Analysis extends AdminController
                 if ($row_criteria['type_data'] == 0) {
                     //simple data
                     $ranklist = $this->CommonModel->getRecord('ranking')->result_array();
-
                     foreach ($ranklist as $row_rank) {
 
                         $final_data['rank_' . $row_rank['rank_id']]['rank_name'] = $row_rank['rank_name'];
@@ -238,7 +239,6 @@ class Analysis extends AdminController
             $temp = $final_data['col_total']['final_total'];
             unset($final_data['col_total']['final_total']);
             $final_data['col_total']['final_total'] = $temp;
-
 
             //move col total to last
 
