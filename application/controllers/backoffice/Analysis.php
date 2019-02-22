@@ -188,8 +188,8 @@ class Analysis extends AdminController
                         if ((isset($final_data['col_total']['final_total']))) {
                             $final_data['col_total']['final_total'] += $row_temp;
                         } else {
-                            $final_data['col_total']['final_total'] = 0;
-                            $final_data['col_total']['final_total'] += $row_temp;
+                            //$final_data['col_total']['final_total'] = 0;
+                            $final_data['col_total']['final_total'] = $row_temp;
                         }
 
                     }
@@ -222,7 +222,7 @@ class Analysis extends AdminController
                         }
 
                         //calculating final column row  total
-                        if (isset($final_data['col_total']['final_total'])) {
+                        if (    (isset($final_data['col_total']['final_total']))    ) {
                             $final_data['col_total']['final_total'] += $final_data['option_' . $row_option['option_id']]['points'][$row_criteria['criteria_id']];
                         } else {
                             $final_data['col_total']['final_total'] = 0;
@@ -235,16 +235,20 @@ class Analysis extends AdminController
             }
 
 
+
             //push column row  total  to last
             $temp = $final_data['col_total']['final_total'];
             unset($final_data['col_total']['final_total']);
             $final_data['col_total']['final_total'] = $temp;
+
 
             //move col total to last
 
             $temp = $final_data['col_total'];
             unset($final_data['col_total']);
             $final_data['col_total'] = $temp;
+
+
 
 
             //for amcharts
@@ -303,13 +307,23 @@ class Analysis extends AdminController
 
 
                             $bar_chart_data[$criteria_name]['criteria_name'] = $criteria_name;
-                            $bar_chart_data[$criteria_name][$rank_name] = $cols;
+                            $bar_chart_data[$criteria_name][$rank_name] = ($cols/$total_student_entries*100);
+                            $bar_chart_data[$criteria_name][$rank_name] = number_format((float)$bar_chart_data[$criteria_name][$rank_name], 2, '.', '');
 
 
                         }
 
+
                         $bar_table_data[$rank_name]['row_total'] = $row['row_total'] . ' (' .number_format((float)$row['row_total'] / $final_data['col_total']['final_total']*100,2,'.','') . '%)';
-                        $bar_table_data['col_total']['row_total'] = (isset($bar_table_data['col_total']['row_total']) ? $bar_table_data['col_total']['row_total'] + $row['row_total'] : 0);
+
+
+                        if((isset($bar_table_data['col_total']['row_total']))){
+                            $bar_table_data['col_total']['row_total'] = $bar_table_data['col_total']['row_total'] + $row['row_total'];
+                        }else{
+                            $bar_table_data['col_total']['row_total'] = $row['row_total'];
+                        }
+                        //$bar_table_data['col_total']['row_total'] = (isset($bar_table_data['col_total']['row_total']) ? $bar_table_data['col_total']['row_total'] + $row['row_total'] : $row['row_total']);
+
                     }
 
                     //bar chart data

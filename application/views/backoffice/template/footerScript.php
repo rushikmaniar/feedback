@@ -122,7 +122,7 @@
         <?php endif; ?>
 
 
-            var checkuser = setInterval(function(){
+            /*var checkuser = setInterval(function(){
                 //check user
                 $.ajax({
                     async: false,
@@ -161,7 +161,7 @@
 
                     }
                 });
-            },3000);
+            },3000);*/
 
     });
 </script>
