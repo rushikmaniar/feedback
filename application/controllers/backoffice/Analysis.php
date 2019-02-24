@@ -269,7 +269,8 @@ class Analysis extends AdminController
                 if ($response_array['data']['total_feedback'] > 0):
                     foreach ($temp as $row) {
                         //data in percentage
-                        $temp1 = ((isset($row['points'][$criteria_id]) ? $row['points'][$criteria_id] : 0));
+                        $per = number_format($row['points'][$criteria_id]/$response_array['data']['total_feedback']*100,2,'.','' );
+                        $temp1 = ((isset($row['points'][$criteria_id]) ? $per : 0));
                         $response_array['data']['donut_data'][] = array('label' => ((isset($row['rank_name']) ? $row['rank_name'] : $row['option_name'])), 'value' => $temp1);
                     }
                 else:

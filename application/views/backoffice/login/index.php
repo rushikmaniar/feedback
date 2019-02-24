@@ -38,9 +38,13 @@
         <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
     </svg>
 </div>
+<style type="text/css">
+    .error{
+        color: red;
+    }
+</style>
 <!-- Main wrapper  -->
 <div id="main-wrapper">
-
     <div class="unix-login">
         <div class="container-fluid">
             <div class="row justify-content-center">
@@ -48,10 +52,13 @@
                     <div class="login-content card">
                         <div class="login-form">
                             <h4>Feedback Admin Login</h4>
-                            <form name="LoginForm" method="post" id="LoginForm" action="<?= base_url().'backoffice/Login' ?>">
+                            <form name="LoginForm" method="post" id="LoginForm"
+                                  action="<?= base_url() . 'backoffice/Login' ?>">
                                 <div class="form-group">
-                                    <div id="error_msg" class="<?= ($this->session->flashdata('login_error')) ? 'text-danger' : 'hidden';?>" style="padding: 10px 0px;">
-                                        <?= ($this->session->flashdata('login_error')) ? $this->session->flashdata('login_error') : "";?>
+                                    <div id="error_msg"
+                                         class="<?= ($this->session->flashdata('login_error')) ? 'text-danger' : 'hidden'; ?>"
+                                         style="padding: 10px 0px;">
+                                        <?= ($this->session->flashdata('login_error')) ? $this->session->flashdata('login_error') : ""; ?>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -63,7 +70,7 @@
                                     <input type="password" class="form-control" name="LoginFormPassword"
                                            placeholder="Password">
                                 </div>
-                                <div class="checkbox">
+                               <!-- <div class="checkbox">
                                     <label>
                                         <input type="checkbox"> Remember Me
                                     </label>
@@ -71,7 +78,7 @@
                                         <a href="#">Forgotten Password?</a>
                                     </label>
 
-                                </div>
+                                </div>-->
                                 <button type="submit" class="btn btn-primary btn-flat m-b-30 m-t-30">Sign in</button>
                                 <!--<div class="register-link m-t-15 text-center">
                                     <p>Don't have account ? <a href="#"> Sign Up Here</a></p>
@@ -102,40 +109,44 @@
 <script src="<?= base_url() ?>/assets/backoffice/js/lib/form-validation/jquery.validate.min.js"></script>
 <script src="<?= base_url() ?>/assets/backoffice/js/lib/form-validation/additional-methods.js"></script>
 <script type="text/javascript">
-    $("#LoginForm").validate({
-        errorClass: 'invalid-feedback animated fadeInDown',
-        /*errorPlacement: function(error, element) {
-         error.appendTo(element.parent().parent());
-         },*/
-        errorPlacement: function (e, a) {
-            jQuery(a).parents(".input-group").append(e)
-        },
-        highlight: function (e) {
-            jQuery(e).closest(".input-group").removeClass("is-invalid").addClass("is-invalid")
-        },
-        success: function (e) {
-            jQuery(e).closest(".input-group").removeClass("is-invalid"), jQuery(e).remove()
-        },
-        rules:
-            {
-                LoginFormEmail: {
-                    required: true,
-                    email:true
-                },
-                LoginFormPassword: {
-                    required: true
-                }
+    $(document).ready(function () {
+
+
+        $("#LoginForm").validate({
+            errorClass: 'invalid-feedback animated fadeInDown',
+            /*errorPlacement: function(error, element) {
+             error.appendTo(element.parent().parent());
+             },*/
+            errorPlacement: function (e, a) {
+                jQuery(a).parents(".form-group").append(e)
             },
-        messages:
-            {
-                LoginFormEmail: {
-                    required: "Email Required",
-                    email: "Enter Valid Email"
+            highlight: function (e) {
+                jQuery(e).closest(".form-group").removeClass("is-invalid").addClass("is-invalid");
+            },
+            success: function (e) {
+                jQuery(e).closest(".form-group").removeClass("is-invalid"), jQuery(e).remove()
+            },
+            rules:
+                {
+                    LoginFormEmail: {
+                        required: true,
+                        email: true
+                    },
+                    LoginFormPassword: {
+                        required: true
+                    }
                 },
-                LoginFormPassword: {
-                    required: "Password Required"
+            messages:
+                {
+                    LoginFormEmail: {
+                        required: "Email Required",
+                        email: "Enter Valid Email"
+                    },
+                    LoginFormPassword: {
+                        required: "Password Required"
+                    }
                 }
-            }
+        });
     });
 </script>
 </body>

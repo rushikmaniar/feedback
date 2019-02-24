@@ -5522,7 +5522,7 @@ tbody tr td:last-child {
   border: 0px;
 }
 .login-form label {
-  color: #455a64;
+  /*color: #455a64;*/
   text-transform: uppercase;
 }
 .login-form label a {
