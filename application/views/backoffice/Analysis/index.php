@@ -90,10 +90,9 @@
 <script src="<?= base_url() ?>assets/backoffice/js/lib/amcharts/pie.js"></script>
 <script src="<?= base_url() ?>assets/backoffice/js/lib/amcharts/serial.js"></script>
 <script src="<?= base_url() ?>assets/backoffice/js/lib/amcharts/plugins/export/export.min.js"></script>
-<link rel="stylesheet" href="<?= base_url() ?>assets/backoffice/css/lib/amchart/export.css" type="text/css"
-      media="all"/>
+<link rel="stylesheet" href="<?= base_url() ?>assets/backoffice/css/lib/amchart/export.css" type="text/css" media="all"/>
 <script src="<?= base_url() ?>assets/backoffice/js/lib/amcharts/themes/light.js"></script>
-<script src="//www.amcharts.com/lib/3/plugins/responsive/responsive.min.js"></script>
+<script src="<?= base_url() ?>assets/backoffice/js/lib/amcharts/plugins/responsive/responsive.min.js"></script>
 
 <script type="text/javascript">
 
